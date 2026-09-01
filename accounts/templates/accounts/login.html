@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion - TaskFlow</title>
+</head>
+<body>
+    <h1>Se connecter</h1>
+    {% if form.errors %}<p>Identifiants incorrects.</p>{% endif %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Se connecter</button>
+    </form>
+</body>
+</html>
