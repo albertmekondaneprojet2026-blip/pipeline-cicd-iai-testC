@@ -28,3 +28,8 @@
     .hero-public-visual { order: -1; }
     .hero-public-text h1 { font-size: 30px; }
 }
+.mock-app-card-blue { border-top-color: #2563eb; }
+.mock-app-card-green { border-top-color: #22c55e; }
+.mock-app-card-purple { border-top-color: #7c3aed; }
+.mock-app-card-orange { border-top-color: #f59e0b; }
+

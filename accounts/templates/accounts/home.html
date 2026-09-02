@@ -1,12 +1,43 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>TaskFlow</title>
-</head>
-<body>
-    <h1>TaskFlow</h1>
-    <a href="{% url 'accounts:login' %}">Se connecter</a>
-    <a href="{% url 'accounts:register' %}">Créer un compte</a>
-</body>
-</html>
+{% extends 'base_public.html' %}
+{% load static %}
+
+{% block title %}TaskFlow - Le travail avance mieux quand le projet est visible{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="hero-public">
+    <div class="hero-public-text">
+        <span class="hero-eyebrow">PLATEFORME DE PROJET</span>
+        <h1>Le travail avance mieux quand le projet est <span class="highlight">visible.</span></h1>
+        <p class="text-muted">TaskFlow rassemble votre backlog, vos sprints, votre tableau et votre roadmap dans un espace simple à présenter et rapide à utiliser.</p>
+        <div class="hero-actions">
+            <a href="{% url 'accounts:register' %}" class="btn btn-primary">Créer mon espace</a>
+            <a href="#" class="btn-link">Voir la démonstration <i data-lucide="chevron-right" class="icon-sm"></i></a>
+        </div>
+    </div>
+    <div class="hero-public-visual card">
+        <div class="mock-app-header">
+            <span class="mock-app-title">TaskFlow Studio</span>
+            <span class="mock-app-subtitle">Vue d'ensemble</span>
+            <span class="mock-app-btn">Créer</span>
+        </div>
+        <div class="mock-app-bar mock-app-bar-dark"></div>
+        <div class="mock-app-bar mock-app-bar-light"></div>
+        <div class="mock-app-row-lines"></div>
+        <div class="mock-app-grid">
+            <div class="mock-app-card mock-app-card-blue"></div>
+            <div class="mock-app-card mock-app-card-green"></div>
+            <div class="mock-app-card mock-app-card-purple"></div>
+        </div>
+        <div class="mock-app-grid">
+            <div class="mock-app-card mock-app-card-blue"></div>
+            <div class="mock-app-card mock-app-card-orange"></div>
+            <div class="mock-app-card mock-app-card-purple"></div>
+            <div class="mock-app-card mock-app-card-green"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

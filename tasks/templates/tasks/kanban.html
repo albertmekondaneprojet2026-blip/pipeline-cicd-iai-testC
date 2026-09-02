@@ -1,0 +1,46 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block title %}Tableau - {{ project.name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/kanban.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Tableau</h1>
+    <p class="text-muted">{{ project.name }}</p>
+</div>
+     <div class="kanban-board"
+     data-update-url="{% url 'tasks:update_task_status' project_pk=project.pk pk=0 %}">
+    <div class="kanban-column" data-status="todo">
+        <div class="kanban-column-header"><span class="status-dot status-todo"></span> À faire <span class="kanban-count">{{ todo_tasks|length }}</span></div>
+        <div class="kanban-cards" data-status="todo">
+            {% for task in todo_tasks %}
+            <div class="kanban-card" data-task-id="{{ task.pk }}"><p class="kanban-card-title">{{ task.title }}</p></div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="kanban-column" data-status="in_progress">
+        <div class="kanban-column-header"><span class="status-dot status-in_progress"></span> En cours <span class="kanban-count">{{ in_progress_tasks|length }}</span></div>
+        <div class="kanban-cards" data-status="in_progress">
+            {% for task in in_progress_tasks %}
+            <div class="kanban-card" data-task-id="{{ task.pk }}"><p class="kanban-card-title">{{ task.title }}</p></div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="kanban-column" data-status="done">
+        <div class="kanban-column-header"><span class="status-dot status-done"></span> Terminé <span class="kanban-count">{{ done_tasks|length }}</span></div>
+        <div class="kanban-cards" data-status="done">
+            {% for task in done_tasks %}
+            <div class="kanban-card" data-task-id="{{ task.pk }}"><p class="kanban-card-title">{{ task.title }}</p></div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/kanban.js' %}"></script>
+{% endblock %}

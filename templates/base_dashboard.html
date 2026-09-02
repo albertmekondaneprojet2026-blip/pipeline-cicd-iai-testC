@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TaskFlow{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/layout-dashboard.css' %}">
+    {% block extra_css %}{% endblock %}
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo">
+                <i data-lucide="layout-dashboard"></i>
+                <span>taskflow</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                {% if project %}
+                <a href="{% url 'projects:project_dashboard' pk=project.pk %}" class="nav-item {% if request.resolver_match.url_name == 'project_dashboard' %}active{% endif %}">
+                    <i data-lucide="layout-dashboard"></i> Résumé
+                </a>
+                <a href="{% url 'tasks:kanban' project_pk=project.pk %}" class="nav-item {% if request.resolver_match.url_name == 'kanban' %}active{% endif %}">
+                    <i data-lucide="columns-3"></i> Tableau
+                </a>
+                <div class="nav-divider"></div>
+                {% endif %}
+
+                <a href="{% url 'projects:project_list' %}" class="nav-item {% if request.resolver_match.url_name == 'project_list' %}active{% endif %}">
+                    <i data-lucide="folder-kanban"></i> Projets
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button type="button" class="nav-item nav-item-logout" disabled>
+                    <i data-lucide="log-out"></i> Déconnexion
+                </button>
+            </div>
+        </aside>
+
+        <div class="main-area">
+            <header class="topbar">
+                <button class="mobile-menu-toggle" id="menuToggle">
+                    <i data-lucide="menu"></i>
+                </button>
+                <div class="topbar-breadcrumb">
+                    <span>Projets</span> <i data-lucide="chevron-right" class="icon-sm"></i> <span>{{ project.name|default:"TaskFlow Studio" }}</span>
+                </div>
+                <div class="topbar-actions">
+                    <button class="icon-btn"><i data-lucide="search"></i></button>
+                    <button class="icon-btn"><i data-lucide="bell"></i></button>
+                    <div class="user-avatar">{{ request.user.username|slice:":1"|upper }}</div>
+                </div>
+            </header>
+
+            <main class="content">
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/sidebar.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

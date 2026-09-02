@@ -1,16 +1,42 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Connexion - TaskFlow</title>
-</head>
-<body>
-    <h1>Se connecter</h1>
-    {% if form.errors %}<p>Identifiants incorrects.</p>{% endif %}
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Se connecter</button>
-    </form>
-</body>
-</html>
+{% extends 'base_public.html' %}
+{% load static %}
+
+{% block title %}Connexion - TaskFlow{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-text">
+        <span class="hero-eyebrow">TASKFLOW STUDIO</span>
+        <h1>Reprenez le fil de votre projet.</h1>
+        <p class="text-muted">Retrouvez vos sprints, vos tickets et vos décisions exactement là où vous les avez laissés.</p>
+    </div>
+
+    <div class="card auth-card">
+        <h2>Se connecter</h2>
+        {% if form.errors %}
+        <p class="form-error auth-form-error">Identifiants incorrects. Réessayez.</p>
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}">Adresse e-mail</label>
+                {{ form.username }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.password.id_for_label }}">Mot de passe</label>
+                {{ form.password }}
+            </div>
+            <div class="auth-row">
+                <label class="checkbox-label"><input type="checkbox"> Se souvenir de moi</label>
+                <a href="#" class="auth-link-sm">Mot de passe oublié ?</a>
+            </div>
+            <button type="submit" class="btn btn-primary auth-submit-btn">Se connecter</button>
+            <p class="text-muted-sm auth-footer-text">En continuant, vous acceptez les règles d'utilisation de TaskFlow.</p>
+        </form>
+    </div>
+</div>
+{% endblock %}

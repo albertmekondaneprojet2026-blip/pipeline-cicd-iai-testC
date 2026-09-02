@@ -1,11 +1,47 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Projets - TaskFlow</title>
-</head>
-<body>
-    <h1>Mes projets</h1>
-    <p>Écran temporaire — sera enrichi au Jour 5.</p>
-</body>
-</html>
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block title %}Projets{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/project-list.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header page-header-row">
+    <div>
+        <h1>Projets</h1>
+        <p class="text-muted">Tous les projets de votre espace de travail</p>
+    </div>
+</div>
+
+<div class="card">
+    <table class="projects-table">
+        <thead>
+            <tr>
+                <th>Nom du projet</th>
+                <th>Progression</th>
+                <th>Équipe</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for project in projects %}
+            <tr>
+                <td>
+                    <a href="{% url 'projects:project_dashboard' pk=project.pk %}" class="project-link">{{ project.name }}</a>
+                </td>
+                <td class="project-progress-cell">
+                    <div class="mini-progress-bar">
+                        <div class="mini-progress-fill" style="width: {{ project.progress_percent }}%"></div>
+                    </div>
+                    <span class="text-muted-sm">{{ project.progress_percent }}%</span>
+                </td>
+                <td class="text-muted-sm">{{ project.member_count }} membre{{ project.member_count|pluralize }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3" class="text-muted-sm">Aucun projet pour le moment. Crée-en un depuis l'admin pour tester.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -18,3 +18,7 @@
     .auth-container { grid-template-columns: 1fr; gap: 30px; }
     .auth-text h1 { font-size: 24px; }
 }
+.auth-form-error { margin-bottom: 12px; }
+.auth-submit-btn { width: 100%; }
+.auth-footer-text { margin-top: 12px; }
+

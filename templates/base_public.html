@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TaskFlow{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/layout-public.css' %}">
+    {% block extra_css %}{% endblock %}
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="public-page">
+    <header class="public-header">
+        <div class="public-logo">
+            <i data-lucide="workflow"></i>
+            <span>taskflow</span>
+        </div>
+        <nav class="public-nav">
+            <a href="{% url 'accounts:login' %}" class="btn btn-secondary btn-sm"><span>Se connecter</span></a>
+            <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-sm"><span>Créer un compte</span></a>
+        </nav>
+    </header>
+
+    <main class="public-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
