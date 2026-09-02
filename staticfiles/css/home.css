@@ -1,0 +1,35 @@
+.hero-public {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.hero-eyebrow { color: var(--color-primary); font-weight: 600; font-size: 12.5px; letter-spacing: 0.5px; }
+.hero-public-text h1 { font-size: 44px; font-weight: 700; line-height: 1.2; margin: 12px 0 20px; }
+.hero-public-text .highlight { color: var(--color-primary); }
+.hero-public-text p { font-size: 15.5px; color: var(--color-text-muted); margin-bottom: 28px; max-width: 440px; }
+.hero-actions { display: flex; align-items: center; gap: 20px; }
+
+.hero-public-visual { padding: 20px; box-shadow: var(--shadow-md); }
+.mock-app-header { display: flex; align-items: center; gap: 10px; padding: 6px 4px 14px; border-bottom: 1px solid var(--color-border); margin-bottom: 14px; }
+.mock-app-title { font-weight: 600; font-size: 13px; }
+.mock-app-subtitle { color: var(--color-text-light); font-size: 12px; }
+.mock-app-btn { margin-left: auto; background: var(--color-primary); color: white; font-size: 11px; padding: 4px 10px; border-radius: 6px; }
+.mock-app-bar { border-radius: 6px; margin-bottom: 8px; }
+.mock-app-bar-dark { height: 22px; background: #0f172a; width: 70%; }
+.mock-app-bar-light { height: 10px; background: #dbeafe; width: 45%; margin-bottom: 16px; }
+.mock-app-row-lines { height: 8px; background: var(--color-border); width: 30%; border-radius: 4px; margin-bottom: 16px; }
+.mock-app-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px; }
+.mock-app-card { height: 60px; background: var(--color-bg); border-top: 3px solid; border-radius: 6px; }
+
+@media (max-width: 900px) {
+    .hero-public { grid-template-columns: 1fr; gap: 30px; }
+    .hero-public-visual { order: -1; }
+    .hero-public-text h1 { font-size: 30px; }
+}
+.mock-app-card-blue { border-top-color: #2563eb; }
+.mock-app-card-green { border-top-color: #22c55e; }
+.mock-app-card-purple { border-top-color: #7c3aed; }
+.mock-app-card-orange { border-top-color: #f59e0b; }
+

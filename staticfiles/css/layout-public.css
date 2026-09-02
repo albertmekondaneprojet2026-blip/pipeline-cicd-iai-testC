@@ -1,0 +1,34 @@
+.public-page { min-height: 100vh; }
+
+.public-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+}
+
+.public-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--color-text);
+}
+
+.public-nav { display: flex; gap: 10px; }
+
+.public-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 40px;
+}
+
+@media (max-width: 900px) {
+    .public-header { padding: 16px 20px; }
+    .public-content { padding: 32px 20px; }
+}
+
+@media (max-width: 480px) {
+    .public-nav .btn-sm span { display: none; }
+}
