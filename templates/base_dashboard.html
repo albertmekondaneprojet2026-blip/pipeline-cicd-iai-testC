@@ -34,11 +34,14 @@
                 </a>
             </nav>
 
-            <div class="sidebar-footer">
-                <button type="button" class="nav-item nav-item-logout" disabled>
-                    <i data-lucide="log-out"></i> Déconnexion
-                </button>
-            </div>
+        <div class="sidebar-footer">
+    <form method="post" action="{% url 'accounts:logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="nav-item nav-item-logout">
+            <i data-lucide="log-out"></i> Déconnexion
+        </button>
+    </form>
+</div>
         </aside>
 
         <div class="main-area">
