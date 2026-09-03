@@ -36,3 +36,21 @@ jobs:
 
       - name: Executer les tests Pytest
         run: pytest
+
+      - name: Analyser la securite avec Bandit
+        run: |
+          pip install bandit
+          bandit -r . -x venv,migrations -f json -o bandit-report.json || true
+
+      - name: Analyser la qualite avec Pylint
+        run: |
+          pip install pylint
+          pylint --disable=missing-module-docstring,missing-class-docstring,missing-function-docstring,too-few-public-methods accounts projects tasks workspaces --output-format=json > pylint-report.json || true
+
+      - name: Sauvegarder les rapports
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-reports
+          path: |
+            bandit-report.json
+            pylint-report.json
