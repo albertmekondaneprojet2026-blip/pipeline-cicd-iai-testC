@@ -38,3 +38,9 @@ python manage.py runserver
 ---
 
 *Ce README sera complété avec l'architecture complète du pipeline, les schémas, et les instructions de déploiement à l'approche de la soutenance.*
+
+# TaskFlow — Pipeline CI/CD Intelligent et AIOps
+
+![CI Status](https://github.com/albertmekondaneprojet2026-blip/pipeline-cicd-iai-testC/actions/workflows/ci.yml/badge.svg)
+
+Application de gestion de projet...
