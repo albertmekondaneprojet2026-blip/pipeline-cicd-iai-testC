@@ -1,4 +1,6 @@
-name: CI - Tests
+
+
+        name: CI - Tests
 
 on:
   push:
@@ -7,9 +9,9 @@ on:
     branches: [ main ]
 
 jobs:
-
-  pytest-tests:
+  test:
     runs-on: ubuntu-latest
+
     env:
       DEBUG: "False"
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
@@ -19,111 +21,62 @@ jobs:
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       DB_HOST: ${{ secrets.DB_HOST }}
       DB_PORT: ${{ secrets.DB_PORT }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Recuperer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.14'
+
       - name: Installer les dependances
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Executer Pytest
+
+      - name: Executer les tests Pytest
         continue-on-error: true
         run: pytest --json-report --json-report-file=pytest-report.json
-      - name: Sauvegarder le rapport Pytest
-        uses: actions/upload-artifact@v4
-        with:
-          name: pytest-report
-          path: pytest-report.json
 
-  bandit-security:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.14'
-      - name: Installer Bandit
-        run: pip install bandit
-      - name: Executer Bandit
+      - name: Analyser la securite avec Bandit
         continue-on-error: true
         run: bandit -r . -x venv,migrations -f json -o bandit-report.json
-      - name: Sauvegarder le rapport Bandit
-        uses: actions/upload-artifact@v4
-        with:
-          name: bandit-report
-          path: bandit-report.json
 
-  pylint-quality:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.14'
-      - name: Installer les dependances et Pylint
-        run: |
-          pip install -r requirements.txt
-          pip install pylint
-      - name: Executer Pylint
+      - name: Analyser la qualite avec Pylint
         continue-on-error: true
         run: pylint --disable=missing-module-docstring,missing-class-docstring,missing-function-docstring,too-few-public-methods accounts projects tasks workspaces --output-format=json > pylint-report.json
-      - name: Sauvegarder le rapport Pylint
-        uses: actions/upload-artifact@v4
-        with:
-          name: pylint-report
-          path: pylint-report.json
-
-  ai-gate:
-    needs: [pytest-tests, bandit-security, pylint-quality]
-    runs-on: ubuntu-latest
-    env:
-      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.14'
-      - name: Installer le SDK Gemini
-        run: pip install google-generativeai
-
-      - name: Recuperer le rapport Pytest
-        uses: actions/download-artifact@v4
-        with:
-          name: pytest-report
-          path: .
-      - name: Recuperer le rapport Bandit
-        uses: actions/download-artifact@v4
-        with:
-          name: bandit-report
-          path: .
-      - name: Recuperer le rapport Pylint
-        uses: actions/download-artifact@v4
-        with:
-          name: pylint-report
-          path: .
 
       - name: Evaluation du risque par Gemini
         run: python scripts/ai_risk_gate.py
 
-      - name: Sauvegarder le rapport IA
+      - name: Sauvegarder les rapports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ai-risk-report
-          path: ai-risk-report.json
+          name: quality-reports
+          path: |
+            pytest-report.json
+            bandit-report.json
+            pylint-report.json
+            ai-risk-report.json
 
   docker-build:
-    needs: ai-gate
+    needs: test
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Recuperer le code
+        uses: actions/checkout@v4
+
       - name: Se connecter a Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Construire et publier l'image
         uses: docker/build-push-action@v6
         with:
@@ -132,10 +85,3 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/taskflow-testc:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/taskflow-testc:${{ github.sha }}
-
-  deploy:
-    needs: docker-build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Declencher le deploiement Render
-        run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
