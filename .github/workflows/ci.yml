@@ -85,8 +85,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.14'
-      - name: Installer le SDK Gemini et dotenv
-        run: pip install google-generativeai 
+      - name: Installer le SDK Gemini
+        run: pip install google-genai python-dotenv 
 
       - name: Recuperer le rapport Pytest
         uses: actions/download-artifact@v4
