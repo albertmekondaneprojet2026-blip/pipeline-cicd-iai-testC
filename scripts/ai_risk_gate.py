@@ -5,10 +5,14 @@ demande a Gemini d'evaluer le risque, et bloque le pipeline si necessaire.
 import os
 import sys
 import json
-from dotenv import load_dotenv
-from google import genai
 
-load_dotenv()
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass  # python-dotenv n'est pas necessaire en environnement CI (variables deja injectees)
+
+from google import genai
 
 
 def load_json_safe(path):

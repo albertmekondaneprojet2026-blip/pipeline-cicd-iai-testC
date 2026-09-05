@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.14'
       - name: Installer les dependances
         run: |
           python -m pip install --upgrade pip
@@ -43,12 +43,12 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.14'
       - name: Installer Bandit
         run: pip install bandit
       - name: Executer Bandit
         continue-on-error: true
-        run: bandit -r . -x venv,migrations,tests -f json -o bandit-report.json
+        run: bandit -r . -x venv,migrations -f json -o bandit-report.json
       - name: Sauvegarder le rapport Bandit
         uses: actions/upload-artifact@v4
         with:
@@ -61,14 +61,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.14'
       - name: Installer les dependances et Pylint
         run: |
           pip install -r requirements.txt
           pip install pylint
       - name: Executer Pylint
         continue-on-error: true
-        run: pylint --disable=missing-module-docstring,missing-class-docstring,missing-function-docstring,too-few-public-methods accounts projects tasks workspaces --output-format=json > pylint-report.json || true
+        run: pylint --disable=missing-module-docstring,missing-class-docstring,missing-function-docstring,too-few-public-methods accounts projects tasks workspaces --output-format=json > pylint-report.json
       - name: Sauvegarder le rapport Pylint
         uses: actions/upload-artifact@v4
         with:
@@ -84,9 +84,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.14'
       - name: Installer le SDK Gemini et dotenv
-        run: pip install google-generativeai python-dotenv
+        run: pip install google-generativeai 
 
       - name: Recuperer le rapport Pytest
         uses: actions/download-artifact@v4
@@ -139,3 +139,5 @@ jobs:
     steps:
       - name: Declencher le deploiement Render
         run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+
+        
