@@ -86,7 +86,7 @@ jobs:
         with:
           python-version: '3.14'
       - name: Installer le SDK Gemini
-        run: pip install google-genai python-dotenv 
+        run: pip install google-genai python-dotenv
 
       - name: Recuperer le rapport Pytest
         uses: actions/download-artifact@v4
@@ -138,6 +138,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Declencher le deploiement Render
-        run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+        run: |
+          response=$(curl -s -o response.txt -w "%{http_code}" -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}")
+          echo "Code HTTP recu : $response"
+          cat response.txt
+          if [ "$response" -lt 200 ] || [ "$response" -ge 300 ]; then
+            echo "ERREUR : Render a refuse la requete de deploiement."
+            exit 1
+          fi
+          echo "Deploiement declenche avec succes."
 
-        
+      - name: Afficher le lien de l'application
+        if: success()
+        run: |
+          echo "##  Pipeline complet reussi !" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Tous les tests, analyses et le gate IA ont ete valides." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "[ Ouvrir l'application TaskFlow](https://taskflow-testc.onrender.com)" >> $GITHUB_STEP_SUMMARY
