@@ -1,43 +1,75 @@
 {% extends 'base_public.html' %}
 {% load static %}
 
-{% block title %}TaskFlow - Le travail avance mieux quand le projet est visible{% endblock %}
+{% block title %}TaskFlow — Voir où va chaque projet{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/home.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="hero-public">
-    <div class="hero-public-text">
-        <span class="hero-eyebrow">GESTION DE PROJET AGILE — TEST PIPELINE</span>
-        <h1>Le travail avance mieux quand le projet est <span class="highlight">visible.</span></h1>
-        <p class="text-muted">TaskFlow rassemble votre backlog, vos sprints, votre tableau et votre roadmap dans un espace simple à présenter et rapide à utiliser.</p>
+<section class="hero">
+    <div class="hero-text">
+        <h1>Voir où va chaque projet,<br>sans ouvrir dix onglets.</h1>
+        <p>TaskFlow réunit le backlog, le tableau et la feuille de route d'un projet dans un seul endroit clair, pensé pour les petites équipes et les projets étudiants.</p>
         <div class="hero-actions">
             <a href="{% url 'accounts:register' %}" class="btn btn-primary">Créer mon espace</a>
-            <a href="#" class="btn-link">Voir la démonstration <i data-lucide="chevron-right" class="icon-sm"></i></a>
+            <a href="#apercu" class="hero-secondary-link">Voir un exemple de projet</a>
         </div>
     </div>
-    <div class="hero-public-visual card">
-        <div class="mock-app-header">
-            <span class="mock-app-title">TaskFlow Studio</span>
-            <span class="mock-app-subtitle">Vue d'ensemble</span>
-            <span class="mock-app-btn">Créer</span>
-        </div>
-        <div class="mock-app-bar mock-app-bar-dark"></div>
-        <div class="mock-app-bar mock-app-bar-light"></div>
-        <div class="mock-app-row-lines"></div>
-        <div class="mock-app-grid">
-            <div class="mock-app-card mock-app-card-blue"></div>
-            <div class="mock-app-card mock-app-card-green"></div>
-            <div class="mock-app-card mock-app-card-purple"></div>
-        </div>
-        <div class="mock-app-grid">
-            <div class="mock-app-card mock-app-card-blue"></div>
-            <div class="mock-app-card mock-app-card-orange"></div>
-            <div class="mock-app-card mock-app-card-purple"></div>
-            <div class="mock-app-card mock-app-card-green"></div>
+
+    <div class="hero-visual" id="apercu">
+        <div class="stack-ghost"></div>
+        <div class="product-panel">
+            <div class="panel-header">
+                <span class="panel-title">Refonte du site</span>
+                <span class="panel-progress">12 / 18 tâches</span>
+            </div>
+            <div class="panel-row">
+                <span class="row-bar row-bar-done"></span>
+                <span class="row-label">Maquette validée</span>
+                <span class="row-avatar">CO</span>
+            </div>
+            <div class="panel-row">
+                <span class="row-bar row-bar-progress"></span>
+                <span class="row-label">Intégration du header</span>
+                <span class="row-avatar">AM</span>
+            </div>
+            <div class="panel-row">
+                <span class="row-bar row-bar-todo"></span>
+                <span class="row-label">Tests de charge</span>
+                <span class="row-tag">urgent</span>
+                <span class="row-avatar">NL</span>
+            </div>
         </div>
     </div>
-</div>
+</section>
+
+<div class="section-divider"></div>
+
+<section class="features">
+    <h2>Trois choses que TaskFlow fait bien</h2>
+    <div class="features-grid">
+        <div class="feature">
+            <span class="feature-mark feature-mark-blue"></span>
+            <h3>Backlog</h3>
+            <p>Classez ce qui compte avant de vous engager, plutôt que de tout mélanger dans une seule liste.</p>
+        </div>
+        <div class="feature">
+            <span class="feature-mark feature-mark-amber"></span>
+            <h3>Tableau</h3>
+            <p>Suivez où en est chaque tâche d'un coup d'œil, sans demander à personne où ça en est.</p>
+        </div>
+        <div class="feature">
+            <span class="feature-mark feature-mark-green"></span>
+            <h3>Roadmap</h3>
+            <p>Montrez où va le projet dans le temps, pour que l'équipe avance dans la même direction.</p>
+        </div>
+    </div>
+</section>
+
+<section class="closing-band">
+    <h2>Prêt à rendre votre projet visible ?</h2>
+    <a href="{% url 'accounts:register' %}" class="btn btn-primary">Créer mon espace</a>
+</section>
 {% endblock %}
