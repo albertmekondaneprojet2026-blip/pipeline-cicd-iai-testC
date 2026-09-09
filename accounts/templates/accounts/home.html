@@ -1,75 +1,104 @@
-{% extends 'base_public.html' %}
 {% load static %}
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="TaskFlow — rendez vos projets plus visibles et vos équipes plus alignées." />
+  <title>TaskFlow — Plateforme de projet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'css/taskflow.css' %}" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="#accueil" aria-label="TaskFlow, accueil">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>taskflow</span>
+      </a>
 
-{% block title %}TaskFlow — Voir où va chaque projet{% endblock %}
+      <!-- Checkbox invisible : permet d'ouvrir le menu sans JavaScript. -->
+      <input class="menu-toggle" type="checkbox" id="menu-toggle" />
+      <label class="menu-button" for="menu-toggle" aria-label="Ouvrir le menu">
+        <span></span><span></span><span></span>
+      </label>
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/home.css' %}">
-{% endblock %}
-
-{% block content %}
-<section class="hero">
-    <div class="hero-text">
-        <h1>Voir où va chaque projet,<br>sans ouvrir dix onglets.</h1>
-        <p>TaskFlow réunit le backlog, le tableau et la feuille de route d'un projet dans un seul endroit clair, pensé pour les petites équipes et les projets étudiants.</p>
-        <div class="hero-actions">
-            <a href="{% url 'accounts:register' %}" class="btn btn-primary">Créer mon espace</a>
-            <a href="#apercu" class="hero-secondary-link">Voir un exemple de projet</a>
-        </div>
+      <nav class="main-nav" aria-label="Navigation principale">
+        <a class="active" href="#accueil">Accueil</a>
+        <a href="#a-propos">À propos</a>
+        <a href="#contact">Contact</a>
+        <a href="#fonctionnalites">Fonctionnalités</a>
+        <a class="login-button" href="#connexion">Se connecter</a>
+      </nav>
     </div>
+  </header>
 
-    <div class="hero-visual" id="apercu">
-        <div class="stack-ghost"></div>
-        <div class="product-panel">
-            <div class="panel-header">
-                <span class="panel-title">Refonte du site</span>
-                <span class="panel-progress">12 / 18 tâches</span>
-            </div>
-            <div class="panel-row">
-                <span class="row-bar row-bar-done"></span>
-                <span class="row-label">Maquette validée</span>
-                <span class="row-avatar">CO</span>
-            </div>
-            <div class="panel-row">
-                <span class="row-bar row-bar-progress"></span>
-                <span class="row-label">Intégration du header</span>
-                <span class="row-avatar">AM</span>
-            </div>
-            <div class="panel-row">
-                <span class="row-bar row-bar-todo"></span>
-                <span class="row-label">Tests de charge</span>
-                <span class="row-tag">urgent</span>
-                <span class="row-avatar">NL</span>
-            </div>
+  <main>
+    <section class="hero" id="accueil">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">PLATEFORME DE PROJET</p>
+          <h1>Le travail avance mieux quand le projet est <span>visible.</span></h1>
+          <p class="hero-text">TaskFlow rassemble votre backlog, vos sprints, votre tableau et votre roadmap dans un espace simple à présenter et rapide à utiliser.</p>
+          <a class="primary-button" href="#creer-compte">Créer mon espace de travail <i data-lucide="arrow-right"></i></a>
+          <p class="cta-note">Créer votre compte gratuitement</p>
+
+          <div class="benefits" aria-label="Avantages TaskFlow">
+            <div class="benefit"><span class="benefit-icon"><i data-lucide="eye"></i></span><span>Projets visibles</span></div>
+            <div class="benefit"><span class="benefit-icon"><i data-lucide="users-round"></i></span><span>Équipes alignées</span></div>
+            <div class="benefit"><span class="benefit-icon"><i data-lucide="zap"></i></span><span>Décisions plus rapides</span></div>
+          </div>
         </div>
+
+        <div class="dashboard-wrap" aria-label="Aperçu du tableau de bord TaskFlow">
+          <div class="dashboard">
+            <div class="dashboard-topbar">
+              <div class="mini-brand"><span class="mini-mark"></span>taskflow</div>
+              <div class="search"><i data-lucide="search"></i><span>Rechercher...</span></div>
+              <div class="top-actions"><i data-lucide="bell"></i><b>AC</b><i data-lucide="chevron-down"></i></div>
+            </div>
+            <div class="dashboard-heading"><strong>Vue d’ensemble</strong><div class="progress-label">Progression <b>62%</b><em><i></i></em></div><button><i data-lucide="list-filter"></i> Filtrer</button></div>
+            <div class="kanban">
+              <div class="kanban-column blue"><h3>À FAIRE <small>8</small></h3><article><b>Refonte de la page d’accueil</b><label>Design</label><footer>AC <span><i data-lucide="message-circle"></i> 2</span></footer></article><article><b>Authentification multifacteur</b><label>Sécurité</label><footer>IM <span><i data-lucide="message-circle"></i> 3</span></footer></article><article><b>Page de tarification</b><label>Design</label><footer>LD <span><i data-lucide="message-circle"></i> 1</span></footer></article></div>
+              <div class="kanban-column orange"><h3>EN COURS <small>5</small></h3><article><b>API publique v2</b><label class="green">Backend</label><footer>MB <span><i data-lucide="message-circle"></i> 4</span></footer></article><article><b>Tableau de bord analytique</b><label>Design</label><footer>AC <span><i data-lucide="message-circle"></i> 2</span></footer></article><article><b>Export des rapports</b><label class="green">Backend</label><footer>LD <span><i data-lucide="message-circle"></i> 1</span></footer></article></div>
+              <div class="kanban-column violet"><h3>EN REVUE <small>4</small></h3><article><b>Notifications in-app</b><label class="yellow">Produit</label><footer>SL <span><i data-lucide="message-circle"></i> 2</span></footer></article><article><b>Amélioration des performances</b><label class="green">Backend</label><footer>MB <span><i data-lucide="message-circle"></i> 1</span></footer></article><article><b>Accessibilité (WCAG 2.2)</b><label class="purple">Qualité</label><footer>AC <span><i data-lucide="message-circle"></i> 2</span></footer></article></div>
+              <div class="kanban-column green"><h3>TERMINÉ <small>6</small></h3><article><b>Onboarding utilisateur</b><label class="green">Backend</label><footer>SL <span class="check"><i data-lucide="check"></i></span></footer></article><article><b>Invitation des membres</b><label>Design</label><footer>JM <span class="check"><i data-lucide="check"></i></span></footer></article><article><b>Intégration Slack</b><label class="yellow">Produit</label><footer>MB <span class="check"><i data-lucide="check"></i></span></footer></article></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section" id="a-propos">
+      <div class="container section-grid">
+        <div><p class="eyebrow">À PROPOS DE TASKFLOW</p><h2>Un espace clair pour faire avancer les bonnes idées.</h2></div>
+        <p>TaskFlow aide les petites équipes à organiser leurs priorités, partager le contexte et garder une vision commune du projet, sans complexité inutile.</p>
+      </div>
+    </section>
+
+    <section class="features-section" id="fonctionnalites">
+      <div class="container"><p class="eyebrow">FONCTIONNALITÉS</p><h2>Tout le projet, au même endroit.</h2><div class="feature-grid"><article><span>01</span><h3>Tableau partagé</h3><p>Visualisez chaque tâche et son avancement en un coup d’œil.</p></article><article><span>02</span><h3>Roadmap claire</h3><p>Donnez une direction lisible à votre équipe et à vos échéances.</p></article><article><span>03</span><h3>Collaboration simple</h3><p>Centralisez les échanges et réduisez les réunions inutiles.</p></article></div></div>
+    </section>
+
+    <section class="contact-section" id="contact">
+      <div class="container contact-grid"><div><p class="eyebrow">CONTACT</p><h2>Une question ? Parlons de votre projet.</h2><p>Notre équipe vous répond à <a href="mailto:bonjour@taskflow.fr">bonjour@taskflow.fr</a>.</p></div><a class="secondary-button" href="mailto:bonjour@taskflow.fr">Nous contacter <i data-lucide="arrow-right"></i></a></div>
+    </section>
+
+    <section class="account-section" id="creer-compte"><div class="container account-card"><div><p class="eyebrow">VOTRE PROCHAIN PROJET</p><h2>Créez votre espace de travail.</h2><p>Commencez gratuitement et donnez de la visibilité à votre équipe.</p></div><a class="primary-button" href="#connexion">Créer un compte <i data-lucide="arrow-right"></i></a></div></section>
+    <section class="anchor-section" id="connexion" aria-label="Connexion"><div class="container"><h2>Se connecter</h2><p>La page de connexion de votre application pourra être reliée ici.</p></div></section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-main">
+      <div class="footer-brand"><a class="brand" href="#accueil"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>taskflow</span></a><p>Le travail avance mieux quand le projet est visible.</p></div>
+      <div class="footer-contact"><a href="mailto:bonjour@taskflow.fr"><i data-lucide="mail"></i>bonjour@taskflow.fr</a><a href="tel:+33184802024"><i data-lucide="phone"></i>+33 1 84 80 20 24</a><span><i data-lucide="map-pin"></i>12 rue de la Paix, 75002 Paris</span></div>
+      <div class="socials" aria-label="Réseaux sociaux"><a href="#" aria-label="LinkedIn"><i data-lucide="linkedin"></i></a><a href="#" aria-label="Instagram"><i data-lucide="instagram"></i></a><a href="#" aria-label="X"><i data-lucide="twitter"></i></a></div>
     </div>
-</section>
-
-<div class="section-divider"></div>
-
-<section class="features">
-    <h2>Trois choses que TaskFlow fait bien</h2>
-    <div class="features-grid">
-        <div class="feature">
-            <span class="feature-mark feature-mark-blue"></span>
-            <h3>Backlog</h3>
-            <p>Classez ce qui compte avant de vous engager, plutôt que de tout mélanger dans une seule liste.</p>
-        </div>
-        <div class="feature">
-            <span class="feature-mark feature-mark-amber"></span>
-            <h3>Tableau</h3>
-            <p>Suivez où en est chaque tâche d'un coup d'œil, sans demander à personne où ça en est.</p>
-        </div>
-        <div class="feature">
-            <span class="feature-mark feature-mark-green"></span>
-            <h3>Roadmap</h3>
-            <p>Montrez où va le projet dans le temps, pour que l'équipe avance dans la même direction.</p>
-        </div>
-    </div>
-</section>
-
-<section class="closing-band">
-    <h2>Prêt à rendre votre projet visible ?</h2>
-    <a href="{% url 'accounts:register' %}" class="btn btn-primary">Créer mon espace</a>
-</section>
-{% endblock %}
+    <div class="container footer-bottom"><span>© 2025 TaskFlow. Tous droits réservés.</span><div><a href="#">Mentions légales</a><a href="#">Confidentialité</a><a href="#">CGU</a></div></div>
+  </footer>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
