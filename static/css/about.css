@@ -1,0 +1,9 @@
+.about-hero { max-width: 640px; padding: 40px 0 20px; }
+.about-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 36px; font-weight: 700; margin-bottom: 16px; }
+.about-hero p { font-size: 16px; color: var(--color-text-muted); line-height: 1.6; }
+
+.about-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; padding: 40px 0 60px; }
+.about-block h2 { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 600; margin-bottom: 10px; }
+.about-block p { font-size: 14px; line-height: 1.6; color: var(--color-text-muted); }
+
+@media (max-width: 800px) { .about-grid { grid-template-columns: 1fr; } }

@@ -1,0 +1,31 @@
+{% extends 'base_public.html' %}
+{% load static %}
+
+{% block title %}Contact - TaskFlow{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/contact.css' %}">{% endblock %}
+
+{% block content %}
+<section class="contact-layout">
+    <div class="contact-info">
+        <h1>Parlons de votre projet.</h1>
+        <p>Une question, une suggestion ? Écrivez-nous, nous répondons rapidement.</p>
+        <div class="contact-info-item"><i data-lucide="mail"></i> albertmekondane2@gmail.com</div>
+        <div class="contact-info-item"><i data-lucide="phone"></i> +237 6 73 83 09 96</div>
+        <div class="contact-info-item"><i data-lucide="map-pin"></i> Douala, Cameroun</div>
+    </div>
+
+    <div class="card contact-card">
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}<span class="form-error">{{ field.errors.0 }}</span>{% endif %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary contact-submit-btn">Envoyer le message</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

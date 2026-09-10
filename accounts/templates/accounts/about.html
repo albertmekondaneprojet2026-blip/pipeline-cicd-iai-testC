@@ -1,0 +1,27 @@
+{% extends 'base_public.html' %}
+{% load static %}
+
+{% block title %}À propos  TaskFlow{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/about.css' %}">{% endblock %}
+
+{% block content %}
+<section class="about-hero">
+    <h1>Une plateforme née d'un constat simple.</h1>
+    <p>La plupart des équipes perdent du temps non pas à travailler, mais à chercher où en est le travail. TaskFlow existe pour régler exactement ce problème.</p>
+</section>
+
+<section class="about-grid">
+    <div class="about-block">
+        <h2>Notre mission</h2>
+        <p>Donner à chaque équipe, petite ou grande, un endroit unique où le backlog, le tableau d'avancement et la feuille de route restent toujours synchronisés — sans feuille Excel parallèle, sans réunion pour "faire le point".</p>
+    </div>
+    <div class="about-block">
+        <h2>Notre objectif</h2>
+        <p>Rester simple. TaskFlow n'essaie pas de tout faire  il fait bien les trois choses dont une équipe de projet a réellement besoin au quotidien : prioriser, suivre, planifier.</p>
+    </div>
+    <div class="about-block">
+        <h2>Nos valeurs</h2>
+        <p>La clarté avant la fonctionnalité. Un outil de gestion de projet ne doit jamais devenir lui-même un projet à gérer.</p>
+    </div>
+</section>
+{% endblock %}

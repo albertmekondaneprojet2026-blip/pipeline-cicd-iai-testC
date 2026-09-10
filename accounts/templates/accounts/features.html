@@ -1,0 +1,44 @@
+{% extends 'base_public.html' %}
+{% load static %}
+
+{% block title %}Fonctionnalités - TaskFlow{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/features.css' %}">{% endblock %}
+
+{% block content %}
+<section class="features-hero">
+    <h1>Tout ce qu'il faut pour piloter un projet, rien de plus.</h1>
+</section>
+
+<section class="features-list">
+    <div class="feature-item">
+        <span class="feature-icon"><i data-lucide="check-square"></i></span>
+        <h3>Gestion des tâches</h3>
+        <p>Créez, assignez et suivez chaque tâche avec un statut clair.</p>
+    </div>
+    <div class="feature-item">
+        <span class="feature-icon"><i data-lucide="columns-3"></i></span>
+        <h3>Tableau Kanban</h3>
+        <p>Visualisez l'avancement du travail par glisser-déposer entre les colonnes.</p>
+    </div>
+    <div class="feature-item">
+        <span class="feature-icon"><i data-lucide="folder-kanban"></i></span>
+        <h3>Suivi des projets</h3>
+        <p>Une vue d'ensemble de tous vos projets, avec leur progression réelle.</p>
+    </div>
+    <div class="feature-item">
+        <span class="feature-icon"><i data-lucide="milestone"></i></span>
+        <h3>Roadmap</h3>
+        <p>Planifiez les grandes étapes dans le temps, visibles par toute l'équipe.</p>
+    </div>
+    <div class="feature-item">
+        <span class="feature-icon"><i data-lucide="users"></i></span>
+        <h3>Collaboration d'équipe</h3>
+        <p>Chaque membre voit ce qui lui est assigné et ce qui avance autour de lui.</p>
+    </div>
+    <div class="feature-item">
+        <span class="feature-icon"><i data-lucide="calendar-clock"></i></span>
+        <h3>Suivi des échéances</h3>
+        <p>Ne perdez plus de vue une date limite, sprint après sprint.</p>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,10 @@
+.contact-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 48px; padding: 40px 0 60px; align-items: start; }
+.contact-info h1 { font-family: 'Space Grotesk', sans-serif; font-size: 30px; font-weight: 700; margin-bottom: 14px; }
+.contact-info p { color: var(--color-text-muted); margin-bottom: 24px; }
+.contact-info-item { display: flex; align-items: center; gap: 10px; font-size: 14px; margin-bottom: 12px; color: var(--color-text); }
+.contact-info-item i { color: var(--color-primary); width: 18px; height: 18px; }
+
+.contact-card textarea { min-height: 120px; resize: vertical; }
+.contact-submit-btn { width: 100%; }
+
+@media (max-width: 800px) { .contact-layout { grid-template-columns: 1fr; } }
