@@ -2,41 +2,52 @@
 {% load static %}
 
 {% block title %}Connexion - TaskFlow{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/auth.css' %}">
-{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/auth.css' %}">{% endblock %}
 
 {% block content %}
-<div class="auth-container">
-    <div class="auth-text">
-        <span class="hero-eyebrow">TASKFLOW STUDIO</span>
-        <h1>Reprenez le fil de votre projet.</h1>
-        <p class="text-muted">Retrouvez vos sprints, vos tickets et vos décisions exactement là où vous les avez laissés.</p>
-    </div>
+<section class="auth-page">
+    <div class="auth-decor auth-decor-1"></div>
+    <div class="auth-decor auth-decor-2"></div>
 
-    <div class="card auth-card">
-        <h2>Se connecter</h2>
+    <div class="card auth-card-centered">
+        <h1>Bienvenue sur <span class="accent">TaskFlow</span></h1>
+        <p class="auth-subtitle">Connectez-vous pour retrouver vos projets.</p>
+
         {% if form.errors %}
-        <p class="form-error auth-form-error">Identifiants incorrects. Réessayez.</p>
+        <p class="form-error" style="margin-bottom: 16px;">Identifiants incorrects. Réessayez.</p>
         {% endif %}
+
         <form method="post">
             {% csrf_token %}
             <div class="form-group">
-                <label for="{{ form.username.id_for_label }}">Adresse e-mail</label>
-                {{ form.username }}
+                <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+                <div class="input-icon-wrap">
+                    <i data-lucide="mail" class="input-icon"></i>
+                    {{ form.username }}
+                </div>
             </div>
             <div class="form-group">
-                <label for="{{ form.password.id_for_label }}">Mot de passe</label>
-                {{ form.password }}
+                <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+                <div class="input-icon-wrap">
+                    <i data-lucide="lock" class="input-icon"></i>
+                    {{ form.password }}
+                    <button type="button" class="password-toggle" data-target="{{ form.password.id_for_label }}">
+                        <i data-lucide="eye"></i>
+                    </button>
+                </div>
             </div>
-            <div class="auth-row">
-                <label class="checkbox-label"><input type="checkbox"> Se souvenir de moi</label>
-                <a href="#" class="auth-link-sm">Mot de passe oublié ?</a>
-            </div>
+            <a href="#" class="auth-forgot-link">Mot de passe oublié ?</a>
             <button type="submit" class="btn btn-primary auth-submit-btn">Se connecter</button>
-            <p class="text-muted-sm auth-footer-text">En continuant, vous acceptez les règles d'utilisation de TaskFlow.</p>
         </form>
+
+        <div class="auth-or-divider">ou</div>
+
+        <p class="auth-switch-text">Vous n'avez pas encore de compte ?</p>
+        <a href="{% url 'accounts:register' %}" class="auth-switch-link">Créer un compte gratuitement</a>
     </div>
-</div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/auth-toggle.js' %}"></script>
 {% endblock %}

@@ -1,73 +1,282 @@
-:root {
-    --color-primary: #2563eb;
-    --color-primary-dark: #1d4ed8;
-    --color-bg: #f8f9fb;
-    --color-surface: #ffffff;
-    --color-border: #e5e7eb;
-    --color-text: #1f2937;
-    --color-text-muted: #6b7280;
-    --color-text-light: #9ca3af;
-    --radius: 10px;
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-}
+/* =========================================================
+   NAVBAR — POSITIONNEMENT COMME SUR LA MAQUETTE
+   ========================================================= */
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: var(--color-bg);
-    color: var(--color-text);
-    font-size: 14px;
-    line-height: 1.5;
-}
-
-.card {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    padding: 20px;
-    box-shadow: var(--shadow-sm);
-}
-
-.btn {
-    display: inline-flex;
+.public-header {
+    width: 100%;
+    height: 82px;
+    display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 10px 18px;
-    border-radius: var(--radius);
-    font-size: 13.5px;
-    font-weight: 500;
-    border: none;
-    cursor: pointer;
+    padding: 0 32px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    position: relative;
+    z-index: 1000;
+}
+
+/* Logo à gauche */
+.public-header .public-logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-right: auto;
     text-decoration: none;
 }
-.btn-primary { background: var(--color-primary); color: white; }
-.btn-primary:hover { background: var(--color-primary-dark); }
-.btn-secondary { background: var(--color-surface); color: var(--color-text); border: 1px solid var(--color-border); }
-.btn-secondary:hover { background: var(--color-bg); }
-.btn-sm { padding: 8px 14px; font-size: 13px; }
-.btn-link { color: var(--color-primary); text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 2px; }
 
-.icon-sm { width: 14px; height: 14px; }
-
-.text-muted { color: var(--color-text-muted); }
-.text-muted-sm { color: var(--color-text-light); font-size: 12.5px; }
-
-.form-group { margin-bottom: 16px; }
-.form-group label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; }
-.form-group input,
-.form-group select,
-.form-group textarea {
-    width: 100%;
-    padding: 10px 14px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    font-size: 14px;
-    font-family: inherit;
+/* Taille du logo */
+.public-header .public-logo svg {
+    width: 36px;
+    height: 36px;
 }
-.form-group input:focus,
-.form-group textarea:focus { outline: none; border-color: var(--color-primary); }
-.form-error { color: #dc2626; font-size: 12px; margin-top: 4px; display: block; }
 
-.checkbox-label { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--color-text-muted); }
+/* Texte taskflow */
+.public-header .public-logo span {
+    font-size: 26px;
+    font-weight: 700;
+}
+
+/* Liens de navigation */
+.public-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 52px;
+    margin-right: 58px;
+}
+
+/* Liens */
+.public-nav-links .nav-link {
+    text-decoration: none;
+    white-space: nowrap;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+/* Zone bouton */
+.public-header-actions {
+    display: flex;
+    align-items: center;
+}
+
+/* Bouton Se connecter */
+.public-header-actions .btn-pill {
+    min-width: 137px;
+    height: 40px;
+    padding: 0 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* =========================================================
+   CONTENU
+   ========================================================= */
+
+.public-content {
+    width: 100%;
+}
+
+
+/* =========================================================
+   FOOTER — POSITIONNEMENT COMME SUR LA MAQUETTE
+   ========================================================= */
+
+.public-footer {
+    width: 100%;
+    position: relative;
+    padding: 32px 44px 18px;
+    display: grid;
+    grid-template-columns: 1.55fr 0.9fr 0.9fr 0.9fr 1fr;
+    column-gap: 40px;
+    background: #f8fbff;
+    border-top: 1px solid #dbe7f5;
+}
+
+/* Colonne marque */
+.footer-brand-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Logo footer */
+.footer-brand-col .public-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+}
+
+/* Icône logo footer */
+.footer-brand-col .public-logo svg {
+    width: 28px;
+    height: 28px;
+}
+
+/* Texte taskflow footer */
+.footer-brand-col .public-logo span {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* Slogan */
+.footer-tagline {
+    margin-top: 12px;
+    margin-bottom: 16px;
+    max-width: 235px;
+    line-height: 1.45;
+}
+
+/* Coordonnées */
+.footer-contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 9px;
+}
+
+/* Colonnes de liens */
+.footer-links-col {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    padding-top: 4px;
+}
+
+/* Liens */
+.footer-links-col a {
+    text-decoration: none;
+}
+
+/* Réseaux sociaux */
+.footer-social-col {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 22px;
+    padding-top: 28px;
+}
+
+/* Cercles sociaux */
+.footer-social-col .social-icon {
+    width: 48px;
+    height: 48px;
+    border: 1px solid #c8daf5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+/* Icônes sociales */
+.footer-social-col .social-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+
+/* =========================================================
+   FOOTER BOTTOM
+   ========================================================= */
+
+.footer-bottom {
+    grid-column: 1 / -1;
+    margin-top: 22px;
+    padding-top: 17px;
+    border-top: 1px solid #d7e2f0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+
+    font-size: 12px;
+}
+
+/* Liens du bas */
+.footer-bottom a {
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+.mobile-nav-toggle,
+.mobile-nav-panel {
+    display: none;
+}
+
+@media (max-width: 900px) {
+
+    .public-header {
+        height: 72px;
+        padding: 0 20px;
+    }
+
+    .public-nav-links {
+        display: none;
+    }
+
+    .public-header-actions .btn-pill {
+        display: none;
+    }
+
+    .mobile-nav-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+    }
+
+    .mobile-nav-panel {
+        position: absolute;
+        top: 72px;
+        left: 0;
+        right: 0;
+        background: #ffffff;
+        border-bottom: 1px solid #e5e7eb;
+        padding: 20px;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .public-footer {
+        grid-template-columns: 1fr 1fr;
+        padding: 30px 25px 18px;
+    }
+
+    .footer-brand-col {
+        grid-column: 1 / -1;
+    }
+
+    .footer-social-col {
+        justify-content: flex-start;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .public-footer {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-brand-col,
+    .footer-social-col {
+        grid-column: auto;
+    }
+
+    .footer-social-col {
+        padding-top: 10px;
+    }
+}

@@ -2,33 +2,72 @@
 {% load static %}
 
 {% block title %}Créer un compte - TaskFlow{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/auth.css' %}">
-{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/auth.css' %}">{% endblock %}
 
 {% block content %}
-<div class="auth-container">
-    <div class="auth-text">
-        <span class="hero-eyebrow">TASKFLOW STUDIO </span>
-        <h1>Créez votre espace projet etudiant .</h1>
-        <p class="text-muted">Un espace simple pour organiser un backlog, suivre un sprint et présenter une roadmap claire.</p>
-    </div>
+<section class="auth-page">
+    <div class="auth-decor auth-decor-1"></div>
+    <div class="auth-decor auth-decor-2"></div>
 
-    <div class="card auth-card">
-        <h2>Créer un compte </h2>
+    <div class="card auth-card-centered">
+        <h1>Créer votre espace <span class="accent">TaskFlow</span></h1>
+        <p class="auth-subtitle">Commencez à organiser vos projets dès aujourd'hui.</p>
+
         <form method="post">
             {% csrf_token %}
-            {% for field in form %}
             <div class="form-group">
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field }}
-                {% if field.errors %}<span class="form-error">{{ field.errors.0 }}</span>{% endif %}
+                <label for="{{ form.full_name.id_for_label }}">Nom complet</label>
+                <div class="input-icon-wrap">
+                    <i data-lucide="user" class="input-icon"></i>
+                    {{ form.full_name }}
+                </div>
+                {% if form.full_name.errors %}<span class="form-error">{{ form.full_name.errors.0 }}</span>{% endif %}
             </div>
-            {% endfor %}
+
+            <div class="form-group">
+                <label for="{{ form.email.id_for_label }}">Email professionnel</label>
+                <div class="input-icon-wrap">
+                    <i data-lucide="mail" class="input-icon"></i>
+                    {{ form.email }}
+                </div>
+                {% if form.email.errors %}<span class="form-error">{{ form.email.errors.0 }}</span>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.password1.id_for_label }}">Mot de passe</label>
+                <div class="input-icon-wrap">
+                    <i data-lucide="lock" class="input-icon"></i>
+                    {{ form.password1 }}
+                    <button type="button" class="password-toggle" data-target="{{ form.password1.id_for_label }}">
+                        <i data-lucide="eye"></i>
+                    </button>
+                </div>
+                {% if form.password1.errors %}<span class="form-error">{{ form.password1.errors.0 }}</span>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.password2.id_for_label }}">Confirmer le mot de passe</label>
+                <div class="input-icon-wrap">
+                    <i data-lucide="lock" class="input-icon"></i>
+                    {{ form.password2 }}
+                    <button type="button" class="password-toggle" data-target="{{ form.password2.id_for_label }}">
+                        <i data-lucide="eye"></i>
+                    </button>
+                </div>
+                {% if form.password2.errors %}<span class="form-error">{{ form.password2.errors.0 }}</span>{% endif %}
+            </div>
+
             <button type="submit" class="btn btn-primary auth-submit-btn">Créer mon compte</button>
-            <p class="text-muted-sm auth-footer-text">En continuant, vous acceptez les règles d'utilisation de TaskFlow.</p>
         </form>
+
+        <div class="auth-or-divider">ou</div>
+
+        <p class="auth-switch-text">Vous avez déjà un compte ?</p>
+        <a href="{% url 'accounts:login' %}" class="auth-switch-link">Se connecter</a>
     </div>
-</div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/auth-toggle.js' %}"></script>
 {% endblock %}
