@@ -6,30 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}TaskFlow{% endblock %}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/variables.css' %}">
+    <link rel="stylesheet" href="{% static 'css/globals.css' %}">
     <link rel="stylesheet" href="{% static 'css/layout-public.css' %}">
     {% block extra_css %}{% endblock %}
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="{% static 'vendor/lucide.min.js' %}"></script>
 </head>
-<body class="public-page">
+<body>
+<div class="public-page">
     <header class="public-header">
         <a href="{% url 'accounts:home' %}" class="public-logo">
             <i data-lucide="layout-dashboard"></i>
             <span>taskflow</span>
         </a>
 
-        <nav class="public-nav-links">
-            <a href="{% url 'accounts:home' %}" class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">Accueil</a>
-            <a href="{% url 'accounts:about' %}" class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}">À propos</a>
-            <a href="{% url 'accounts:contact' %}" class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}">Contact</a>
-            <a href="{% url 'accounts:features' %}" class="nav-link {% if request.resolver_match.url_name == 'features' %}active{% endif %}">Fonctionnalités</a>
-        </nav>
+        <div class="header-right">
+            <nav class="public-nav-links">
+                <a href="{% url 'accounts:home' %}" class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">Accueil</a>
+                <a href="{% url 'accounts:about' %}" class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}">À propos</a>
+                <a href="{% url 'accounts:contact' %}" class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}">Contact</a>
+                <a href="{% url 'accounts:features' %}" class="nav-link {% if request.resolver_match.url_name == 'features' %}active{% endif %}">Fonctionnalités</a>
+            </nav>
 
-        <div class="public-header-actions">
-            <a href="{% url 'accounts:login' %}" class="btn btn-pill">Se connecter</a>
-            <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Ouvrir le menu">
+            {% if request.user.is_authenticated %}
+            <a href="{% url 'projects:project_list' %}" class="btn-pill">Mon espace <i data-lucide="arrow-right" class="icon-sm"></i></a>
+            {% else %}
+            <a href="{% url 'accounts:login' %}" class="btn-pill">Se connecter</a>
+            {% endif %}
+
+            <button type="button" class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Ouvrir le menu">
                 <i data-lucide="menu"></i>
             </button>
         </div>
@@ -39,18 +45,23 @@
             <a href="{% url 'accounts:about' %}">À propos</a>
             <a href="{% url 'accounts:contact' %}">Contact</a>
             <a href="{% url 'accounts:features' %}">Fonctionnalités</a>
+            {% if request.user.is_authenticated %}
+            <a href="{% url 'projects:project_list' %}" class="mobile-nav-cta">Mon espace</a>
+            {% else %}
             <a href="{% url 'accounts:login' %}" class="mobile-nav-cta">Se connecter</a>
+            {% endif %}
         </div>
     </header>
 
+    {% if messages %}
+    <div class="public-messages">
+        {% for message in messages %}
+        <p class="public-message">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
     <main class="public-content">
-        {% if messages %}
-        <div class="public-messages">
-            {% for message in messages %}
-            <p class="public-message">{{ message }}</p>
-            {% endfor %}
-        </div>
-        {% endif %}
         {% block content %}{% endblock %}
     </main>
 
@@ -62,8 +73,8 @@
             </a>
             <p class="footer-tagline">Le travail avance mieux quand le projet est visible.</p>
             <p class="footer-contact-item"><i data-lucide="mail" class="icon-sm"></i> contact@taskflow.io</p>
-            <p class="footer-contact-item"><i data-lucide="phone" class="icon-sm"></i> +237 6 00 00 00 00</p>
-            <p class="footer-contact-item"><i data-lucide="map-pin" class="icon-sm"></i> Douala, Cameroun</p>
+            <p class="footer-contact-item"><i data-lucide="phone" class="icon-sm"></i> +33 1 84 80 01 20</p>
+            <p class="footer-contact-item"><i data-lucide="map-pin" class="icon-sm"></i> 12 rue de la Paix, 75002 Paris, France</p>
         </div>
 
         <div class="footer-links-col">
@@ -71,11 +82,13 @@
             <a href="{% url 'accounts:features' %}">Fonctionnalités</a>
             <a href="#">Tarifs</a>
         </div>
+
         <div class="footer-links-col">
             <a href="#">Sécurité</a>
             <a href="#">Intégrations</a>
-            <a href="#">Centre d'aide</a>
+            <a href="{% url 'accounts:contact' %}">Centre d'aide</a>
         </div>
+
         <div class="footer-links-col">
             <a href="#">Blog</a>
             <a href="#">Carrières</a>
@@ -83,19 +96,20 @@
         </div>
 
         <div class="footer-social-col">
-            <a href="#" class="social-icon"><i data-lucide="linkedin" class="icon-sm"></i></a>
-            <a href="#" class="social-icon"><i data-lucide="twitter" class="icon-sm"></i></a>
-            <a href="#" class="social-icon"><i data-lucide="github" class="icon-sm"></i></a>
+            <a href="#" class="social-icon" aria-label="LinkedIn"><i data-lucide="linkedin" class="icon-sm"></i></a>
+            <a href="#" class="social-icon" aria-label="X"><i data-lucide="twitter" class="icon-sm"></i></a>
+            <a href="#" class="social-icon" aria-label="GitHub"><i data-lucide="github" class="icon-sm"></i></a>
         </div>
 
         <div class="footer-bottom">
-            <span>© 2026 TaskFlow. Tous droits réservés.</span>
+            <span>© 2024 TaskFlow. Tous droits réservés.</span>
             <span><a href="#">Conditions générales</a> · <a href="#">Confidentialité</a></span>
         </div>
     </footer>
+</div>
 
-    <script src="{% static 'js/main.js' %}"></script>
-    <script src="{% static 'js/public-nav.js' %}"></script>
-    {% block extra_js %}{% endblock %}
+<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/public-nav.js' %}"></script>
+{% block extra_js %}{% endblock %}
 </body>
 </html>

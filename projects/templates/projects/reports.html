@@ -1,0 +1,120 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block title %}Rapports{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/reports.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header page-header-row">
+    <div>
+        <h1>Rapports</h1>
+        <p class="text-muted">Suivez la performance de vos projets et l'avancement de vos équipes.</p>
+    </div>
+</div>
+
+<div class="reports-stats">
+    <div class="card stat-card">
+        <div class="stat-card-top"><span class="icon-circle"><i data-lucide="folder"></i></span></div>
+        <p class="stat-label">Projets actifs</p>
+        <p class="stat-value">{{ active_projects }}</p>
+    </div>
+    <div class="card stat-card">
+        <div class="stat-card-top"><span class="icon-circle"><i data-lucide="check-circle-2"></i></span></div>
+        <p class="stat-label">Tâches complétées</p>
+        <p class="stat-value">{{ completed_tasks }}</p>
+    </div>
+    <div class="card stat-card">
+        <div class="stat-card-top"><span class="icon-circle"><i data-lucide="clock"></i></span></div>
+        <p class="stat-label">Membres actifs</p>
+        <p class="stat-value">{{ member_count }}</p>
+    </div>
+    <div class="card stat-card">
+        <div class="stat-card-top"><span class="icon-circle"><i data-lucide="users"></i></span></div>
+        <p class="stat-label">Membres de l'équipe</p>
+        <p class="stat-value">{{ member_count }}</p>
+    </div>
+</div>
+
+<div class="reports-mid-grid">
+    <div class="card chart-card">
+        <div class="chart-card-header">
+            <h3>Tâches complétées par mois</h3>
+            <div class="chart-legend">
+                <span><i class="legend-dot"></i> Complétées</span>
+                <span class="legend-muted"><i class="legend-dot"></i> Total</span>
+            </div>
+        </div>
+        <div id="reportsChart" class="reports-chart"></div>
+        {{ chart_labels|json_script:"chartLabels" }}
+        {{ chart_totals|json_script:"chartTotals" }}
+        {{ chart_completed|json_script:"chartCompleted" }}
+    </div>
+
+    <div class="card summary-card">
+        <h3>Résumé d'avancement</h3>
+        <div class="summary-row">
+            <div class="summary-row-top"><span>Projets</span><span>{{ progress_projects.done }} / {{ progress_projects.total }}</span></div>
+            <div class="progress-bar"><div class="progress-bar-fill" style="width: {{ progress_projects.pct }}%"></div></div>
+        </div>
+        <div class="summary-row">
+            <div class="summary-row-top"><span>Tâches</span><span>{{ progress_tasks.done }} / {{ progress_tasks.total }}</span></div>
+            <div class="progress-bar"><div class="progress-bar-fill" style="width: {{ progress_tasks.pct }}%"></div></div>
+        </div>
+        <div class="summary-row">
+            <div class="summary-row-top"><span>Équipe</span><span>{{ progress_members.done }} / {{ progress_members.total }}</span></div>
+            <div class="progress-bar"><div class="progress-bar-fill" style="width: {{ progress_members.pct }}%"></div></div>
+        </div>
+        <div class="summary-row">
+            <div class="summary-row-top"><span>Objectifs</span><span>{{ progress_goals.done }} / {{ progress_goals.total }}</span></div>
+            <div class="progress-bar"><div class="progress-bar-fill" style="width: {{ progress_goals.pct }}%"></div></div>
+        </div>
+    </div>
+</div>
+
+<div class="card completion-card">
+    <div class="completion-card-header">
+        <h3>Taux de complétion des tâches</h3>
+    </div>
+    <table class="completion-table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Tâche</th>
+                <th class="hide-mobile">Projet</th>
+                <th class="hide-mobile">Responsable</th>
+                <th class="hide-mobile">Échéance</th>
+                <th>Statut</th>
+                <th>Progression</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in recent_tasks %}
+            <tr>
+                <td><i data-lucide="{% if task.status == 'done' %}check-circle-2{% else %}circle{% endif %}" class="completion-check {% if task.status == 'done' %}is-done{% endif %}"></i></td>
+                <td class="task-title-cell">{{ task.title }}</td>
+                <td class="hide-mobile text-muted-sm">{{ task.project.name }}</td>
+                <td class="hide-mobile">
+                    {% if task.assignee %}<div class="assignee-cell"><span class="avatar avatar-sm">{{ task.assignee_initials }}</span> {{ task.assignee.get_full_name|default:task.assignee.username }}</div>{% else %}—{% endif %}
+                </td>
+                <td class="hide-mobile text-muted-sm">{% if task.due_date %}{{ task.due_date|date:"d M Y" }}{% else %}—{% endif %}</td>
+                <td><span class="badge badge-{% if task.status == 'done' %}green{% elif task.status == 'in_progress' %}blue{% elif task.status == 'in_review' %}purple{% else %}gray{% endif %}">{{ task.get_status_display }}</span></td>
+                <td>
+                    <div class="table-progress">
+                        <div class="progress-bar"><div class="progress-bar-fill" style="width: {% if task.status == 'done' %}100{% elif task.status == 'in_progress' %}55{% elif task.status == 'in_review' %}80{% else %}0{% endif %}%"></div></div>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7"><div class="empty-state"><i data-lucide="bar-chart-3"></i><p>Pas encore assez de données pour établir un rapport.</p></div></td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/reports.js' %}"></script>
+{% endblock %}

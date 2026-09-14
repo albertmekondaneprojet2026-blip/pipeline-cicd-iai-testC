@@ -1,0 +1,42 @@
+/* =========================================================
+   DESIGN TOKENS — TaskFlow
+   Toutes les couleurs, rayons et ombres utilisés par
+   l'ensemble des pages sont centralisés ici.
+   ========================================================= */
+
+:root {
+    /* Couleurs de marque */
+    --color-primary: #2563eb;
+    --color-primary-dark: #1d4ed8;
+    --color-primary-light: #eff6ff;
+
+    /* Neutres */
+    --color-bg: #f8fafc;
+    --color-surface: #ffffff;
+    --color-border: #e5e7eb;
+    --color-text: #0f172a;
+    --color-text-muted: #64748b;
+    --color-text-light: #94a3b8;
+
+    /* Statuts */
+    --color-success: #22c55e;
+    --color-success-bg: #ecfdf5;
+    --color-warning: #f59e0b;
+    --color-warning-bg: #fff4e5;
+    --color-danger: #ef4444;
+    --color-danger-bg: #fef2f2;
+    --color-info: #3b82f6;
+    --color-info-bg: #eff6ff;
+    --color-purple: #7c3aed;
+    --color-purple-bg: #f3e8ff;
+
+    /* Forme */
+    --radius: 12px;
+    --radius-sm: 8px;
+    --radius-lg: 18px;
+
+    /* Ombres */
+    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+    --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.10);
+    --shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.14);
+}

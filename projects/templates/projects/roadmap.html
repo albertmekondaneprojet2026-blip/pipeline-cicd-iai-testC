@@ -1,0 +1,75 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block title %}Roadmap{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/roadmap.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header page-header-row">
+    <div>
+        <h1>Roadmap</h1>
+        <p class="text-muted">Visualisez la progression de vos projets et les prochaines étapes clés.</p>
+    </div>
+    <div class="roadmap-range">
+        <i data-lucide="calendar" class="icon-sm"></i>
+        {{ range_start|date:"d M Y" }} – {{ range_end|date:"d M Y" }}
+    </div>
+</div>
+
+<div class="milestone-row">
+    {% for milestone in milestones %}
+    <div class="card milestone-card">
+        <span class="milestone-icon milestone-{{ milestone.color }}"><i data-lucide="flag"></i></span>
+        <div>
+            <p class="milestone-code">M{{ forloop.counter }}</p>
+            <p class="milestone-title">{{ milestone.title }}</p>
+            <p class="text-muted-sm">{{ milestone.due_date|date:"d M Y" }}</p>
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-muted-sm">Aucun jalon défini pour le moment.</p>
+    {% endfor %}
+</div>
+
+<div class="card roadmap-gantt">
+    <div class="gantt-scroll">
+        <div class="gantt-header">
+            <div class="gantt-side-col">Projet / Phase</div>
+            <div class="gantt-timeline-col">
+                {% for label in timeline_labels %}
+                <span>{{ label }}</span>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% for item in projects_data %}
+        <div class="gantt-project-row">
+            <div class="gantt-side-col gantt-project-name">
+                <span class="dot dot-{{ item.color }}"></span> {{ item.project.name }}
+            </div>
+            <div class="gantt-timeline-col gantt-timeline-track"></div>
+        </div>
+        {% for s in item.sprints %}
+        <div class="gantt-phase-row">
+            <div class="gantt-side-col gantt-phase-name">{{ s.sprint.name }}</div>
+            <div class="gantt-timeline-col gantt-timeline-track">
+                <div class="gantt-bar gantt-bar-{{ item.color }}" style="left: {{ s.offset_pct }}%; width: {{ s.width_pct }}%;"></div>
+            </div>
+        </div>
+        {% endfor %}
+        {% empty %}
+        <div class="empty-state"><i data-lucide="map"></i><p>Aucun projet à afficher sur la roadmap.</p></div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="roadmap-legend">
+    <span>Légende :</span>
+    {% for item in projects_data %}
+    <span class="legend-item"><span class="dot dot-{{ item.color }}"></span> {{ item.project.name }}</span>
+    {% endfor %}
+</div>
+{% endblock %}

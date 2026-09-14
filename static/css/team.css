@@ -1,0 +1,39 @@
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.team-card { padding: 20px; }
+.team-card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+.team-card-name { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+.team-card-role { margin-bottom: 12px; }
+.team-card-email { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--color-text-muted); }
+.team-card-email [data-lucide] { color: var(--color-text-light); }
+
+.team-card-divider { height: 1px; background: var(--color-border); margin: 16px 0 12px; }
+.team-card-project-label { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--color-text-light); margin-bottom: 4px; }
+.team-card-project-label [data-lucide] { color: var(--color-primary); }
+.team-card-project-name { font-size: 13.5px; font-weight: 600; }
+
+/* Modale d'invitation */
+.modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    align-items: center; justify-content: center;
+    padding: 20px;
+    z-index: 100;
+}
+.modal-overlay.open { display: flex; }
+.modal-box { width: 100%; max-width: 420px; padding: 28px; box-shadow: var(--shadow-lg); }
+.modal-box h3 { font-size: 17px; margin-bottom: 6px; }
+.modal-box .form-group { margin-top: 18px; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px; }
+
+@media (max-width: 1100px) {
+    .team-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+    .team-grid { grid-template-columns: 1fr; }
+}

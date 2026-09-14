@@ -14,7 +14,7 @@
 
 .dashboard-columns { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; }
 .dashboard-columns h3 { display: flex; align-items: center; gap: 8px; font-size: 14.5px; margin-bottom: 14px; }
-.dashboard-columns h3 i { width: 16px; height: 16px; color: var(--color-primary); }
+.dashboard-columns h3 [data-lucide] { width: 16px; height: 16px; color: var(--color-primary); }
 
 .activity-list { display: flex; flex-direction: column; gap: 12px; }
 .activity-item { display: flex; align-items: flex-start; gap: 10px; }
@@ -23,6 +23,7 @@
 .status-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
 .status-dot.status-todo { background: #9ca3af; }
 .status-dot.status-in_progress { background: #f59e0b; }
+.status-dot.status-in_review { background: #7c3aed; }
 .status-dot.status-done { background: #22c55e; }
 
 .sprint-name { font-weight: 600; font-size: 15px; margin-bottom: 4px; }

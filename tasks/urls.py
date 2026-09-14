@@ -4,6 +4,8 @@ from . import views
 app_name = 'tasks'
 
 urlpatterns = [
-    path('kanban/', views.kanban_view, name='kanban'),
-    path('<int:pk>/update-status/', views.update_task_status, name='update_task_status'),
+    path('', views.task_list_view, name='task_list'),
+    path('<int:project_pk>/kanban/', views.kanban_view, name='kanban'),
+    path('<int:project_pk>/backlog/', views.backlog_view, name='backlog'),
+    path('<int:project_pk>/update-status/<int:pk>/', views.update_task_status, name='update_task_status'),
 ]

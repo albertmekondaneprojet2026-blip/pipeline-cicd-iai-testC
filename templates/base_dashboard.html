@@ -5,70 +5,127 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}TaskFlow{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/variables.css' %}">
+    <link rel="stylesheet" href="{% static 'css/globals.css' %}">
+    <link rel="stylesheet" href="{% static 'css/layout-public.css' %}">
     <link rel="stylesheet" href="{% static 'css/layout-dashboard.css' %}">
     {% block extra_css %}{% endblock %}
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="{% static 'vendor/lucide.min.js' %}"></script>
 </head>
 <body>
-    <div class="app-layout">
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-logo">
-                <i data-lucide="layout-dashboard"></i>
-                <span>taskflow</span>
-            </div>
+<div class="public-page">
+    <header class="public-header">
+        <a href="{% url 'accounts:home' %}" class="public-logo">
+            <i data-lucide="layout-dashboard"></i>
+            <span>taskflow</span>
+        </a>
 
+        <div class="header-right">
+            <nav class="public-nav-links">
+                <a href="{% url 'accounts:home' %}" class="nav-link">Accueil</a>
+                <a href="{% url 'accounts:about' %}" class="nav-link">À propos</a>
+                <a href="{% url 'accounts:contact' %}" class="nav-link">Contact</a>
+                <a href="{% url 'accounts:features' %}" class="nav-link">Fonctionnalités</a>
+            </nav>
+
+            <a href="{% url 'accounts:logout' %}" class="btn-pill" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                Déconnexion
+            </a>
+            <form id="logoutForm" method="post" action="{% url 'accounts:logout' %}" style="display:none;">{% csrf_token %}</form>
+
+            <button type="button" class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Ouvrir le menu">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+
+        <div class="mobile-nav-panel" id="mobileNavPanel">
+            <span class="mobile-nav-section-label">Espace de travail</span>
+            <a href="{% url 'projects:project_list' %}">Projets</a>
+            {% if project %}
+            <a href="{% url 'projects:project_dashboard' pk=project.pk %}">Résumé du projet</a>
+            <a href="{% url 'tasks:backlog' project_pk=project.pk %}">Backlog</a>
+            <a href="{% url 'tasks:kanban' project_pk=project.pk %}">Tableau Kanban</a>
+            {% endif %}
+            
+            <a href="{% url 'tasks:task_list' project_pk=project.pk %}">Tâches</a>
+            <a href="{% url 'projects:roadmap' %}">Roadmap</a>
+            <a href="{% url 'workspaces:team' %}">Équipe</a>
+            <a href="{% url 'projects:reports' %}">Rapports</a>
+            <a href="{% url 'workspaces:settings' %}">Paramètres</a>
+            <span class="mobile-nav-section-label">TaskFlow</span>
+            <a href="{% url 'accounts:home' %}">Accueil</a>
+            <a href="{% url 'accounts:about' %}">À propos</a>
+            <a href="{% url 'accounts:contact' %}">Contact</a>
+            <a href="{% url 'accounts:features' %}">Fonctionnalités</a>
+            <a href="#" class="mobile-nav-cta" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">Déconnexion</a>
+        </div>
+    </header>
+
+    {% if messages %}
+    <div class="public-messages">
+        {% for message in messages %}
+        <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="app-shell">
+        <aside class="app-sidebar" id="appSidebar">
             <nav class="sidebar-nav">
+                <a href="{% url 'projects:project_list' %}" class="nav-item {% if request.resolver_match.url_name == 'project_list' %}active{% endif %}">
+                    <i data-lucide="folder-kanban"></i> Projets
+                </a>
+
                 {% if project %}
                 <a href="{% url 'projects:project_dashboard' pk=project.pk %}" class="nav-item {% if request.resolver_match.url_name == 'project_dashboard' %}active{% endif %}">
                     <i data-lucide="layout-dashboard"></i> Résumé
                 </a>
+                <a href="{% url 'tasks:backlog' project_pk=project.pk %}" class="nav-item {% if request.resolver_match.url_name == 'backlog' %}active{% endif %}">
+                    <i data-lucide="list-checks"></i> Backlog
+                </a>
                 <a href="{% url 'tasks:kanban' project_pk=project.pk %}" class="nav-item {% if request.resolver_match.url_name == 'kanban' %}active{% endif %}">
-                    <i data-lucide="columns-3"></i> Tableau
+                    <i data-lucide="columns-3"></i> Tableau Kanban
                 </a>
                 <div class="nav-divider"></div>
                 {% endif %}
 
-                <a href="{% url 'projects:project_list' %}" class="nav-item {% if request.resolver_match.url_name == 'project_list' %}active{% endif %}">
-                    <i data-lucide="folder-kanban"></i> Projets
+                <a href="{% url 'tasks:task_list' %}" class="nav-item {% if request.resolver_match.url_name == 'task_list' %}active{% endif %}">
+                    <i data-lucide="check-square"></i> Tâches
+                </a>
+                <a href="{% url 'projects:roadmap' %}" class="nav-item {% if request.resolver_match.url_name == 'roadmap' %}active{% endif %}">
+                    <i data-lucide="map"></i> Roadmap
+                </a>
+                <a href="{% url 'workspaces:team' %}" class="nav-item {% if request.resolver_match.url_name == 'team' %}active{% endif %}">
+                    <i data-lucide="users"></i> Équipe
+                </a>
+                <a href="{% url 'projects:reports' %}" class="nav-item {% if request.resolver_match.url_name == 'reports' %}active{% endif %}">
+                    <i data-lucide="bar-chart-3"></i> Rapports
+                </a>
+
+                <div class="nav-divider"></div>
+
+                <a href="{% url 'workspaces:settings' %}" class="nav-item {% if request.resolver_match.url_name == 'settings' %}active{% endif %}">
+                    <i data-lucide="settings"></i> Paramètres
                 </a>
             </nav>
-
-        <div class="sidebar-footer">
-    <form method="post" action="{% url 'accounts:logout' %}">
-        {% csrf_token %}
-        <button type="submit" class="nav-item nav-item-logout">
-            <i data-lucide="log-out"></i> Déconnexion
-        </button>
-    </form>
-</div>
         </aside>
 
-        <div class="main-area">
-            <header class="topbar">
-                <button class="mobile-menu-toggle" id="menuToggle">
-                    <i data-lucide="menu"></i>
-                </button>
-                <div class="topbar-breadcrumb">
-                    <span>Projets</span> <i data-lucide="chevron-right" class="icon-sm"></i> <span>{{ project.name|default:"TaskFlow Studio" }}</span>
-                </div>
-                <div class="topbar-actions">
-                    <button class="icon-btn"><i data-lucide="search"></i></button>
-                    <button class="icon-btn"><i data-lucide="bell"></i></button>
-                    <div class="user-avatar">{{ request.user.username|slice:":1"|upper }}</div>
-                </div>
-            </header>
+        <div class="app-sidebar-overlay" id="sidebarOverlay"></div>
 
-            <main class="content">
-                {% block content %}{% endblock %}
-            </main>
-        </div>
+        <main class="app-content">
+            <button type="button" class="sidebar-toggle-mobile" id="sidebarToggle">
+                <i data-lucide="menu"></i> Menu
+            </button>
+            {% block content %}{% endblock %}
+        </main>
     </div>
+</div>
 
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-    <script src="{% static 'js/main.js' %}"></script>
-    <script src="{% static 'js/sidebar.js' %}"></script>
-    {% block extra_js %}{% endblock %}
+<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/public-nav.js' %}"></script>
+<script src="{% static 'js/sidebar.js' %}"></script>
+{% block extra_js %}{% endblock %}
 </body>
 </html>

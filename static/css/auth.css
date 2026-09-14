@@ -69,7 +69,7 @@
     color: var(--color-text-light);
     display: flex;
 }
-.password-toggle i { width: 17px; height: 17px; }
+.password-toggle [data-lucide] { width: 17px; height: 17px; }
 
 .auth-forgot-link {
     display: block;
