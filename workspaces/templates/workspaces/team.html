@@ -1,0 +1,64 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block title %}Équipe{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/team.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header page-header-row">
+    <div>
+        <h1>Équipe</h1>
+        <p class="text-muted">Gérez les membres de votre équipe, leurs rôles et leurs projets.</p>
+    </div>
+    <button type="button" class="btn btn-primary" id="inviteBtn">
+        <i data-lucide="user-plus"></i> Inviter un membre
+    </button>
+</div>
+
+<div class="team-grid">
+    {% for member in members %}
+    <div class="card team-card">
+        <div class="team-card-top">
+            <span class="avatar avatar-lg">{{ member.initials }}</span>
+            <button type="button" class="icon-btn team-card-menu" aria-label="Options">
+                <i data-lucide="more-horizontal"></i>
+            </button>
+        </div>
+        <h3 class="team-card-name">{{ member.user.get_full_name|default:member.user.username }}</h3>
+        <span class="badge badge-blue team-card-role">{{ member.title }}</span>
+        <p class="team-card-email"><i data-lucide="mail" class="icon-sm"></i> {{ member.user.email|default:"—" }}</p>
+
+        <div class="team-card-divider"></div>
+        <p class="team-card-project-label"><i data-lucide="folder" class="icon-sm"></i> Projet assigné</p>
+        <p class="team-card-project-name">{{ member.assigned_project|default:"Aucun projet pour le moment" }}</p>
+    </div>
+    {% empty %}
+    <div class="card empty-state">
+        <i data-lucide="users"></i>
+        <p>Aucun membre dans votre équipe pour le moment.</p>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="modal-overlay" id="inviteModal">
+    <div class="card modal-box">
+        <h3>Inviter un membre</h3>
+        <p class="text-muted-sm">Envoyez une invitation par e-mail pour rejoindre {{ workspace.name }}.</p>
+        <div class="form-group">
+            <label for="inviteEmail">Adresse e-mail</label>
+            <input type="email" id="inviteEmail" placeholder="collegue@entreprise.com">
+        </div>
+        <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" id="inviteCancel">Annuler</button>
+            <button type="button" class="btn btn-primary" id="inviteConfirm">Envoyer l'invitation</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/team.js' %}"></script>
+{% endblock %}

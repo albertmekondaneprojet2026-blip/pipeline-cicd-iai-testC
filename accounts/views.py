@@ -73,6 +73,7 @@ class RegisterView(FormView):
             user=user,
             workspace=workspace,
             role=TeamMember.Role.ADMIN,
+            title='Fondateur',
         )
 
         login(self.request, user)

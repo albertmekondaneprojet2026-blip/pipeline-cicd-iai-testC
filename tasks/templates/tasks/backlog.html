@@ -1,0 +1,105 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block title %}Backlog - {{ project.name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/backlog.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header page-header-row">
+    <div>
+        <h1>Backlog</h1>
+        <p class="text-muted">Gérez et priorisez les tâches de {{ project.name }}.</p>
+    </div>
+    <a href="{% url 'tasks:kanban' project_pk=project.pk %}" class="btn btn-primary">
+        <i data-lucide="plus"></i> Nouvelle tâche
+    </a>
+</div>
+
+<form method="get" class="backlog-toolbar">
+    <div class="search-input-wrap">
+        <i data-lucide="search"></i>
+        <input type="search" name="q" value="{{ query }}" placeholder="Rechercher une tâche, un membre...">
+    </div>
+    <select name="status" onchange="this.form.submit()">
+        <option value="">Statut</option>
+        {% for value, label in status_choices %}
+        <option value="{{ value }}" {% if request.GET.status == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    <select name="priority" onchange="this.form.submit()">
+        <option value="">Priorité</option>
+        {% for value, label in priority_choices %}
+        <option value="{{ value }}" {% if request.GET.priority == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    <select name="assignee" onchange="this.form.submit()">
+        <option value="">Assignee</option>
+        {% for member in members %}
+        <option value="{{ member.user.id }}" {% if request.GET.assignee == member.user.id|stringformat:"s" %}selected{% endif %}>{{ member.user.get_full_name|default:member.user.username }}</option>
+        {% endfor %}
+    </select>
+</form>
+
+{% for group in sprint_groups %}
+<div class="card sprint-group">
+    <button type="button" class="sprint-group-header">
+        <i data-lucide="chevron-down" class="sprint-chevron"></i>
+        <span class="sprint-group-title">{{ group.sprint.name|default:"Sans sprint" }}</span>
+        <span class="badge badge-blue">{{ group.tasks|length }} tâche{{ group.tasks|length|pluralize }}</span>
+        {% if group.sprint %}
+        <span class="sprint-dates text-muted-sm"><i data-lucide="calendar" class="icon-sm"></i> {{ group.sprint.start_date|date:"d M Y" }} – {{ group.sprint.end_date|date:"d M Y" }}</span>
+        {% endif %}
+    </button>
+
+    <div class="sprint-group-body">
+        <table class="backlog-table">
+            <thead>
+                <tr>
+                    <th class="col-check"><input type="checkbox" aria-label="Tout sélectionner"></th>
+                    <th>Tâche</th>
+                    <th>Statut</th>
+                    <th>Priorité</th>
+                    <th>Assigné à</th>
+                    <th>Échéance</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in group.tasks %}
+                <tr>
+                    <td class="col-check"><input type="checkbox" aria-label="Sélectionner {{ task.title }}"></td>
+                    <td>
+                        <p class="backlog-task-title">{{ task.title }}</p>
+                        {% if task.description %}<p class="text-muted-sm">{{ task.description|truncatechars:60 }}</p>{% endif %}
+                    </td>
+                    <td><span class="badge badge-{% if task.status == 'done' %}green{% elif task.status == 'in_progress' %}blue{% elif task.status == 'in_review' %}purple{% else %}gray{% endif %}">{{ task.get_status_display }}</span></td>
+                    <td><span class="priority-flag priority-{{ task.priority }}"><i data-lucide="flag" class="icon-sm"></i> {{ task.get_priority_display }}</span></td>
+                    <td>
+                        {% if task.assignee %}
+                        <div class="assignee-cell"><span class="avatar avatar-sm">{{ task.assignee_initials }}</span> {{ task.assignee.get_full_name|default:task.assignee.username }}</div>
+                        {% else %}
+                        <span class="text-muted-sm">Non assignée</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-muted-sm">{% if task.due_date %}<i data-lucide="calendar" class="icon-sm"></i> {{ task.due_date|date:"d M Y" }}{% else %}—{% endif %}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6" class="text-muted-sm">Aucune tâche dans ce groupe.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% empty %}
+<div class="card empty-state">
+    <i data-lucide="inbox"></i>
+    <p>Aucune tâche dans le backlog de ce projet pour le moment.</p>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/backlog.js' %}"></script>
+{% endblock %}

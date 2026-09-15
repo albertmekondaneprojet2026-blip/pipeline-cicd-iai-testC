@@ -1,27 +1,44 @@
 {% extends 'base_public.html' %}
 {% load static %}
 
-{% block title %}À propos  TaskFlow{% endblock %}
+{% block title %}À propos - TaskFlow{% endblock %}
 {% block extra_css %}<link rel="stylesheet" href="{% static 'css/about.css' %}">{% endblock %}
 
 {% block content %}
 <section class="about-hero">
-    <h1>Une plateforme née d'un constat simple.</h1>
-    <p>La plupart des équipes perdent du temps non pas à travailler, mais à chercher où en est le travail. TaskFlow existe pour régler exactement ce problème.</p>
+    <div class="about-hero-text">
+        <p class="about-eyebrow">À propos de TaskFlow</p>
+        <h1>Un espace clair pour faire avancer les <span class="accent">bonnes idées.</span></h1>
+        <p class="about-lead">Chez TaskFlow, nous pensons que les meilleures idées méritent un cadre simple pour se concrétiser. Notre plateforme aide les petites équipes à organiser leurs priorités, collaborer efficacement et avancer avec confiance.</p>
+    </div>
+
+    <div class="about-illustration" aria-hidden="true">
+        <div class="about-illus-card">
+            <div class="about-illus-row"><span class="illus-check"><i data-lucide="check" class="icon-sm"></i></span><span class="illus-line"></span></div>
+            <div class="about-illus-row"><span class="illus-circle"></span><span class="illus-line short"></span></div>
+            <div class="about-illus-row"><span class="illus-circle"></span><span class="illus-line"></span></div>
+        </div>
+        <div class="about-illus-donut"></div>
+        <div class="about-illus-calendar"><i data-lucide="calendar" class="icon-sm"></i></div>
+        <div class="about-illus-chat"><i data-lucide="message-circle" class="icon-sm"></i></div>
+    </div>
 </section>
 
-<section class="about-grid">
-    <div class="about-block">
-        <h2>Notre mission</h2>
-        <p>Donner à chaque équipe, petite ou grande, un endroit unique où le backlog, le tableau d'avancement et la feuille de route restent toujours synchronisés — sans feuille Excel parallèle, sans réunion pour "faire le point".</p>
+<section class="about-values">
+    <div class="card about-value-card">
+        <span class="icon-circle about-value-icon"><i data-lucide="target"></i></span>
+        <h3>Clarté</h3>
+        <p>Nous rendons vos projets visibles et compréhensibles, pour que chacun sache quoi faire et pourquoi.</p>
     </div>
-    <div class="about-block">
-        <h2>Notre objectif</h2>
-        <p>Rester simple. TaskFlow n'essaie pas de tout faire  il fait bien les trois choses dont une équipe de projet a réellement besoin au quotidien : prioriser, suivre, planifier.</p>
+    <div class="card about-value-card">
+        <span class="icon-circle about-value-icon"><i data-lucide="zap"></i></span>
+        <h3>Simplicité</h3>
+        <p>Une interface épurée, des outils essentiels et une prise en main rapide pour rester focus sur l'essentiel.</p>
     </div>
-    <div class="about-block">
-        <h2>Nos valeurs</h2>
-        <p>La clarté avant la fonctionnalité. Un outil de gestion de projet ne doit jamais devenir lui-même un projet à gérer.</p>
+    <div class="card about-value-card">
+        <span class="icon-circle about-value-icon"><i data-lucide="shield-check"></i></span>
+        <h3>Confiance</h3>
+        <p>Vos données sont sécurisées et votre équipe peut collaborer en toute sérénité, à chaque étape.</p>
     </div>
 </section>
 {% endblock %}

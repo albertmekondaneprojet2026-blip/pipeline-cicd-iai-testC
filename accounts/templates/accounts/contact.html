@@ -7,11 +7,30 @@
 {% block content %}
 <section class="contact-layout">
     <div class="contact-info">
-        <h1>Parlons de votre projet.</h1>
-        <p>Une question, une suggestion ? Écrivez-nous, nous répondons rapidement.</p>
-        <div class="contact-info-item"><i data-lucide="mail"></i> albertmekondane2@gmail.com</div>
-        <div class="contact-info-item"><i data-lucide="phone"></i> +237 6 73 83 09 96</div>
-        <div class="contact-info-item"><i data-lucide="map-pin"></i> Douala, Cameroun</div>
+        <h1>Parlons de votre projet<span class="accent">.</span></h1>
+        <p class="contact-subtitle">Notre équipe est là pour vous répondre.</p>
+
+        <div class="card contact-info-card">
+            <span class="icon-circle"><i data-lucide="mail"></i></span>
+            <div>
+                <p class="contact-info-label">Email</p>
+                <a href="mailto:bonjour@taskflow.fr" class="contact-info-value">bonjour@taskflow.fr</a>
+            </div>
+        </div>
+        <div class="card contact-info-card">
+            <span class="icon-circle"><i data-lucide="phone"></i></span>
+            <div>
+                <p class="contact-info-label">Téléphone</p>
+                <a href="tel:+33184802024" class="contact-info-value">+33 1 84 80 20 24</a>
+            </div>
+        </div>
+        <div class="card contact-info-card">
+            <span class="icon-circle"><i data-lucide="map-pin"></i></span>
+            <div>
+                <p class="contact-info-label">Adresse</p>
+                <span class="contact-info-value">12 rue de la Paix, 75002 Paris</span>
+            </div>
+        </div>
     </div>
 
     <div class="card contact-card">

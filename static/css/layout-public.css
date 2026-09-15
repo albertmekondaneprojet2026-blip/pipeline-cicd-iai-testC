@@ -122,7 +122,7 @@
 }
 
 /* ---------- Messages Django ---------- */
-.public-messages { max-width: 1280px; margin: 16px auto 0; padding: 0 48px; }
+.public-messages { padding: 16px 48px 0; }
 .public-message {
     background: var(--color-success-bg);
     color: #065f46;
@@ -133,7 +133,7 @@
     margin-bottom: 10px;
 }
 
-.public-content { flex: 1; }
+.public-content { flex: 1; padding: 0 48px; box-sizing: border-box; }
 
 /* ---------- Pied de page ---------- */
 .public-footer {
@@ -186,14 +186,21 @@
    ========================================================= */
 @media (max-width: 860px) {
     .public-header { padding: 16px 20px; }
+    .public-content { padding: 0 20px; }
     .header-right .public-nav-links,
     .header-right .btn-pill { display: none; }
     .mobile-nav-toggle { display: flex; }
 
-    .public-footer { grid-template-columns: 1fr 1fr; padding: 40px 24px 24px; }
-    .footer-social-col { grid-column: 1 / -1; }
+    .public-footer {
+        grid-template-columns: 1fr 1fr;
+        gap: 28px 20px;
+        padding: 36px 20px 20px;
+    }
+    .footer-brand-col { grid-column: 1 / -1; }
+    .footer-social-col { grid-column: 1 / -1; margin-top: -8px; }
 }
 
-@media (max-width: 520px) {
-    .public-footer { grid-template-columns: 1fr; }
+@media (max-width: 480px) {
+    .public-footer { gap: 24px 14px; }
+    .footer-links-col { gap: 10px; }
 }

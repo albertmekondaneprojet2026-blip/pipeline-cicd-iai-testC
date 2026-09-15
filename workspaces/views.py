@@ -1,6 +1,3 @@
-#from django.shortcuts import render
-
-# Create your views here.
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -67,4 +64,3 @@ def settings_view(request):
 
     context = {'workspace': workspace, 'preferences': preferences}
     return render(request, 'workspaces/settings.html', context)
-

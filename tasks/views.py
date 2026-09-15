@@ -6,13 +6,14 @@ from django.db.models import Q
 
 from .models import Task
 from projects.models import Project, Sprint
+from projects.views import get_user_project_or_404
 from workspaces.models import TeamMember
 from workspaces.utils import get_user_workspace
 
 
 @login_required
 def kanban_view(request, project_pk):
-    project = get_object_or_404(Project, pk=project_pk)
+    project = get_user_project_or_404(request.user, project_pk)
     tasks = Task.objects.filter(project=project).select_related('assignee')
 
     context = {
@@ -28,7 +29,8 @@ def kanban_view(request, project_pk):
 @require_POST
 @login_required
 def update_task_status(request, project_pk, pk):
-    task = get_object_or_404(Task, pk=pk, project_id=project_pk)
+    project = get_user_project_or_404(request.user, project_pk)
+    task = get_object_or_404(Task, pk=pk, project=project)
     new_status = request.POST.get('status')
     if new_status in dict(Task.Status.choices):
         task.status = new_status
@@ -80,7 +82,7 @@ def task_list_view(request):
 @login_required
 def backlog_view(request, project_pk):
     """Ecran 'Backlog' : taches du projet groupees par sprint."""
-    project = get_object_or_404(Project, pk=project_pk)
+    project = get_user_project_or_404(request.user, project_pk)
     tasks = Task.objects.filter(project=project).select_related('assignee', 'sprint')
 
     query = request.GET.get('q', '').strip()

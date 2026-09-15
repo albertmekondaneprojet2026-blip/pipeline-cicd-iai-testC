@@ -1,0 +1,90 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block title %}Tâches{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/task-list.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header page-header-row">
+    <div>
+        <h1>Tâches</h1>
+        <p class="text-muted">Gérez et suivez toutes vos tâches au sein de vos projets.</p>
+    </div>
+</div>
+
+<form method="get" class="task-list-toolbar">
+    <div class="search-input-wrap">
+        <i data-lucide="search"></i>
+        <input type="search" name="q" value="{{ query }}" placeholder="Rechercher une tâche...">
+    </div>
+    <select name="project" onchange="this.form.submit()">
+        <option value="">Tous les projets</option>
+        {% for p in projects %}
+        <option value="{{ p.id }}" {% if selected_project == p.id|stringformat:"s" %}selected{% endif %}>{{ p.name }}</option>
+        {% endfor %}
+    </select>
+    <select name="assignee" onchange="this.form.submit()">
+        <option value="">Tous les membres</option>
+        {% for member in members %}
+        <option value="{{ member.user.id }}" {% if selected_assignee == member.user.id|stringformat:"s" %}selected{% endif %}>{{ member.user.get_full_name|default:member.user.username }}</option>
+        {% endfor %}
+    </select>
+    <select name="priority" onchange="this.form.submit()">
+        <option value="">Toutes les priorités</option>
+        {% for value, label in priority_choices %}
+        <option value="{{ value }}" {% if selected_priority == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    <select name="status" onchange="this.form.submit()">
+        <option value="">Tous les statuts</option>
+        {% for value, label in status_choices %}
+        <option value="{{ value }}" {% if selected_status == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-primary"><i data-lucide="plus"></i> Nouvelle tâche</button>
+</form>
+
+<div class="card">
+    <table class="task-list-table">
+        <thead>
+            <tr>
+                <th class="col-check"><input type="checkbox" aria-label="Tout sélectionner"></th>
+                <th>Tâche</th>
+                <th class="hide-mobile">Projet</th>
+                <th class="hide-mobile">Assigné à</th>
+                <th>Priorité</th>
+                <th>Statut</th>
+                <th class="hide-mobile">Échéance</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td class="col-check"><input type="checkbox" aria-label="Sélectionner {{ task.title }}"></td>
+                <td><p class="task-title-cell">{{ task.title }}</p></td>
+                <td class="hide-mobile"><span class="project-chip"><i data-lucide="folder" class="icon-sm"></i> {{ task.project.name }}</span></td>
+                <td class="hide-mobile">
+                    {% if task.assignee %}
+                    <div class="assignee-cell"><span class="avatar avatar-sm">{{ task.assignee_initials }}</span> {{ task.assignee.get_full_name|default:task.assignee.username }}</div>
+                    {% else %}<span class="text-muted-sm">—</span>{% endif %}
+                </td>
+                <td><span class="priority-flag priority-{{ task.priority }}"><i data-lucide="flag" class="icon-sm"></i> {{ task.get_priority_display }}</span></td>
+                <td><span class="badge badge-{% if task.status == 'done' %}green{% elif task.status == 'in_progress' %}blue{% elif task.status == 'in_review' %}purple{% else %}gray{% endif %}">{{ task.get_status_display }}</span></td>
+                <td class="hide-mobile text-muted-sm">{% if task.due_date %}{{ task.due_date|date:"d M Y" }}{% else %}—{% endif %}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7">
+                <div class="empty-state"><i data-lucide="check-square"></i><p>Aucune tâche ne correspond à ces filtres.</p></div>
+            </td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/task-list.js' %}"></script>
+{% endblock %}

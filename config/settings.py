@@ -67,6 +67,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -80,18 +81,33 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
+#
+# En production (et en CI), la base est Supabase (Postgres) via les
+# variables d'environnement DB_HOST/DB_NAME/DB_USER/DB_PASSWORD/DB_PORT
+# (voir .env.example). Si DB_HOST n'est pas renseigné (ex : environnement
+# local sans .env), on retombe automatiquement sur SQLite pour pouvoir
+# développer/tester sans dépendance externe.
 
+_db_host = os.getenv('DB_HOST', '').strip()
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', '').strip(),
-        'USER': os.getenv('DB_USER', '').strip(),
-        'PASSWORD': os.getenv('DB_PASSWORD', '').strip(),
-        'HOST': os.getenv('DB_HOST', '').strip(),
-        'PORT': os.getenv('DB_PORT', '').strip(),
+if _db_host:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('DB_NAME', '').strip(),
+            'USER': os.getenv('DB_USER', '').strip(),
+            'PASSWORD': os.getenv('DB_PASSWORD', '').strip(),
+            'HOST': _db_host,
+            'PORT': os.getenv('DB_PORT', '5432').strip(),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
@@ -132,6 +148,13 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+# Stockage simple (pas de manifest a hash) : WhiteNoiseMiddleware sert les
+# fichiers de STATIC_ROOT en production sans exiger une etape supplementaire
+# avant les tests/CI.
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+}
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

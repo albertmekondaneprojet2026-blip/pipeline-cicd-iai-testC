@@ -48,3 +48,32 @@ def test_project_dashboard_shows_correct_stats(logged_in_client):
     assert response.status_code == 200
     assert response.context['stats']['total'] == 2
     assert response.context['stats']['done'] == 1
+
+@pytest.fixture
+def other_user_project(db):
+    """Fixture : un DEUXIEME utilisateur, avec son propre espace et projet."""
+    user = User.objects.create_user(username='otheruser', password='otherpass123')
+    workspace = Workspace.objects.create(name='Other Workspace', owner=user)
+    project = Project.objects.create(workspace=workspace, name='Other Project')
+    return project
+
+
+@pytest.mark.django_db
+def test_user_cannot_access_another_users_project_dashboard(logged_in_client, other_user_project):
+    """Securite (autorisation) : un utilisateur connecte ne doit JAMAIS pouvoir
+    consulter le dashboard d'un projet appartenant a un autre espace de travail,
+    meme en connaissant son ID. On attend un 404 (et non les donnees du projet)."""
+    client, _own_project = logged_in_client
+    response = client.get(reverse('projects:project_dashboard', kwargs={'pk': other_user_project.pk}))
+    assert response.status_code == 404
+    assert other_user_project.name.encode() not in response.content
+
+
+@pytest.mark.django_db
+def test_project_list_only_shows_own_projects(logged_in_client, other_user_project):
+    """Securite (autorisation) : la liste des projets ne doit afficher que
+    ceux de l'espace de travail de l'utilisateur connecte."""
+    client, own_project = logged_in_client
+    response = client.get(reverse('projects:project_list'))
+    assert own_project.name.encode() in response.content
+    assert other_user_project.name.encode() not in response.content

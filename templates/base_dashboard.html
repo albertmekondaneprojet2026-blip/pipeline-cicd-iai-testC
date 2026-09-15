@@ -48,8 +48,7 @@
             <a href="{% url 'tasks:backlog' project_pk=project.pk %}">Backlog</a>
             <a href="{% url 'tasks:kanban' project_pk=project.pk %}">Tableau Kanban</a>
             {% endif %}
-            
-            <a href="{% url 'tasks:task_list' project_pk=project.pk %}">Tâches</a>
+            <a href="{% url 'tasks:task_list' %}">Tâches</a>
             <a href="{% url 'projects:roadmap' %}">Roadmap</a>
             <a href="{% url 'workspaces:team' %}">Équipe</a>
             <a href="{% url 'projects:reports' %}">Rapports</a>

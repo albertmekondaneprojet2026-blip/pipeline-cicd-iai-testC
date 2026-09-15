@@ -1,0 +1,114 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block title %}Paramètres{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/settings.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Paramètres</h1>
+    <p class="text-muted">Gérez les informations de votre espace de travail et vos préférences.</p>
+</div>
+
+<div class="settings-layout">
+    <nav class="settings-tabs">
+        <button type="button" class="settings-tab active" data-tab="profil"><i data-lucide="user"></i> Profil</button>
+        <button type="button" class="settings-tab" data-tab="projet"><i data-lucide="briefcase"></i> Espace de travail</button>
+        <button type="button" class="settings-tab" data-tab="notifications"><i data-lucide="bell"></i> Notifications</button>
+        <button type="button" class="settings-tab" data-tab="securite"><i data-lucide="shield"></i> Sécurité</button>
+    </nav>
+
+    <div class="settings-panels">
+        <section class="settings-panel active" id="panel-profil">
+            <form method="post" class="card settings-card">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="profile">
+                <h3><i data-lucide="user" class="icon-sm"></i> Profil</h3>
+                <div class="settings-grid-2">
+                    <div class="form-group">
+                        <label for="first_name">Prénom</label>
+                        <input type="text" id="first_name" name="first_name" value="{{ request.user.first_name }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Nom</label>
+                        <input type="text" id="last_name" name="last_name" value="{{ request.user.last_name }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Adresse e-mail</label>
+                    <input type="email" id="email" name="email" value="{{ request.user.email }}">
+                </div>
+                <button type="submit" class="btn btn-primary"><i data-lucide="save"></i> Enregistrer les modifications</button>
+            </form>
+        </section>
+
+        <section class="settings-panel" id="panel-projet">
+            <form method="post" class="card settings-card">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="workspace">
+                <h3><i data-lucide="briefcase" class="icon-sm"></i> Espace de travail</h3>
+                <div class="form-group">
+                    <label for="ws_name">Nom de l'espace de travail</label>
+                    <input type="text" id="ws_name" name="name" value="{{ workspace.name }}">
+                </div>
+                <div class="form-group">
+                    <label for="ws_description">Description</label>
+                    <textarea id="ws_description" name="description" rows="4">{{ workspace.description }}</textarea>
+                </div>
+                <button type="submit" class="btn btn-primary"><i data-lucide="save"></i> Enregistrer les modifications</button>
+            </form>
+        </section>
+
+        <section class="settings-panel" id="panel-notifications">
+            <form method="post" class="card settings-card">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="notifications">
+                <h3><i data-lucide="bell" class="icon-sm"></i> Notifications</h3>
+                <p class="text-muted-sm settings-intro">Choisissez comment vous souhaitez être informé des activités de votre espace de travail.</p>
+
+                <label class="settings-toggle-row">
+                    <div><p class="toggle-title">Nouveaux commentaires</p><p class="text-muted-sm">Recevez une notification lorsqu'un commentaire est ajouté.</p></div>
+                    <span class="switch"><input type="checkbox" name="notify_comments" {% if preferences.notify_comments %}checked{% endif %}><span class="switch-track"></span></span>
+                </label>
+                <label class="settings-toggle-row">
+                    <div><p class="toggle-title">Tâches assignées</p><p class="text-muted-sm">Recevez une notification lorsqu'une tâche vous est assignée.</p></div>
+                    <span class="switch"><input type="checkbox" name="notify_task_assigned" {% if preferences.notify_task_assigned %}checked{% endif %}><span class="switch-track"></span></span>
+                </label>
+                <label class="settings-toggle-row">
+                    <div><p class="toggle-title">Mises à jour de projet</p><p class="text-muted-sm">Recevez une notification sur les mises à jour importantes.</p></div>
+                    <span class="switch"><input type="checkbox" name="notify_project_updates" {% if preferences.notify_project_updates %}checked{% endif %}><span class="switch-track"></span></span>
+                </label>
+                <label class="settings-toggle-row">
+                    <div><p class="toggle-title">Rappels d'échéance</p><p class="text-muted-sm">Recevez un rappel avant la date limite des tâches.</p></div>
+                    <span class="switch"><input type="checkbox" name="notify_due_date" {% if preferences.notify_due_date %}checked{% endif %}><span class="switch-track"></span></span>
+                </label>
+
+                <button type="submit" class="btn btn-primary settings-save-btn"><i data-lucide="save"></i> Enregistrer les modifications</button>
+            </form>
+        </section>
+
+        <section class="settings-panel" id="panel-securite">
+            <form method="post" class="card settings-card">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="security">
+                <h3><i data-lucide="shield" class="icon-sm"></i> Sécurité</h3>
+                <p class="text-muted-sm settings-intro">Protégez votre compte avec des options de sécurité avancées.</p>
+
+                <label class="settings-toggle-row">
+                    <div><p class="toggle-title">Authentification à deux facteurs</p><p class="text-muted-sm">Ajoutez une couche de sécurité supplémentaire à votre compte.</p></div>
+                    <span class="switch"><input type="checkbox" name="two_factor_enabled" {% if preferences.two_factor_enabled %}checked{% endif %}><span class="switch-track"></span></span>
+                </label>
+
+                <button type="submit" class="btn btn-primary settings-save-btn"><i data-lucide="save"></i> Enregistrer les modifications</button>
+            </form>
+        </section>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/settings.js' %}"></script>
+{% endblock %}

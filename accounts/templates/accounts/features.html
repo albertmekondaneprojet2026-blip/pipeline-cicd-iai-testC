@@ -6,39 +6,57 @@
 
 {% block content %}
 <section class="features-hero">
-    <h1>Tout ce qu'il faut pour piloter un projet, rien de plus.</h1>
+    <p class="features-eyebrow">Fonctionnalités</p>
+    <h1>Tout le projet, au <span class="accent">même endroit.</span></h1>
+    <p class="features-subtitle">Donnez à vos équipes la visibilité et les outils pour avancer plus vite, ensemble.</p>
 </section>
 
-<section class="features-list">
-    <div class="feature-item">
-        <span class="feature-icon"><i data-lucide="check-square"></i></span>
-        <h3>Gestion des tâches</h3>
-        <p>Créez, assignez et suivez chaque tâche avec un statut clair.</p>
-    </div>
-    <div class="feature-item">
+<div class="features-divider-label">
+    <span></span>
+    <p>Les outils essentiels pour avancer</p>
+    <span></span>
+</div>
+
+<section class="features-grid">
+    <div class="feature-card">
         <span class="feature-icon"><i data-lucide="columns-3"></i></span>
-        <h3>Tableau Kanban</h3>
-        <p>Visualisez l'avancement du travail par glisser-déposer entre les colonnes.</p>
+        <h3>Tableau partagé</h3>
+        <p>Visualisez chaque tâche et son avancement.</p>
     </div>
-    <div class="feature-item">
-        <span class="feature-icon"><i data-lucide="folder-kanban"></i></span>
-        <h3>Suivi des projets</h3>
-        <p>Une vue d'ensemble de tous vos projets, avec leur progression réelle.</p>
-    </div>
-    <div class="feature-item">
+    <div class="feature-card">
         <span class="feature-icon"><i data-lucide="milestone"></i></span>
-        <h3>Roadmap</h3>
-        <p>Planifiez les grandes étapes dans le temps, visibles par toute l'équipe.</p>
+        <h3>Roadmap claire</h3>
+        <p>Donnez une direction lisible à votre équipe.</p>
     </div>
-    <div class="feature-item">
+    <div class="feature-card">
         <span class="feature-icon"><i data-lucide="users"></i></span>
-        <h3>Collaboration d'équipe</h3>
-        <p>Chaque membre voit ce qui lui est assigné et ce qui avance autour de lui.</p>
+        <h3>Collaboration simple</h3>
+        <p>Centralisez les échanges au même endroit.</p>
     </div>
-    <div class="feature-item">
+    <div class="feature-card">
         <span class="feature-icon"><i data-lucide="calendar-clock"></i></span>
         <h3>Suivi des échéances</h3>
-        <p>Ne perdez plus de vue une date limite, sprint après sprint.</p>
+        <p>Gardez le rythme et respectez vos délais.</p>
+    </div>
+    <div class="feature-card">
+        <span class="feature-icon"><i data-lucide="list-checks"></i></span>
+        <h3>Gestion du backlog</h3>
+        <p>Priorisez les demandes importantes.</p>
+    </div>
+    <div class="feature-card">
+        <span class="feature-icon"><i data-lucide="refresh-cw"></i></span>
+        <h3>Sprints structurés</h3>
+        <p>Organisez le travail par cycles.</p>
+    </div>
+    <div class="feature-card">
+        <span class="feature-icon"><i data-lucide="bar-chart-3"></i></span>
+        <h3>Rapports de progression</h3>
+        <p>Comprenez rapidement les résultats.</p>
+    </div>
+    <div class="feature-card">
+        <span class="feature-icon"><i data-lucide="shield-check"></i></span>
+        <h3>Permissions d'équipe</h3>
+        <p>Contrôlez les accès en toute sécurité.</p>
     </div>
 </section>
 {% endblock %}
