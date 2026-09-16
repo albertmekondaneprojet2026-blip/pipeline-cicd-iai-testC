@@ -10,6 +10,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
     gap: 24px;
     padding: 18px 48px;
     background: var(--color-surface);
@@ -30,7 +31,7 @@
     font-family: 'Space Grotesk', 'Inter', sans-serif;
     flex-shrink: 0;
 }
-.public-logo [data-lucide] { color: var(--color-primary); width: 26px; height: 26px; }
+.public-logo .logo-icon { width: 26px; height: auto; display: block; }
 
 /* Groupe de droite : liens de nav + CTA + hamburger, TOUJOURS ensemble */
 .header-right {
@@ -88,9 +89,14 @@
 .mobile-nav-panel {
     display: none;
     flex-direction: column;
+    flex-basis: 100%;
+    width: 100%;
+    order: 10;
     gap: 2px;
     padding: 10px 20px 18px;
     background: var(--color-surface);
+    max-height: calc(100vh - 70px);
+    overflow-y: auto;
     border-bottom: 1px solid var(--color-border);
 }
 .mobile-nav-panel.open { display: flex; }
@@ -138,7 +144,7 @@
 /* ---------- Pied de page ---------- */
 .public-footer {
     display: grid;
-    grid-template-columns: 1.6fr 1fr 1fr 1fr auto;
+    grid-template-columns: 1.3fr 1.15fr 1fr 1fr 1fr auto;
     gap: 32px;
     padding: 56px 48px 28px;
     border-top: 1px solid var(--color-border);
@@ -146,6 +152,7 @@
 }
 .footer-brand-col .public-logo { margin-bottom: 14px; }
 .footer-tagline { color: var(--color-text-muted); font-size: 13.5px; margin-bottom: 16px; max-width: 260px; }
+.footer-contact-col { padding-top: 2px; }
 .footer-contact-item {
     display: flex; align-items: center; gap: 8px;
     color: var(--color-text-muted); font-size: 13.5px; margin-bottom: 10px;
@@ -160,11 +167,14 @@
 .social-icon {
     width: 36px; height: 36px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    border: 1px solid var(--color-border);
-    color: var(--color-text-muted);
+    background: var(--color-primary-light);
+    border: none;
+    color: var(--color-text);
     text-decoration: none;
 }
-.social-icon:hover { color: var(--color-primary); border-color: var(--color-primary); }
+.social-icon:hover { background: var(--color-primary); color: #fff; }
+.social-icon-linkedin { color: #0a66c2; }
+.social-icon-linkedin:hover { background: #0a66c2; color: #fff; }
 
 .footer-bottom {
     grid-column: 1 / -1;
@@ -197,6 +207,7 @@
         padding: 36px 20px 20px;
     }
     .footer-brand-col { grid-column: 1 / -1; }
+    .footer-contact-col { grid-column: 1 / -1; margin-top: -12px; }
     .footer-social-col { grid-column: 1 / -1; margin-top: -8px; }
 }
 
