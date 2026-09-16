@@ -1,0 +1,11 @@
+groups:
+  - name: taskflow_alerts
+    rules:
+      - alert: TauxErreur500Eleve
+        expr: rate(django_http_responses_total_by_status_total{status="500"}[5m]) > 0.05
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Taux d'erreurs 500 anormalement eleve"
+          description: "Plus de 5% des requetes echouent depuis 2 minutes."
