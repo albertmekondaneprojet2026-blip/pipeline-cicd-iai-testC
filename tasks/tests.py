@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 
 # Create your tests here.
 import pytest
@@ -108,3 +108,59 @@ def test_global_task_list_excludes_other_users_tasks(client, two_users_with_task
     assert response.status_code == 200
     assert b'Tache confidentielle A' in response.content
     assert b'Tache confidentielle B' not in response.content
+
+
+@pytest.fixture
+def logged_in_client_with_task(db):
+    user = User.objects.create_user(username='taskuser', password='pass123456')
+    workspace = Workspace.objects.create(name='WS', owner=user)
+    project = Project.objects.create(workspace=workspace, name='Projet')
+    task = Task.objects.create(project=project, title='Tache existante')
+    client = Client()
+    client.login(username='taskuser', password='pass123456')
+    return client, project, task
+
+
+@pytest.mark.django_db
+def test_task_create_view(logged_in_client_with_task):
+    client, project, _task = logged_in_client_with_task
+    response = client.post(
+        reverse('tasks:task_create', kwargs={'project_pk': project.pk}),
+        {'title': 'Nouvelle tache', 'priority': 'medium', 'status': 'todo', 'label_color': 'blue'},
+    )
+    assert response.status_code == 302
+    assert Task.objects.filter(project=project, title='Nouvelle tache').exists()
+
+
+@pytest.mark.django_db
+def test_task_edit_view(logged_in_client_with_task):
+    client, project, task = logged_in_client_with_task
+    response = client.post(
+        reverse('tasks:task_edit', kwargs={'project_pk': project.pk, 'pk': task.pk}),
+        {'title': 'Titre modifie', 'priority': 'high', 'status': 'in_progress', 'label_color': 'blue'},
+    )
+    assert response.status_code == 302
+    task.refresh_from_db()
+    assert task.title == 'Titre modifie'
+    assert task.status == 'in_progress'
+
+
+@pytest.mark.django_db
+def test_task_delete_view(logged_in_client_with_task):
+    client, project, task = logged_in_client_with_task
+    response = client.post(reverse('tasks:task_delete', kwargs={'project_pk': project.pk, 'pk': task.pk}))
+    assert response.status_code == 302
+    assert not Task.objects.filter(pk=task.pk).exists()
+
+
+@pytest.mark.django_db
+def test_cannot_create_task_in_another_users_project(logged_in_client_with_task, two_users_with_tasks):
+    """Securite : impossible de creer une tache dans le projet d'un autre espace."""
+    client, _project, _task = logged_in_client_with_task
+    other_project = two_users_with_tasks['project_a']
+    response = client.post(
+        reverse('tasks:task_create', kwargs={'project_pk': other_project.pk}),
+        {'title': 'Intrusion', 'priority': 'medium', 'status': 'todo', 'label_color': 'blue'},
+    )
+    assert response.status_code == 404
+    assert not Task.objects.filter(title='Intrusion').exists()

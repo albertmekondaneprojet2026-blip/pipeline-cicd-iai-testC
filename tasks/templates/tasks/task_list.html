@@ -44,7 +44,11 @@
         <option value="{{ value }}" {% if selected_status == value %}selected{% endif %}>{{ label }}</option>
         {% endfor %}
     </select>
-    <button type="submit" class="btn btn-primary"><i data-lucide="plus"></i> Nouvelle tâche</button>
+    {% if selected_project %}
+    <a href="{% url 'tasks:task_create' project_pk=selected_project %}?from=list" class="btn btn-primary"><i data-lucide="plus"></i> Nouvelle tâche</a>
+    {% else %}
+    <span class="btn btn-secondary btn-disabled" title="Sélectionnez d'abord un projet dans les filtres pour créer une tâche"><i data-lucide="plus"></i> Nouvelle tâche</span>
+    {% endif %}
 </form>
 
 <div class="card">
@@ -64,7 +68,7 @@
             {% for task in tasks %}
             <tr>
                 <td class="col-check"><input type="checkbox" aria-label="Sélectionner {{ task.title }}"></td>
-                <td><p class="task-title-cell">{{ task.title }}</p></td>
+                <td><a href="{% url 'tasks:task_edit' project_pk=task.project.pk pk=task.pk %}?from=list" class="task-title-cell">{{ task.title }}</a></td>
                 <td class="hide-mobile"><span class="project-chip"><i data-lucide="folder" class="icon-sm"></i> {{ task.project.name }}</span></td>
                 <td class="hide-mobile">
                     {% if task.assignee %}

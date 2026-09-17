@@ -1,14 +1,24 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib import messages
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.db.models import Q
 
 from .models import Task
+from .forms import TaskForm
 from projects.models import Project, Sprint
 from projects.views import get_user_project_or_404
 from workspaces.models import TeamMember
 from workspaces.utils import get_user_workspace
+
+
+def get_user_task_or_404(user, project_pk, pk):
+    """Renvoie la tache pk UNIQUEMENT si elle appartient au projet project_pk
+    et que ce projet appartient a l'espace de travail de l'utilisateur."""
+    project = get_user_project_or_404(user, project_pk)
+    return get_object_or_404(Task, pk=pk, project=project)
 
 
 @login_required
@@ -119,3 +129,70 @@ def backlog_view(request, project_pk):
         'query': query,
     }
     return render(request, 'tasks/backlog.html', context)
+
+
+@login_required
+def task_create(request, project_pk):
+    project = get_user_project_or_404(request.user, project_pk)
+    members_qs = User.objects.filter(team_memberships__workspace=project.workspace).distinct()
+    origin = request.GET.get('from', 'backlog')
+
+    if request.method == 'POST':
+        form = TaskForm(request.POST, project=project, members_queryset=members_qs)
+        if form.is_valid():
+            task = form.save(commit=False)
+            task.project = project
+            task.save()
+            messages.success(request, f"La tâche « {task.title} » a été créée.")
+            origin = request.POST.get('from', origin)
+            if origin == 'kanban':
+                return redirect('tasks:kanban', project_pk=project.pk)
+            if origin == 'list':
+                return redirect('tasks:task_list')
+            return redirect('tasks:backlog', project_pk=project.pk)
+    else:
+        form = TaskForm(project=project, members_queryset=members_qs, initial={'sprint': request.GET.get('sprint') or None})
+
+    context = {'form': form, 'project': project, 'is_edit': False, 'origin': origin}
+    return render(request, 'tasks/task_form.html', context)
+
+
+@login_required
+def task_edit(request, project_pk, pk):
+    project = get_user_project_or_404(request.user, project_pk)
+    task = get_object_or_404(Task, pk=pk, project=project)
+    members_qs = User.objects.filter(team_memberships__workspace=project.workspace).distinct()
+    origin = request.GET.get('from', 'backlog')
+
+    if request.method == 'POST':
+        form = TaskForm(request.POST, instance=task, project=project, members_queryset=members_qs)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"La tâche « {task.title} » a été mise à jour.")
+            origin = request.POST.get('from', origin)
+            if origin == 'kanban':
+                return redirect('tasks:kanban', project_pk=project.pk)
+            if origin == 'list':
+                return redirect('tasks:task_list')
+            return redirect('tasks:backlog', project_pk=project.pk)
+    else:
+        form = TaskForm(instance=task, project=project, members_queryset=members_qs)
+
+    context = {'form': form, 'project': project, 'task': task, 'is_edit': True, 'origin': origin}
+    return render(request, 'tasks/task_form.html', context)
+
+
+@require_POST
+@login_required
+def task_delete(request, project_pk, pk):
+    project = get_user_project_or_404(request.user, project_pk)
+    task = get_object_or_404(Task, pk=pk, project=project)
+    title = task.title
+    task.delete()
+    messages.success(request, f"La tâche « {title} » a été supprimée.")
+    origin = request.POST.get('from', 'backlog')
+    if origin == 'kanban':
+        return redirect('tasks:kanban', project_pk=project.pk)
+    if origin == 'list':
+        return redirect('tasks:task_list')
+    return redirect('tasks:backlog', project_pk=project.pk)

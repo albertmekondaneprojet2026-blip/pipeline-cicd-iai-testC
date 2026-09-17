@@ -9,6 +9,7 @@ class Task(models.Model):
         IN_PROGRESS = 'in_progress', 'En cours'
         IN_REVIEW = 'in_review', 'En revue'
         DONE = 'done', 'Termine'
+        CANCELLED = 'cancelled', 'Annulee'
 
     class Priority(models.TextChoices):
         LOW = 'low', 'Basse'

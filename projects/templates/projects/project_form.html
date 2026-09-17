@@ -1,0 +1,71 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block title %}{% if is_edit %}Modifier {{ project.name }}{% else %}Nouveau projet{% endif %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/form-page.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <a href="{% if is_edit %}{% url 'projects:project_dashboard' pk=project.pk %}{% else %}{% url 'projects:project_list' %}{% endif %}" class="form-back-link">
+        <i data-lucide="arrow-left" class="icon-sm"></i> Retour
+    </a>
+    <h1>{% if is_edit %}Modifier le projet{% else %}Nouveau projet{% endif %}</h1>
+    <p class="text-muted">{% if is_edit %}Mettez à jour les informations de « {{ project.name }} ».{% else %}Renseignez les informations de votre nouveau projet.{% endif %}</p>
+</div>
+
+<form method="post" class="card form-card">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+    <div class="alert alert-error">{{ form.non_field_errors.0 }}</div>
+    {% endif %}
+
+    <div class="form-group">
+        <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+        {{ form.name }}
+        {% if form.name.errors %}<span class="form-error">{{ form.name.errors.0 }}</span>{% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+        {{ form.description }}
+    </div>
+
+    <div class="form-grid-2">
+        <div class="form-group">
+            <label for="{{ form.status.id_for_label }}">{{ form.status.label }}</label>
+            {{ form.status }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.icon.id_for_label }}">Icône</label>
+            {{ form.icon }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.lead.id_for_label }}">{{ form.lead.label }}</label>
+        {{ form.lead }}
+    </div>
+
+    <div class="form-grid-2">
+        <div class="form-group">
+            <label for="{{ form.start_date.id_for_label }}">{{ form.start_date.label }}</label>
+            {{ form.start_date }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.end_date.id_for_label }}">{{ form.end_date.label }}</label>
+            {{ form.end_date }}
+            {% if form.end_date.errors %}<span class="form-error">{{ form.end_date.errors.0 }}</span>{% endif %}
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <a href="{% if is_edit %}{% url 'projects:project_dashboard' pk=project.pk %}{% else %}{% url 'projects:project_list' %}{% endif %}" class="btn btn-secondary">Annuler</a>
+        <button type="submit" class="btn btn-primary">
+            <i data-lucide="save"></i> {% if is_edit %}Enregistrer les modifications{% else %}Créer le projet{% endif %}
+        </button>
+    </div>
+</form>
+{% endblock %}

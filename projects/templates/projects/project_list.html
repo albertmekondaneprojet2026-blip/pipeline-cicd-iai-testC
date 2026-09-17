@@ -13,8 +13,32 @@
         <h1>Projets</h1>
         <p class="text-muted">Gérez et suivez tous vos projets en un seul endroit.</p>
     </div>
-    <button type="button" class="btn btn-primary"><i data-lucide="plus"></i> Nouveau projet</button>
+    <a href="{% url 'projects:project_create' %}" class="btn btn-primary"><i data-lucide="plus"></i> Nouveau projet</a>
 </div>
+
+<form method="get" class="project-list-toolbar">
+    <div class="search-input-wrap">
+        <i data-lucide="search"></i>
+        <input type="search" name="q" value="{{ query }}" placeholder="Rechercher un projet...">
+    </div>
+    <select name="status" onchange="this.form.submit()">
+        <option value="">Tous les statuts</option>
+        {% for value, label in status_choices %}
+        <option value="{{ value }}" {% if status_filter == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    <select name="sort" onchange="this.form.submit()">
+        <option value="-updated_at" {% if sort == '-updated_at' %}selected{% endif %}>Récemment mis à jour</option>
+        <option value="name" {% if sort == 'name' %}selected{% endif %}>Nom (A→Z)</option>
+        <option value="-name" {% if sort == '-name' %}selected{% endif %}>Nom (Z→A)</option>
+        <option value="-start_date" {% if sort == '-start_date' %}selected{% endif %}>Date de début (récente)</option>
+    </select>
+    {% if show_archived %}<input type="hidden" name="archived" value="1">{% endif %}
+    <button type="submit" class="btn btn-secondary btn-sm">Filtrer</button>
+    <a href="{% if show_archived %}?{% else %}?archived=1{% endif %}" class="archive-toggle-link">
+        {% if show_archived %}<i data-lucide="arrow-left" class="icon-sm"></i> Retour aux projets actifs{% else %}<i data-lucide="archive" class="icon-sm"></i> Voir les archivés{% endif %}
+    </a>
+</form>
 
 <div class="card">
     <table class="projects-table">
@@ -22,9 +46,10 @@
             <tr>
                 <th>Projet</th>
                 <th class="hide-mobile">Avancement</th>
-                <th class="hide-mobile">Équipe</th>
+                <th class="hide-mobile">Responsable</th>
                 <th>Statut</th>
                 <th class="hide-mobile">Dernière mise à jour</th>
+                <th class="col-actions"></th>
             </tr>
         </thead>
         <tbody>
@@ -45,14 +70,39 @@
                     </div>
                     <span class="text-muted-sm">{{ project.progress_percent }}%</span>
                 </td>
-                <td class="hide-mobile text-muted-sm">{{ project.member_count }} membre{{ project.member_count|pluralize }}</td>
+                <td class="hide-mobile text-muted-sm">{% if project.lead %}{{ project.lead.get_full_name|default:project.lead.username }}{% else %}Non assigné{% endif %}</td>
                 <td><span class="badge {{ project.status_css }}">{{ project.status_label }}</span></td>
                 <td class="hide-mobile text-muted-sm">{{ project.updated_at|date:"d M Y, H:i" }}</td>
+                <td class="col-actions">
+                    <div class="row-actions-menu">
+                        <button type="button" class="icon-btn row-actions-toggle" aria-label="Actions"><i data-lucide="more-horizontal"></i></button>
+                        <div class="row-actions-dropdown">
+                            <a href="{% url 'projects:project_edit' pk=project.pk %}"><i data-lucide="pencil" class="icon-sm"></i> Modifier</a>
+                            <form method="post" action="{% url 'projects:project_archive' pk=project.pk %}">
+                                {% csrf_token %}
+                                <button type="submit"><i data-lucide="archive" class="icon-sm"></i> {% if project.is_archived %}Désarchiver{% else %}Archiver{% endif %}</button>
+                            </form>
+                            <form method="post" action="{% url 'projects:project_delete' pk=project.pk %}" onsubmit="return confirm('Supprimer définitivement « {{ project.name }} » ? Cette action est irréversible.');">
+                                {% csrf_token %}
+                                <button type="submit" class="danger"><i data-lucide="trash-2" class="icon-sm"></i> Supprimer</button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
             </tr>
             {% empty %}
-            <tr><td colspan="5"><div class="empty-state"><i data-lucide="folder-kanban"></i><p>Aucun projet pour le moment. Ajoutez-en un depuis l'admin pour commencer.</p></div></td></tr>
+            <tr><td colspan="6">
+                <div class="empty-state">
+                    <i data-lucide="folder-kanban"></i>
+                    <p>{% if show_archived %}Aucun projet archivé.{% else %}Aucun projet ne correspond à votre recherche.{% endif %}</p>
+                </div>
+            </td></tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/row-actions.js' %}"></script>
 {% endblock %}

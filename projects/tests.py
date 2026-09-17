@@ -77,3 +77,53 @@ def test_project_list_only_shows_own_projects(logged_in_client, other_user_proje
     response = client.get(reverse('projects:project_list'))
     assert own_project.name.encode() in response.content
     assert other_user_project.name.encode() not in response.content
+
+
+@pytest.mark.django_db
+def test_project_create_view(logged_in_client):
+    """Le formulaire de creation de projet doit fonctionner de bout en bout."""
+    client, _own_project = logged_in_client
+    response = client.post(reverse('projects:project_create'), {
+        'name': 'Nouveau projet test',
+        'description': 'Une description',
+        'status': 'planned',
+        'icon': 'rocket',
+    })
+    assert response.status_code == 302
+    assert Project.objects.filter(name='Nouveau projet test').exists()
+
+
+@pytest.mark.django_db
+def test_project_edit_view(logged_in_client):
+    client, project = logged_in_client
+    response = client.post(reverse('projects:project_edit', kwargs={'pk': project.pk}), {
+        'name': 'Nom modifie',
+        'description': project.description,
+        'status': project.status,
+        'icon': project.icon,
+    })
+    assert response.status_code == 302
+    project.refresh_from_db()
+    assert project.name == 'Nom modifie'
+
+
+@pytest.mark.django_db
+def test_project_archive_view(logged_in_client):
+    client, project = logged_in_client
+    assert project.is_archived is False
+    response = client.post(reverse('projects:project_archive', kwargs={'pk': project.pk}))
+    assert response.status_code == 302
+    project.refresh_from_db()
+    assert project.is_archived is True
+
+
+@pytest.mark.django_db
+def test_cannot_edit_another_users_project(logged_in_client, other_user_project):
+    """Securite : impossible de modifier le projet d'un autre espace de travail."""
+    client, _own_project = logged_in_client
+    response = client.post(reverse('projects:project_edit', kwargs={'pk': other_user_project.pk}), {
+        'name': 'Piratage', 'status': 'planned', 'icon': 'rocket',
+    })
+    assert response.status_code == 404
+    other_user_project.refresh_from_db()
+    assert other_user_project.name != 'Piratage'

@@ -1,11 +1,15 @@
 from datetime import date, timedelta
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.views.decorators.http import require_POST
 from django.db.models import Count, Q
 from django.db.models.functions import TruncMonth
 from django.http import Http404
 
 from .models import Project, Sprint, Milestone, Goal
+from .forms import ProjectForm
 from tasks.models import Task
 from workspaces.models import TeamMember
 from workspaces.utils import get_user_workspace
@@ -32,7 +36,23 @@ def get_user_project_or_404(user, pk):
 @login_required
 def project_list(request):
     workspace = get_user_workspace(request.user)
-    projects = Project.objects.filter(workspace=workspace).select_related('workspace') if workspace else Project.objects.none()
+    projects = Project.objects.filter(workspace=workspace).select_related('workspace', 'lead') if workspace else Project.objects.none()
+
+    show_archived = request.GET.get('archived') == '1'
+    projects = projects.filter(is_archived=show_archived)
+
+    query = request.GET.get('q', '').strip()
+    if query:
+        projects = projects.filter(Q(name__icontains=query) | Q(description__icontains=query))
+
+    status_filter = request.GET.get('status', '')
+    if status_filter:
+        projects = projects.filter(status=status_filter)
+
+    sort = request.GET.get('sort', '-updated_at')
+    allowed_sorts = {'name', '-name', 'updated_at', '-updated_at', 'start_date', '-start_date'}
+    if sort in allowed_sorts:
+        projects = projects.order_by(sort)
 
     for project in projects:
         tasks = Task.objects.filter(project=project)
@@ -42,7 +62,72 @@ def project_list(request):
         project.member_count = TeamMember.objects.filter(workspace=project.workspace).count()
         project.status_label, project.status_css = STATUS_LABELS.get(project.status, ('En cours', 'badge-green'))
 
-    return render(request, 'projects/project_list.html', {'projects': projects})
+    context = {
+        'projects': projects,
+        'query': query,
+        'status_filter': status_filter,
+        'sort': sort,
+        'show_archived': show_archived,
+        'status_choices': Project.Status.choices,
+    }
+    return render(request, 'projects/project_list.html', context)
+
+
+@login_required
+def project_create(request):
+    workspace = get_user_workspace(request.user)
+    members_qs = User.objects.filter(team_memberships__workspace=workspace).distinct() if workspace else User.objects.none()
+
+    if request.method == 'POST':
+        form = ProjectForm(request.POST, members_queryset=members_qs)
+        if form.is_valid():
+            project = form.save(commit=False)
+            project.workspace = workspace
+            project.save()
+            messages.success(request, f"Le projet « {project.name} » a été créé.")
+            return redirect('projects:project_dashboard', pk=project.pk)
+    else:
+        form = ProjectForm(members_queryset=members_qs)
+
+    return render(request, 'projects/project_form.html', {'form': form, 'is_edit': False})
+
+
+@login_required
+def project_edit(request, pk):
+    project = get_user_project_or_404(request.user, pk)
+    members_qs = User.objects.filter(team_memberships__workspace=project.workspace).distinct()
+
+    if request.method == 'POST':
+        form = ProjectForm(request.POST, instance=project, members_queryset=members_qs)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"Le projet « {project.name} » a été mis à jour.")
+            return redirect('projects:project_dashboard', pk=project.pk)
+    else:
+        form = ProjectForm(instance=project, members_queryset=members_qs)
+
+    return render(request, 'projects/project_form.html', {'form': form, 'is_edit': True, 'project': project})
+
+
+@require_POST
+@login_required
+def project_archive(request, pk):
+    project = get_user_project_or_404(request.user, pk)
+    project.is_archived = not project.is_archived
+    project.save(update_fields=['is_archived'])
+    verb = 'archivé' if project.is_archived else 'désarchivé'
+    messages.success(request, f"Le projet « {project.name} » a été {verb}.")
+    return redirect('projects:project_list')
+
+
+@require_POST
+@login_required
+def project_delete(request, pk):
+    project = get_user_project_or_404(request.user, pk)
+    name = project.name
+    project.delete()
+    messages.success(request, f"Le projet « {name} » a été supprimé définitivement.")
+    return redirect('projects:project_list')
 
 
 @login_required
@@ -153,3 +238,76 @@ def roadmap_view(request):
         'timeline_labels': timeline_labels,
     }
     return render(request, 'projects/roadmap.html', context)
+
+
+@login_required
+def summary_view(request):
+    """Ecran 'Resume' : vue d'ensemble personnelle affichee apres connexion."""
+    workspace = get_user_workspace(request.user)
+    projects = Project.objects.filter(workspace=workspace) if workspace else Project.objects.none()
+    tasks = Task.objects.filter(project__workspace=workspace) if workspace else Task.objects.none()
+    members = TeamMember.objects.filter(workspace=workspace) if workspace else TeamMember.objects.none()
+
+    today = date.today()
+    week_ago = today - timedelta(days=7)
+
+    total_tasks = tasks.count()
+    done_tasks = tasks.filter(status=Task.Status.DONE).count()
+    workspace_progress = round((done_tasks / total_tasks) * 100) if total_tasks else 0
+
+    active_projects = projects.exclude(status=Project.Status.DONE)
+    todo_tasks = tasks.exclude(status=Task.Status.DONE)
+    overdue_tasks = tasks.filter(due_date__lt=today).exclude(status=Task.Status.DONE)
+
+    # --- Activite recente (deduite des donnees existantes, pas de journal dedie) ---
+    activity = []
+    for t in tasks.filter(status=Task.Status.DONE).select_related('assignee').order_by('-updated_at')[:4]:
+        who = t.assignee.get_full_name() or t.assignee.username if t.assignee else 'quelqu\'un'
+        activity.append({
+            'title': f'Tâche « {t.title} »',
+            'detail': f'Terminée par {who}',
+            'when': t.updated_at,
+            'filled': True,
+        })
+    for m in members.select_related('user').order_by('-joined_at')[:3]:
+        activity.append({
+            'title': 'Nouveau membre ajouté',
+            'detail': f'{m.user.get_full_name() or m.user.username} a rejoint l\'équipe',
+            'when': m.joined_at,
+            'filled': False,
+        })
+    for p in projects.order_by('-updated_at')[:3]:
+        activity.append({
+            'title': f'Projet « {p.name} »',
+            'detail': 'Mis à jour récemment',
+            'when': p.updated_at,
+            'filled': True,
+        })
+    activity.sort(key=lambda a: a['when'], reverse=True)
+    activity = activity[:5]
+
+    # --- Mes prochaines taches ---
+    my_tasks = (
+        tasks.filter(assignee=request.user)
+        .exclude(status=Task.Status.DONE)
+        .order_by('due_date')[:5]
+    )
+
+    context = {
+        'workspace_progress': workspace_progress,
+        'done_tasks': done_tasks,
+        'total_tasks': total_tasks,
+        'active_projects_count': active_projects.count(),
+        'active_projects_new': projects.filter(created_at__date__gte=week_ago).count(),
+        'todo_tasks_count': todo_tasks.count(),
+        'todo_tasks_new': tasks.filter(created_at__date__gte=week_ago).exclude(status=Task.Status.DONE).count(),
+        'overdue_count': overdue_tasks.count(),
+        'overdue_new': overdue_tasks.filter(due_date__gte=week_ago).count(),
+        'members_count': members.count(),
+        'members_new': members.filter(joined_at__date__gte=week_ago).count(),
+        'activity': activity,
+        'my_tasks': my_tasks,
+        'today': today,
+        'tomorrow': today + timedelta(days=1),
+    }
+    return render(request, 'projects/summary.html', context)

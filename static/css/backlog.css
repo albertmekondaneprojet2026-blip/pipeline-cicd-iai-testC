@@ -44,7 +44,8 @@
 .backlog-table tr:last-child td { border-bottom: none; }
 .col-check { width: 36px; }
 
-.backlog-task-title { font-weight: 600; font-size: 13.5px; }
+.backlog-task-title { font-weight: 600; font-size: 13.5px; color: var(--color-text); text-decoration: none; display: inline-block; }
+.backlog-task-title:hover { color: var(--color-primary); text-decoration: underline; }
 
 .priority-flag { display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px; font-weight: 600; }
 .priority-flag [data-lucide] { width: 13px; height: 13px; }

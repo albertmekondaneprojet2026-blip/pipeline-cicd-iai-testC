@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from workspaces.models import Workspace
 
 
@@ -14,6 +15,13 @@ class Project(models.Model):
     description = models.TextField(blank=True)
     status = models.CharField(max_length=15, choices=Status.choices, default=Status.IN_PROGRESS)
     icon = models.CharField(max_length=30, default='rocket')
+    lead = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='led_projects', verbose_name='Responsable',
+    )
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
+    is_archived = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

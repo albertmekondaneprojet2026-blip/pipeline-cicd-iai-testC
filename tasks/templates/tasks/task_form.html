@@ -1,0 +1,94 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block title %}{% if is_edit %}Modifier la tâche{% else %}Nouvelle tâche{% endif %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/form-page.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <a href="{% if origin == 'kanban' %}{% url 'tasks:kanban' project_pk=project.pk %}{% elif origin == 'list' %}{% url 'tasks:task_list' %}{% else %}{% url 'tasks:backlog' project_pk=project.pk %}{% endif %}" class="form-back-link">
+        <i data-lucide="arrow-left" class="icon-sm"></i> Retour
+    </a>
+    <h1>{% if is_edit %}Modifier la tâche{% else %}Nouvelle tâche{% endif %}</h1>
+    <p class="text-muted">Projet : {{ project.name }}</p>
+</div>
+
+<form method="post" class="card form-card">
+    {% csrf_token %}
+    <input type="hidden" name="from" value="{{ origin }}">
+
+    <div class="form-group">
+        <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+        {{ form.title }}
+        {% if form.title.errors %}<span class="form-error">{{ form.title.errors.0 }}</span>{% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+        {{ form.description }}
+    </div>
+
+    <div class="form-grid-2">
+        <div class="form-group">
+            <label for="{{ form.assignee.id_for_label }}">{{ form.assignee.label }}</label>
+            {{ form.assignee }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.sprint.id_for_label }}">{{ form.sprint.label }}</label>
+            {{ form.sprint }}
+        </div>
+    </div>
+
+    <div class="form-grid-2">
+        <div class="form-group">
+            <label for="{{ form.priority.id_for_label }}">{{ form.priority.label }}</label>
+            {{ form.priority }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.status.id_for_label }}">{{ form.status.label }}</label>
+            {{ form.status }}
+        </div>
+    </div>
+
+    <div class="form-grid-2">
+        <div class="form-group">
+            <label for="{{ form.due_date.id_for_label }}">{{ form.due_date.label }}</label>
+            {{ form.due_date }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.estimated_hours.id_for_label }}">{{ form.estimated_hours.label }}</label>
+            {{ form.estimated_hours }}
+        </div>
+    </div>
+
+    <div class="form-grid-2">
+        <div class="form-group">
+            <label for="{{ form.label.id_for_label }}">{{ form.label.label }}</label>
+            {{ form.label }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.label_color.id_for_label }}">{{ form.label_color.label }}</label>
+            {{ form.label_color }}
+        </div>
+    </div>
+
+    <label class="form-checkbox-row">
+        {{ form.is_blocked }} {{ form.is_blocked.label }}
+    </label>
+
+    <div class="form-actions">
+        <a href="{% if origin == 'kanban' %}{% url 'tasks:kanban' project_pk=project.pk %}{% elif origin == 'list' %}{% url 'tasks:task_list' %}{% else %}{% url 'tasks:backlog' project_pk=project.pk %}{% endif %}" class="btn btn-secondary">Annuler</a>
+        {% if is_edit %}
+        <button type="submit" formaction="{% url 'tasks:task_delete' project_pk=project.pk pk=task.pk %}" class="btn btn-danger" onclick="return confirm('Supprimer définitivement cette tâche ?');">
+            <i data-lucide="trash-2"></i> Supprimer
+        </button>
+        {% endif %}
+        <button type="submit" class="btn btn-primary">
+            <i data-lucide="save"></i> {% if is_edit %}Enregistrer{% else %}Créer la tâche{% endif %}
+        </button>
+    </div>
+</form>
+{% endblock %}

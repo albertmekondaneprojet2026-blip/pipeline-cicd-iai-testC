@@ -24,7 +24,8 @@
 .task-list-table td { padding: 14px 20px; border-bottom: 1px solid var(--color-border); font-size: 13.5px; vertical-align: middle; }
 .task-list-table tr:last-child td { border-bottom: none; }
 .col-check { width: 36px; }
-.task-title-cell { font-weight: 600; }
+.task-title-cell { font-weight: 600; color: var(--color-text); text-decoration: none; }
+.task-title-cell:hover { color: var(--color-primary); text-decoration: underline; }
 
 .project-chip { display: inline-flex; align-items: center; gap: 6px; color: var(--color-text-muted); font-size: 13px; }
 .project-chip [data-lucide] { color: var(--color-primary); }

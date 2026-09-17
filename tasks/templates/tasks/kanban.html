@@ -13,7 +13,7 @@
         <h1>Tableau Kanban</h1>
         <p class="text-muted">Visualisez et gérez vos tâches par étapes pour {{ project.name }}.</p>
     </div>
-    <button type="button" class="btn btn-primary"><i data-lucide="plus"></i> Nouvelle tâche</button>
+    <a href="{% url 'tasks:task_create' project_pk=project.pk %}?from=kanban" class="btn btn-primary"><i data-lucide="plus"></i> Nouvelle tâche</a>
 </div>
 
 <div class="kanban-toolbar">
@@ -29,7 +29,7 @@
         <div class="kanban-cards" data-status="todo">
             {% for task in todo_tasks %}
             <div class="kanban-card" data-task-id="{{ task.pk }}">
-                <p class="kanban-card-title">{{ task.title }}</p>
+                <a href="{% url 'tasks:task_edit' project_pk=project.pk pk=task.pk %}?from=kanban" class="kanban-card-title">{{ task.title }}</a>
                 {% if task.label %}<span class="tag tag-{{ task.label_color }}">{{ task.label }}</span>{% endif %}
                 <div class="kanban-card-footer">
                     <span class="kanban-card-date">{% if task.due_date %}<i data-lucide="calendar"></i> {{ task.due_date|date:"d M Y" }}{% endif %}</span>
@@ -44,7 +44,7 @@
         <div class="kanban-cards" data-status="in_progress">
             {% for task in in_progress_tasks %}
             <div class="kanban-card" data-task-id="{{ task.pk }}">
-                <p class="kanban-card-title">{{ task.title }}</p>
+                <a href="{% url 'tasks:task_edit' project_pk=project.pk pk=task.pk %}?from=kanban" class="kanban-card-title">{{ task.title }}</a>
                 {% if task.label %}<span class="tag tag-{{ task.label_color }}">{{ task.label }}</span>{% endif %}
                 <div class="kanban-card-footer">
                     <span class="kanban-card-date">{% if task.due_date %}<i data-lucide="calendar"></i> {{ task.due_date|date:"d M Y" }}{% endif %}</span>
@@ -59,7 +59,7 @@
         <div class="kanban-cards" data-status="in_review">
             {% for task in in_review_tasks %}
             <div class="kanban-card" data-task-id="{{ task.pk }}">
-                <p class="kanban-card-title">{{ task.title }}</p>
+                <a href="{% url 'tasks:task_edit' project_pk=project.pk pk=task.pk %}?from=kanban" class="kanban-card-title">{{ task.title }}</a>
                 {% if task.label %}<span class="tag tag-{{ task.label_color }}">{{ task.label }}</span>{% endif %}
                 <div class="kanban-card-footer">
                     <span class="kanban-card-date">{% if task.due_date %}<i data-lucide="calendar"></i> {{ task.due_date|date:"d M Y" }}{% endif %}</span>
@@ -74,7 +74,7 @@
         <div class="kanban-cards" data-status="done">
             {% for task in done_tasks %}
             <div class="kanban-card" data-task-id="{{ task.pk }}">
-                <p class="kanban-card-title">{{ task.title }}</p>
+                <a href="{% url 'tasks:task_edit' project_pk=project.pk pk=task.pk %}?from=kanban" class="kanban-card-title">{{ task.title }}</a>
                 {% if task.label %}<span class="tag tag-{{ task.label_color }}">{{ task.label }}</span>{% endif %}
                 <div class="kanban-card-footer">
                     <span class="kanban-card-date">{% if task.due_date %}<i data-lucide="calendar"></i> {{ task.due_date|date:"d M Y" }}{% endif %}</span>

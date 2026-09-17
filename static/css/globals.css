@@ -58,6 +58,20 @@ img { max-width: 100%; display: block; }
 .btn-outline { background: transparent; color: var(--color-primary); border-color: var(--color-primary); }
 .btn-outline:hover { background: var(--color-primary-light); }
 
+.btn-danger { background: var(--color-danger-bg); color: var(--color-danger); border-color: transparent; }
+.btn-danger:hover { background: var(--color-danger); color: #fff; }
+
+.icon-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 34px; height: 34px; border-radius: var(--radius-sm);
+    border: 1px solid transparent; background: none; color: var(--color-text-muted);
+    cursor: pointer;
+}
+.icon-btn:hover { background: var(--color-bg); color: var(--color-text); }
+.icon-btn [data-lucide] { width: 17px; height: 17px; }
+
+.btn-disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+
 .btn-ghost { background: transparent; color: var(--color-text-muted); }
 .btn-ghost:hover { background: var(--color-bg); color: var(--color-text); }
 

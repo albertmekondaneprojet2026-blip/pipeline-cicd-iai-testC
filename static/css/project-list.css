@@ -14,10 +14,47 @@
 .mini-progress-bar { width: 90px; height: 6px; background: var(--color-border); border-radius: 4px; overflow: hidden; }
 .mini-progress-fill { height: 100%; background: var(--color-primary); border-radius: 4px; }
 
+.col-actions { width: 44px; text-align: right; }
+
+.project-list-toolbar {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+    margin-bottom: 18px;
+}
+.project-list-toolbar .search-input-wrap { position: relative; flex: 1; min-width: 200px; }
+.project-list-toolbar .search-input-wrap [data-lucide] { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--color-text-light); }
+.project-list-toolbar input[type="search"] { padding-left: 36px; }
+.project-list-toolbar select { width: auto; min-width: 160px; }
+.archive-toggle-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 600; color: var(--color-text-muted); text-decoration: none;
+    margin-left: auto; white-space: nowrap;
+}
+.archive-toggle-link:hover { color: var(--color-primary); }
+
+.row-actions-menu { position: relative; display: inline-block; }
+.row-actions-dropdown {
+    display: none;
+    position: absolute; right: 0; top: calc(100% + 4px);
+    background: var(--color-surface); border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm); box-shadow: var(--shadow-md);
+    min-width: 170px; z-index: 20; overflow: hidden;
+}
+.row-actions-dropdown.open { display: block; }
+.row-actions-dropdown a, .row-actions-dropdown button {
+    display: flex; align-items: center; gap: 8px; width: 100%;
+    padding: 10px 14px; font-size: 13px; color: var(--color-text);
+    text-decoration: none; background: none; border: none; cursor: pointer; text-align: left;
+}
+.row-actions-dropdown a:hover, .row-actions-dropdown button:hover { background: var(--color-bg); }
+.row-actions-dropdown button.danger { color: var(--color-danger); }
+
 @media (max-width: 700px) {
+    .project-list-toolbar select { flex: 1; min-width: 130px; }
+    .archive-toggle-link { width: 100%; margin-left: 0; }
     .projects-table thead { display: none; }
     .projects-table, .projects-table tbody, .projects-table tr, .projects-table td { display: block; width: 100%; }
-    .projects-table tr { padding: 14px 16px; border-bottom: 1px solid var(--color-border); }
+    .projects-table tr { padding: 14px 16px; border-bottom: 1px solid var(--color-border); position: relative; }
     .projects-table td { padding: 3px 0; border: none; }
     .project-progress-cell { margin-top: 6px; }
+    .col-actions { position: absolute; top: 10px; right: 12px; width: auto; }
 }
