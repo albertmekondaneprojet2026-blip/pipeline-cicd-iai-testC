@@ -7,9 +7,10 @@ from django.views.decorators.http import require_POST
 from django.db.models import Count, Q
 from django.db.models.functions import TruncMonth
 from django.http import Http404
+from django.utils import timezone
 
 from .models import Project, Sprint, Milestone, Goal
-from .forms import ProjectForm
+from .forms import ProjectForm, SprintForm
 from tasks.models import Task
 from workspaces.models import TeamMember
 from workspaces.utils import get_user_workspace
@@ -147,7 +148,7 @@ def project_dashboard(request, pk):
         'project': project,
         'stats': stats,
         'progress_percent': progress_percent,
-        'active_sprint': Sprint.objects.filter(project=project, is_active=True).first(),
+        'active_sprint': Sprint.objects.filter(project=project, status=Sprint.Status.ACTIVE).first(),
         'recent_tasks': tasks.order_by('-updated_at')[:5],
     }
     return render(request, 'projects/project_dashboard.html', context)
@@ -311,3 +312,166 @@ def summary_view(request):
         'tomorrow': today + timedelta(days=1),
     }
     return render(request, 'projects/summary.html', context)
+
+
+@login_required
+def sprint_create(request, project_pk):
+    project = get_user_project_or_404(request.user, project_pk)
+    members_qs = User.objects.filter(team_memberships__workspace=project.workspace).distinct()
+
+    if request.method == 'POST':
+        form = SprintForm(request.POST, members_queryset=members_qs)
+        if form.is_valid():
+            sprint = form.save(commit=False)
+            sprint.project = project
+            sprint.save()
+            form.save_m2m()
+            messages.success(request, f"Le sprint « {sprint.name} » a été créé. Sélectionnez maintenant ses tâches depuis le Backlog.")
+            return redirect('tasks:backlog', project_pk=project.pk)
+    else:
+        form = SprintForm(members_queryset=members_qs)
+
+    context = {'form': form, 'project': project, 'is_edit': False}
+    return render(request, 'projects/sprint_form.html', context)
+
+
+@login_required
+def sprint_edit(request, project_pk, pk):
+    project = get_user_project_or_404(request.user, project_pk)
+    sprint = get_object_or_404(Sprint, pk=pk, project=project)
+    members_qs = User.objects.filter(team_memberships__workspace=project.workspace).distinct()
+
+    if sprint.status != Sprint.Status.UPCOMING:
+        messages.error(request, "Un sprint démarré ne peut plus être modifié — seul un sprint « À venir » peut l'être.")
+        return redirect('projects:sprint_detail', project_pk=project.pk, pk=sprint.pk)
+
+    if request.method == 'POST':
+        form = SprintForm(request.POST, instance=sprint, members_queryset=members_qs)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"Le sprint « {sprint.name} » a été mis à jour.")
+            return redirect('projects:sprint_detail', project_pk=project.pk, pk=sprint.pk)
+    else:
+        form = SprintForm(instance=sprint, members_queryset=members_qs)
+
+    context = {'form': form, 'project': project, 'is_edit': True, 'sprint': sprint}
+    return render(request, 'projects/sprint_form.html', context)
+
+
+@login_required
+def sprint_detail(request, project_pk, pk):
+    project = get_user_project_or_404(request.user, project_pk)
+    sprint = get_object_or_404(Sprint, pk=pk, project=project)
+    tasks = sprint.tasks.select_related('assignee').all()
+
+    total = tasks.count()
+    done = tasks.filter(status=Task.Status.DONE).count()
+    late = tasks.exclude(status=Task.Status.DONE).filter(due_date__lt=date.today()).count()
+    progress = round((done / total) * 100) if total else 0
+
+    other_active = Sprint.objects.filter(project=project, status=Sprint.Status.ACTIVE).exclude(pk=sprint.pk).first()
+    upcoming_sprints = Sprint.objects.filter(project=project, status=Sprint.Status.UPCOMING).exclude(pk=sprint.pk)
+    unplanned_tasks = Task.objects.filter(project=project, sprint__isnull=True).exclude(status=Task.Status.DONE)
+
+    context = {
+        'project': project,
+        'sprint': sprint,
+        'tasks': tasks,
+        'total': total,
+        'done': done,
+        'late': late,
+        'progress': progress,
+        'other_active': other_active,
+        'upcoming_sprints': upcoming_sprints,
+        'unplanned_tasks': unplanned_tasks,
+        'today': date.today(),
+    }
+    return render(request, 'projects/sprint_detail.html', context)
+
+
+@require_POST
+@login_required
+def sprint_start(request, project_pk, pk):
+    project = get_user_project_or_404(request.user, project_pk)
+    sprint = get_object_or_404(Sprint, pk=pk, project=project)
+
+    if sprint.status != Sprint.Status.UPCOMING:
+        messages.error(request, "Seul un sprint « À venir » peut être démarré.")
+        return redirect('projects:sprint_detail', project_pk=project.pk, pk=sprint.pk)
+
+    already_active = Sprint.objects.filter(project=project, status=Sprint.Status.ACTIVE).exclude(pk=sprint.pk).first()
+    if already_active:
+        messages.error(request, f"Impossible de démarrer ce sprint : « {already_active.name} » est déjà actif sur ce projet. Clôturez-le d'abord.")
+        return redirect('projects:sprint_detail', project_pk=project.pk, pk=sprint.pk)
+
+    sprint.status = Sprint.Status.ACTIVE
+    sprint.save(update_fields=['status'])
+    messages.success(request, f"Le sprint « {sprint.name} » est maintenant en cours.")
+    return redirect('projects:sprint_detail', project_pk=project.pk, pk=sprint.pk)
+
+
+@require_POST
+@login_required
+def sprint_cancel(request, project_pk, pk):
+    project = get_user_project_or_404(request.user, project_pk)
+    sprint = get_object_or_404(Sprint, pk=pk, project=project)
+    sprint.status = Sprint.Status.CANCELLED
+    sprint.save(update_fields=['status'])
+    messages.success(request, f"Le sprint « {sprint.name} » a été annulé.")
+    return redirect('tasks:backlog', project_pk=project.pk)
+
+
+@login_required
+def sprint_close(request, project_pk, pk):
+    """Ecran de cloture d'un sprint : bilan + devenir des taches non terminees."""
+    project = get_user_project_or_404(request.user, project_pk)
+    sprint = get_object_or_404(Sprint, pk=pk, project=project)
+
+    if sprint.status != Sprint.Status.ACTIVE:
+        messages.error(request, "Seul un sprint « En cours » peut être clôturé.")
+        return redirect('projects:sprint_detail', project_pk=project.pk, pk=sprint.pk)
+
+    tasks = sprint.tasks.select_related('assignee').all()
+    incomplete_tasks = tasks.exclude(status=Task.Status.DONE)
+    done_tasks = tasks.filter(status=Task.Status.DONE)
+    late_tasks = incomplete_tasks.filter(due_date__lt=date.today())
+    next_sprints = Sprint.objects.filter(project=project, status=Sprint.Status.UPCOMING).exclude(pk=sprint.pk)
+
+    if request.method == 'POST':
+        for task in incomplete_tasks:
+            action = request.POST.get(f'task_{task.pk}')
+            if action == 'next_sprint':
+                target_id = request.POST.get(f'target_sprint_{task.pk}')
+                if target_id:
+                    task.sprint_id = target_id
+                    task.save(update_fields=['sprint'])
+            elif action == 'backlog':
+                task.sprint = None
+                task.save(update_fields=['sprint'])
+            elif action == 'cancel':
+                task.status = Task.Status.CANCELLED
+                task.save(update_fields=['status'])
+            # action == 'reassign' : laisse la tache dans le sprint cloture, geree manuellement ensuite
+
+        sprint.status = Sprint.Status.DONE
+        sprint.closed_at = timezone.now()
+        sprint.save(update_fields=['status', 'closed_at'])
+        messages.success(request, f"Le sprint « {sprint.name} » a été clôturé.")
+        return redirect('tasks:backlog', project_pk=project.pk)
+
+    total = tasks.count()
+    progress = round((done_tasks.count() / total) * 100) if total else 0
+    objective_reached = progress == 100
+
+    context = {
+        'project': project,
+        'sprint': sprint,
+        'done_tasks': done_tasks,
+        'incomplete_tasks': incomplete_tasks,
+        'late_tasks': late_tasks,
+        'progress': progress,
+        'objective_reached': objective_reached,
+        'next_sprints': next_sprints,
+        'duration_days': (sprint.end_date - sprint.start_date).days,
+    }
+    return render(request, 'projects/sprint_close.html', context)

@@ -1,0 +1,46 @@
+.sprint-title-row { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
+.sprint-title-row h1 { margin: 0; }
+
+.sprint-status-badge.status-upcoming { background: var(--color-info-bg); color: var(--color-primary); }
+.sprint-status-badge.status-active { background: var(--color-success-bg); color: #15803d; }
+.sprint-status-badge.status-done { background: #f1f5f9; color: var(--color-text-muted); }
+.sprint-status-badge.status-cancelled { background: var(--color-danger-bg); color: var(--color-danger); }
+
+.sprint-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start; }
+.sprint-actions form { display: inline; }
+
+.sprint-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 18px;
+}
+.sprint-stat-card { padding: 18px 20px; }
+.sprint-stat-value { font-size: 24px; font-weight: 700; margin: 4px 0 8px; }
+.sprint-stat-value.danger { color: var(--color-danger); }
+.sprint-stat-value.success { color: #15803d; }
+.sprint-stat-value.warning { color: #b45309; }
+
+.sprint-section { padding: 0; margin-bottom: 18px; }
+.sprint-section .summary-section-header {
+    display: flex; align-items: center; gap: 8px;
+    padding: 18px 20px; border-bottom: 1px solid var(--color-border); margin: 0;
+}
+.sprint-section .summary-section-header h3 { display: flex; align-items: center; gap: 8px; font-size: 15px; margin: 0; }
+.sprint-section .backlog-table { margin: 0; }
+
+.sprint-simple-list { list-style: disc; padding: 12px 20px 18px 36px; margin: 0; font-size: 13.5px; color: var(--color-text-muted); }
+.sprint-simple-list li { margin-bottom: 6px; }
+
+.sprint-close-hint { padding: 0 20px 12px; }
+.close-task-decision { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.sprint-close-select, .sprint-close-target { width: auto; font-size: 13px; padding: 7px 10px; }
+
+.inline-form { display: inline; }
+.sprint-section .col-actions { width: 160px; }
+
+@media (max-width: 900px) {
+    .sprint-stats { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 700px) {
+    .sprint-actions { width: 100%; }
+    .sprint-actions .btn, .sprint-actions form { width: 100%; }
+    .sprint-actions .btn { justify-content: center; width: 100%; }
+}

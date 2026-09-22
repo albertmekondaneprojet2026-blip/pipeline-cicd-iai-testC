@@ -33,11 +33,20 @@ class Project(models.Model):
 
 
 class Sprint(models.Model):
+    class Status(models.TextChoices):
+        UPCOMING = 'upcoming', 'À venir'
+        ACTIVE = 'active', 'En cours'
+        DONE = 'done', 'Terminé'
+        CANCELLED = 'cancelled', 'Annulé'
+
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='sprints')
     name = models.CharField(max_length=100)
+    objective = models.TextField(blank=True, verbose_name='Objectif')
     start_date = models.DateField()
     end_date = models.DateField()
-    is_active = models.BooleanField(default=False)
+    status = models.CharField(max_length=12, choices=Status.choices, default=Status.UPCOMING)
+    members = models.ManyToManyField(User, blank=True, related_name='sprints')
+    closed_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         ordering = ['start_date']

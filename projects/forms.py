@@ -1,5 +1,5 @@
 from django import forms
-from .models import Project
+from .models import Project, Sprint
 
 ICON_CHOICES = [
     ('rocket', 'Fusée'),
@@ -40,6 +40,39 @@ class ProjectForm(forms.ModelForm):
             self.fields['lead'].queryset = members_queryset
         self.fields['lead'].empty_label = 'Non assigné'
         self.fields['icon'].initial = self.instance.icon if self.instance and self.instance.pk else 'rocket'
+
+    def clean(self):
+        cleaned = super().clean()
+        start = cleaned.get('start_date')
+        end = cleaned.get('end_date')
+        if start and end and end < start:
+            self.add_error('end_date', "La date de fin doit être postérieure à la date de début.")
+        return cleaned
+
+
+class SprintForm(forms.ModelForm):
+    class Meta:
+        model = Sprint
+        fields = ['name', 'objective', 'start_date', 'end_date', 'members']
+        labels = {
+            'name': 'Nom du sprint',
+            'objective': 'Objectif',
+            'start_date': 'Date de début',
+            'end_date': 'Date de fin',
+            'members': 'Membres concernés',
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={'placeholder': 'Ex : Sprint 1 — Structure principale'}),
+            'objective': forms.Textarea(attrs={'rows': 2, 'placeholder': 'Ex : Mettre en place la nouvelle structure du site'}),
+            'start_date': forms.DateInput(attrs={'type': 'date'}),
+            'end_date': forms.DateInput(attrs={'type': 'date'}),
+            'members': forms.CheckboxSelectMultiple,
+        }
+
+    def __init__(self, *args, members_queryset=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        if members_queryset is not None:
+            self.fields['members'].queryset = members_queryset
 
     def clean(self):
         cleaned = super().clean()

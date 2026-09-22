@@ -1,0 +1,121 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block title %}{{ sprint.name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/backlog.css' %}">
+<link rel="stylesheet" href="{% static 'css/sprint.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <a href="{% url 'tasks:backlog' project_pk=project.pk %}" class="form-back-link">
+        <i data-lucide="arrow-left" class="icon-sm"></i> Retour au backlog
+    </a>
+    <div class="page-header-row">
+        <div>
+            <div class="sprint-title-row">
+                <h1>{{ sprint.name }}</h1>
+                <span class="badge sprint-status-badge status-{{ sprint.status }}">{{ sprint.get_status_display }}</span>
+            </div>
+            {% if sprint.objective %}<p class="text-muted">{{ sprint.objective }}</p>{% endif %}
+            <p class="text-muted-sm"><i data-lucide="calendar" class="icon-sm"></i> {{ sprint.start_date|date:"d M Y" }} – {{ sprint.end_date|date:"d M Y" }}</p>
+        </div>
+        <div class="sprint-actions">
+            {% if sprint.status == 'upcoming' %}
+            <a href="{% url 'projects:sprint_edit' project_pk=project.pk pk=sprint.pk %}" class="btn btn-secondary"><i data-lucide="pencil"></i> Modifier</a>
+            <form method="post" action="{% url 'projects:sprint_start' project_pk=project.pk pk=sprint.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary"><i data-lucide="play"></i> Démarrer le sprint</button>
+            </form>
+            <form method="post" action="{% url 'projects:sprint_cancel' project_pk=project.pk pk=sprint.pk %}" onsubmit="return confirm('Annuler ce sprint ?');">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger"><i data-lucide="x"></i> Annuler</button>
+            </form>
+            {% elif sprint.status == 'active' %}
+            <a href="{% url 'projects:sprint_close' project_pk=project.pk pk=sprint.pk %}" class="btn btn-primary"><i data-lucide="flag"></i> Clôturer le sprint</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% if other_active %}
+<div class="alert alert-error">Un autre sprint est déjà en cours sur ce projet : « {{ other_active.name }} ». Un seul sprint actif est autorisé par projet.</div>
+{% endif %}
+
+<div class="sprint-stats">
+    <div class="card sprint-stat-card">
+        <p class="text-muted-sm">Progression</p>
+        <p class="sprint-stat-value">{{ progress }}%</p>
+        <div class="progress-bar"><div class="progress-bar-fill" style="width: {{ progress }}%"></div></div>
+    </div>
+    <div class="card sprint-stat-card">
+        <p class="text-muted-sm">Tâches terminées</p>
+        <p class="sprint-stat-value">{{ done }} / {{ total }}</p>
+    </div>
+    <div class="card sprint-stat-card">
+        <p class="text-muted-sm">En retard</p>
+        <p class="sprint-stat-value {% if late %}danger{% endif %}">{{ late }}</p>
+    </div>
+    <div class="card sprint-stat-card">
+        <p class="text-muted-sm">Membres</p>
+        <p class="sprint-stat-value">{{ sprint.members.count }}</p>
+    </div>
+</div>
+
+<div class="card sprint-section">
+    <div class="summary-section-header">
+        <h3><i data-lucide="list-checks" class="icon-sm"></i> Tâches du sprint</h3>
+    </div>
+    <table class="backlog-table">
+        <thead>
+            <tr>
+                <th>Tâche</th><th>Statut</th><th>Priorité</th><th>Assigné à</th><th>Échéance</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td><a href="{% url 'tasks:task_edit' project_pk=project.pk pk=task.pk %}?from=backlog" class="backlog-task-title">{{ task.title }}</a></td>
+                <td><span class="badge badge-{% if task.status == 'done' %}green{% elif task.status == 'in_progress' %}blue{% elif task.status == 'in_review' %}purple{% elif task.status == 'cancelled' %}gray{% else %}gray{% endif %}">{{ task.get_status_display }}</span></td>
+                <td><span class="priority-flag priority-{{ task.priority }}"><i data-lucide="flag" class="icon-sm"></i> {{ task.get_priority_display }}</span></td>
+                <td>{% if task.assignee %}<div class="assignee-cell"><span class="avatar avatar-sm">{{ task.assignee_initials }}</span> {{ task.assignee.get_full_name|default:task.assignee.username }}</div>{% else %}<span class="text-muted-sm">Non assignée</span>{% endif %}</td>
+                <td class="text-muted-sm">{% if task.due_date %}{{ task.due_date|date:"d M Y" }}{% else %}—{% endif %}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" class="text-muted-sm">Aucune tâche dans ce sprint pour le moment.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if sprint.status == 'upcoming' or sprint.status == 'active' %}
+<div class="card sprint-section">
+    <div class="summary-section-header">
+        <h3><i data-lucide="plus-circle" class="icon-sm"></i> Ajouter des tâches non planifiées</h3>
+    </div>
+    {% if unplanned_tasks %}
+    <table class="backlog-table">
+        <tbody>
+            {% for task in unplanned_tasks %}
+            <tr>
+                <td>{{ task.title }}</td>
+                <td class="col-actions">
+                    <form method="post" action="{% url 'tasks:task_move_to_sprint' project_pk=project.pk pk=task.pk %}" class="inline-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="sprint_id" value="{{ sprint.pk }}">
+                        <input type="hidden" name="next" value="{% url 'projects:sprint_detail' project_pk=project.pk pk=sprint.pk %}">
+                        <button type="submit" class="btn btn-sm btn-secondary">Ajouter au sprint</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="text-muted-sm">Aucune tâche non planifiée disponible dans ce projet.</p>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

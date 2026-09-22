@@ -1,0 +1,61 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block title %}{% if is_edit %}Modifier le sprint{% else %}Nouveau sprint{% endif %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/form-page.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <a href="{% url 'tasks:backlog' project_pk=project.pk %}" class="form-back-link">
+        <i data-lucide="arrow-left" class="icon-sm"></i> Retour au backlog
+    </a>
+    <h1>{% if is_edit %}Modifier le sprint{% else %}Nouveau sprint{% endif %}</h1>
+    <p class="text-muted">Projet : {{ project.name }}</p>
+</div>
+
+<form method="post" class="card form-card">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+        {{ form.name }}
+        {% if form.name.errors %}<span class="form-error">{{ form.name.errors.0 }}</span>{% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.objective.id_for_label }}">{{ form.objective.label }}</label>
+        {{ form.objective }}
+    </div>
+
+    <div class="form-grid-2">
+        <div class="form-group">
+            <label for="{{ form.start_date.id_for_label }}">{{ form.start_date.label }}</label>
+            {{ form.start_date }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.end_date.id_for_label }}">{{ form.end_date.label }}</label>
+            {{ form.end_date }}
+            {% if form.end_date.errors %}<span class="form-error">{{ form.end_date.errors.0 }}</span>{% endif %}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>{{ form.members.label }}</label>
+        <div class="checkbox-list">
+            {% for checkbox in form.members %}
+            <label class="checkbox-list-item">{{ checkbox.tag }} {{ checkbox.choice_label }}</label>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <a href="{% url 'tasks:backlog' project_pk=project.pk %}" class="btn btn-secondary">Annuler</a>
+        <button type="submit" class="btn btn-primary">
+            <i data-lucide="save"></i> {% if is_edit %}Enregistrer{% else %}Créer le sprint{% endif %}
+        </button>
+    </div>
+</form>
+{% endblock %}

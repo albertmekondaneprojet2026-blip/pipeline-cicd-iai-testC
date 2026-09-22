@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -109,7 +110,8 @@ def backlog_view(request, project_pk):
     if assignee_filter:
         tasks = tasks.filter(assignee_id=assignee_filter)
 
-    sprints = Sprint.objects.filter(project=project)
+    status_order = {Sprint.Status.ACTIVE: 0, Sprint.Status.UPCOMING: 1, Sprint.Status.DONE: 2, Sprint.Status.CANCELLED: 3}
+    sprints = sorted(Sprint.objects.filter(project=project), key=lambda s: (status_order.get(s.status, 9), s.start_date))
     sprint_groups = []
     for sprint in sprints:
         sprint_groups.append({'sprint': sprint, 'tasks': tasks.filter(sprint=sprint)})
@@ -196,3 +198,25 @@ def task_delete(request, project_pk, pk):
     if origin == 'list':
         return redirect('tasks:task_list')
     return redirect('tasks:backlog', project_pk=project.pk)
+
+
+@require_POST
+@login_required
+def task_move_to_sprint(request, project_pk, pk):
+    """Deplace une tache vers un sprint (ou la retire si sprint_id est vide),
+    sans toucher aux autres champs de la tache."""
+    project = get_user_project_or_404(request.user, project_pk)
+    task = get_object_or_404(Task, pk=pk, project=project)
+    sprint_id = request.POST.get('sprint_id') or None
+
+    if sprint_id:
+        sprint = get_object_or_404(Sprint, pk=sprint_id, project=project)
+        task.sprint = sprint
+        messages.success(request, f"« {task.title} » a été ajoutée au sprint « {sprint.name} ».")
+    else:
+        task.sprint = None
+        messages.success(request, f"« {task.title} » a été renvoyée dans le backlog.")
+
+    task.save(update_fields=['sprint'])
+    next_url = request.POST.get('next') or reverse('tasks:backlog', kwargs={'project_pk': project.pk})
+    return redirect(next_url)

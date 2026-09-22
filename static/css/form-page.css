@@ -25,3 +25,10 @@
     .form-actions { flex-direction: column-reverse; }
     .form-actions .btn { width: 100%; justify-content: center; }
 }
+
+.checkbox-list {
+    display: flex; flex-wrap: wrap; gap: 10px 20px;
+    padding: 12px 14px; border: 1px solid var(--color-border); border-radius: var(--radius-sm);
+}
+.checkbox-list-item { display: flex; align-items: center; gap: 8px; font-size: 13.5px; cursor: pointer; }
+.checkbox-list-item input { width: auto; }

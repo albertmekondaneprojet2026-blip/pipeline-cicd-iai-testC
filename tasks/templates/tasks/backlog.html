@@ -13,9 +13,14 @@
         <h1>Backlog</h1>
         <p class="text-muted">Gérez et priorisez les tâches de {{ project.name }}.</p>
     </div>
-    <a href="{% url 'tasks:task_create' project_pk=project.pk %}?from=backlog" class="btn btn-primary">
-        <i data-lucide="plus"></i> Nouvelle tâche
-    </a>
+    <div class="backlog-header-actions">
+        <a href="{% url 'projects:sprint_create' project_pk=project.pk %}" class="btn btn-secondary">
+            <i data-lucide="calendar-plus"></i> Nouveau sprint
+        </a>
+        <a href="{% url 'tasks:task_create' project_pk=project.pk %}?from=backlog" class="btn btn-primary">
+            <i data-lucide="plus"></i> Nouvelle tâche
+        </a>
+    </div>
 </div>
 
 <form method="get" class="backlog-toolbar">
@@ -48,9 +53,13 @@
     <button type="button" class="sprint-group-header">
         <i data-lucide="chevron-down" class="sprint-chevron"></i>
         <span class="sprint-group-title">{{ group.sprint.name|default:"Sans sprint" }}</span>
+        {% if group.sprint %}<span class="badge sprint-status-badge status-{{ group.sprint.status }}">{{ group.sprint.get_status_display }}</span>{% endif %}
         <span class="badge badge-blue">{{ group.tasks|length }} tâche{{ group.tasks|length|pluralize }}</span>
         {% if group.sprint %}
         <span class="sprint-dates text-muted-sm"><i data-lucide="calendar" class="icon-sm"></i> {{ group.sprint.start_date|date:"d M Y" }} – {{ group.sprint.end_date|date:"d M Y" }}</span>
+        <a href="{% url 'projects:sprint_detail' project_pk=project.pk pk=group.sprint.pk %}" class="sprint-detail-link" onclick="event.stopPropagation();">
+            {% if group.sprint.status == 'upcoming' %}Démarrer / gérer{% elif group.sprint.status == 'active' %}Voir / clôturer{% else %}Voir le bilan{% endif %} <i data-lucide="arrow-right" class="icon-sm"></i>
+        </a>
         {% endif %}
     </button>
 

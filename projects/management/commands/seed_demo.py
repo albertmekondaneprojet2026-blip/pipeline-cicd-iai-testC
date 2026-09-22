@@ -83,14 +83,27 @@ class Command(BaseCommand):
 
             sprints = []
             phase_names = ['Conception', 'Developpement', 'Tests', 'Lancement']
+            phase_objectives = [
+                'Poser les bases visuelles et fonctionnelles du projet.',
+                'Developper les fonctionnalites principales.',
+                'Fiabiliser avant mise en production.',
+                'Deployer et livrer la version finale.',
+            ]
+            phase_statuses = [Sprint.Status.DONE, Sprint.Status.ACTIVE, Sprint.Status.UPCOMING, Sprint.Status.UPCOMING]
             cursor = today - timedelta(days=20)
             for i, phase in enumerate(phase_names):
                 start = cursor
                 end = start + timedelta(days=14)
                 sprint, _ = Sprint.objects.get_or_create(
                     project=project, name=phase,
-                    defaults={'start_date': start, 'end_date': end, 'is_active': i == 1},
+                    defaults={
+                        'start_date': start, 'end_date': end,
+                        'status': phase_statuses[i],
+                        'objective': phase_objectives[i],
+                    },
                 )
+                if members:
+                    sprint.members.add(*members[:3])
                 sprints.append(sprint)
                 cursor = end
 

@@ -29,6 +29,20 @@
 .sprint-group-title { font-weight: 700; font-size: 15px; }
 .sprint-dates { margin-left: auto; display: flex; align-items: center; gap: 6px; }
 
+.backlog-header-actions { display: flex; gap: 10px; }
+
+.sprint-detail-link {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 12.5px; font-weight: 600; color: var(--color-primary); text-decoration: none;
+    margin-left: 12px; white-space: nowrap;
+}
+.sprint-detail-link:hover { text-decoration: underline; }
+
+.sprint-status-badge.status-upcoming { background: var(--color-info-bg); color: var(--color-primary); }
+.sprint-status-badge.status-active { background: var(--color-success-bg); color: #15803d; }
+.sprint-status-badge.status-done { background: #f1f5f9; color: var(--color-text-muted); }
+.sprint-status-badge.status-cancelled { background: var(--color-danger-bg); color: var(--color-danger); }
+
 .backlog-table { width: 100%; border-collapse: collapse; }
 .backlog-table th {
     text-align: left;
@@ -55,8 +69,10 @@
 
 .assignee-cell { display: flex; align-items: center; gap: 8px; }
 
-@media (max-width: 900px) {
+@media (max-width: 700px) {
     .backlog-toolbar select { flex: 1; min-width: 130px; }
+    .backlog-header-actions { width: 100%; flex-direction: column; }
+    .backlog-header-actions .btn { width: 100%; justify-content: center; }
 }
 
 @media (max-width: 700px) {

@@ -9,6 +9,7 @@ urlpatterns = [
     path('<int:project_pk>/backlog/', views.backlog_view, name='backlog'),
     path('<int:project_pk>/nouvelle/', views.task_create, name='task_create'),
     path('<int:project_pk>/<int:pk>/modifier/', views.task_edit, name='task_edit'),
+    path('<int:project_pk>/<int:pk>/deplacer-sprint/', views.task_move_to_sprint, name='task_move_to_sprint'),
     path('<int:project_pk>/<int:pk>/supprimer/', views.task_delete, name='task_delete'),
     path('<int:project_pk>/update-status/<int:pk>/', views.update_task_status, name='update_task_status'),
 ]

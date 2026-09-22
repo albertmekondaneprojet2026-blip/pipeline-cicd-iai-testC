@@ -134,6 +134,11 @@ def main():
 
     if recommendation == 'block':
         print("PIPELINE BLOQUE : risque juge trop eleve pour continuer.")
+        from send_alert import send_alert_email
+        send_alert_email(
+        subject="Deploiement bloque par l'IA",
+        message=f"Risque : {risk}\nJustification : {justification}"
+    )
         sys.exit(1)
 
     print("Risque acceptable, le pipeline continue.")
