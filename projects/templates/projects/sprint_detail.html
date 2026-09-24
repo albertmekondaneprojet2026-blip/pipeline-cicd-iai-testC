@@ -48,7 +48,9 @@
     <div class="card sprint-stat-card">
         <p class="text-muted-sm">Progression</p>
         <p class="sprint-stat-value">{{ progress }}%</p>
-        <div class="progress-bar"><div class="progress-bar-fill" style="width: {{ progress }}%"></div></div>
+        <div class="progress-bar">
+    <div class="progress-bar-fill" data-progress="{{ progress }}"></div>
+</div>
     </div>
     <div class="card sprint-stat-card">
         <p class="text-muted-sm">Tâches terminées</p>

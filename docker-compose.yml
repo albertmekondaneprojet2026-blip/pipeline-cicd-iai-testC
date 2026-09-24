@@ -16,6 +16,7 @@ services:
       - "9090:9090"
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/alert_rules.yml:/etc/prometheus/alert_rules.yml
     depends_on:
       - web
 
@@ -31,6 +32,4 @@ services:
       - prometheus
 
 volumes:
-  
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./prometheus/alert_rules.yml:/etc/prometheus/alert_rules.yml
+  grafana-data:
