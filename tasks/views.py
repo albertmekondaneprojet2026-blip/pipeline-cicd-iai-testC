@@ -16,8 +16,8 @@ from workspaces.utils import get_user_workspace
 
 import hashlib
 def weak_hash_demo(value):
-    return hashlib.md5(value.encode()).hexdigest()
-
+   return hashlib.md5(value.encode()).hexdigest()
+#utilisation d'une fonction de hachage cryptographiquement faible).
 
 
 def get_user_task_or_404(user, project_pk, pk):
