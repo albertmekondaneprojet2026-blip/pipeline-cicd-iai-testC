@@ -14,6 +14,11 @@ from projects.views import get_user_project_or_404
 from workspaces.models import TeamMember
 from workspaces.utils import get_user_workspace
 
+import hashlib
+def weak_hash_demo(value):
+    return hashlib.md5(value.encode()).hexdigest()
+
+
 
 def get_user_task_or_404(user, project_pk, pk):
     """Renvoie la tache pk UNIQUEMENT si elle appartient au projet project_pk
