@@ -5,6 +5,7 @@ demande a Gemini d'evaluer le risque, et bloque le pipeline si necessaire.
 import os
 import sys
 import json
+import time
 
 try:
     from dotenv import load_dotenv
@@ -13,6 +14,7 @@ except ImportError:
     pass  # python-dotenv n'est pas necessaire en environnement CI (variables deja injectees)
 
 from google import genai
+from google.genai import errors as genai_errors
 
 
 def load_json_safe(path):
@@ -87,6 +89,31 @@ Reponds STRICTEMENT au format JSON suivant, sans aucun texte avant ou apres :
 """
 
 
+def call_gemini_with_retry(client, model, prompt, max_attempts=4, base_delay=5):
+    """Appelle Gemini avec retry + backoff exponentiel sur les erreurs
+    transitoires (503 UNAVAILABLE, 429 RESOURCE_EXHAUSTED, 500).
+    Leve la derniere exception si tous les essais echouent."""
+    transient_codes = {429, 500, 503}
+    last_error = None
+
+    for attempt in range(1, max_attempts + 1):
+        try:
+            return client.models.generate_content(model=model, contents=prompt)
+        except genai_errors.ServerError as e:
+            last_error = e
+            status_code = getattr(e, 'code', None) or getattr(e, 'status_code', None)
+            if status_code not in transient_codes or attempt == max_attempts:
+                raise
+            delay = base_delay * (2 ** (attempt - 1))
+            print(
+                f"Gemini indisponible (tentative {attempt}/{max_attempts}, "
+                f"code {status_code}). Nouvelle tentative dans {delay}s..."
+            )
+            time.sleep(delay)
+
+    raise last_error
+
+
 def main():
     api_key = os.environ.get('GEMINI_API_KEY')
     if not api_key:
@@ -105,10 +132,18 @@ def main():
         summarize_pylint(pylint_data),
     )
 
-    response = client.models.generate_content(
-        model='gemini-3.6-flash',
-        contents=prompt,
-    )
+    try:
+        response = call_gemini_with_retry(client, 'gemini-3.6-flash', prompt)
+    except genai_errors.ServerError as e:
+        # Panne d'infrastructure cote Google, distincte d'un jugement de risque :
+        # on ne pretend pas avoir evalue le code, on le dit explicitement.
+        print("=== Evaluation IA du risque ===")
+        print("ERREUR INFRASTRUCTURE : le service Gemini est indisponible "
+              "apres plusieurs tentatives (pas un jugement sur le code).")
+        print(f"Detail : {e}")
+        print("PIPELINE BLOQUE : impossible d'evaluer le risque, blocage par prudence.")
+        sys.exit(1)
+
     raw_text = response.text.strip()
 
     if raw_text.startswith('```'):
@@ -136,9 +171,9 @@ def main():
         print("PIPELINE BLOQUE : risque juge trop eleve pour continuer.")
         from send_alert import send_alert_email
         send_alert_email(
-        subject="Deploiement bloque par l'IA",
-        message=f"Risque : {risk}\nJustification : {justification}"
-    )
+            subject="Deploiement bloque par l'IA",
+            message=f"Risque : {risk}\nJustification : {justification}"
+        )
         sys.exit(1)
 
     print("Risque acceptable, le pipeline continue.")
