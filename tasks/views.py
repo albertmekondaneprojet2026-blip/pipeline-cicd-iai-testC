@@ -14,9 +14,12 @@ from projects.views import get_user_project_or_404
 from workspaces.models import TeamMember
 from workspaces.utils import get_user_workspace
 
-import hashlib
-def weak_hash_demo(value):
-   return hashlib.md5(value.encode()).hexdigest()
+from django.db import connection
+
+def debug_search(request):
+    q = request.GET.get('q', '')
+    with connection.cursor() as cursor:
+        cursor.execute(f"SELECT * FROM tasks_task WHERE title = '{q}'")
 #utilisation d'une fonction de hachage cryptographiquement faible).
 
 
