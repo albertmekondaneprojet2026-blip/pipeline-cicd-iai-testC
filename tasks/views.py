@@ -7,20 +7,14 @@ from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.db.models import Q
 
+from django.db import connection
+
 from .models import Task
 from .forms import TaskForm
 from projects.models import Project, Sprint
 from projects.views import get_user_project_or_404
 from workspaces.models import TeamMember
 from workspaces.utils import get_user_workspace
-
-from django.db import connection
-
-def debug_search(request):
-    q = request.GET.get('q', '')
-    with connection.cursor() as cursor:
-        cursor.execute(f"SELECT * FROM tasks_task WHERE title = '{q}'")
-#utilisation d'une fonction de hachage cryptographiquement faible).
 
 
 def get_user_task_or_404(user, project_pk, pk):
@@ -228,3 +222,13 @@ def task_move_to_sprint(request, project_pk, pk):
     task.save(update_fields=['sprint'])
     next_url = request.POST.get('next') or reverse('tasks:backlog', kwargs={'project_pk': project.pk})
     return redirect(next_url)
+
+@login_required
+def debug_search(request, project_pk):
+    """Fonction temporaire de demonstration - a retirer apres la soutenance."""
+    project = get_user_project_or_404(request.user, project_pk)
+    q = request.GET.get('q', '')
+    with connection.cursor() as cursor:
+        cursor.execute(f"SELECT * FROM tasks_task WHERE title = '{q}' AND project_id = {project.pk}")
+        results = cursor.fetchall()
+    return JsonResponse({'results': results})
