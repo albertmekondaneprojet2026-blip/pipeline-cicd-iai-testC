@@ -5,16 +5,18 @@ demande a Gemini d'evaluer le risque, et bloque le pipeline si necessaire.
 import os
 import sys
 import json
-import time
 
 try:
     from dotenv import load_dotenv
     load_dotenv()
 except ImportError:
-    pass  # python-dotenv n'est pas necessaire en environnement CI (variables deja injectees)
+    pass  # python-dotenv n'est pas necessaire en CI (variables deja injectees)
 
 from google import genai
-from google.genai import errors as genai_errors
+from google.genai import types
+
+BANDIT_ORDER = {'HIGH': 0, 'MEDIUM': 1, 'LOW': 2}
+PYLINT_ORDER = {'fatal': 0, 'error': 1, 'warning': 2, 'refactor': 3, 'convention': 4}
 
 
 def load_json_safe(path):
@@ -32,32 +34,62 @@ def summarize_pytest(data):
     if data is None:
         return "Resultats Pytest indisponibles."
     summary = data.get('summary', {})
-    return (
+    lines = [
         f"Tests: {summary.get('total', 0)} total, "
         f"{summary.get('passed', 0)} reussis, "
-        f"{summary.get('failed', 0)} echoues."
-    )
+        f"{summary.get('failed', 0)} echoues, "
+        f"{summary.get('error', 0)} en erreur."
+    ]
+    failed = [t.get('nodeid') for t in data.get('tests', []) if t.get('outcome') in ('failed', 'error')]
+    for nodeid in failed[:10]:
+        lines.append(f"- ECHEC : {nodeid}")
+    return "\n".join(lines)
 
 
 def summarize_bandit(data):
     if data is None:
         return "Resultats Bandit indisponibles."
-    results = data.get('results', [])
+
+    # On ignore le bruit habituel : les assert des fichiers de tests (B101)
+    results = [
+        issue for issue in data.get('results', [])
+        if not (issue.get('test_id') == 'B101' or 'tests.py' in issue.get('filename', ''))
+    ]
     if not results:
-        return "Bandit : aucune vulnerabilite detectee."
-    lines = ["Bandit a detecte les problemes suivants :"]
-    for issue in results[:10]:
+        return "Bandit : aucune vulnerabilite detectee (hors assertions des fichiers de tests)."
+
+    results.sort(key=lambda i: BANDIT_ORDER.get(i.get('issue_severity', 'LOW'), 3))
+
+    counts = {}
+    for issue in results:
+        sev = issue.get('issue_severity', 'LOW')
+        counts[sev] = counts.get(sev, 0) + 1
+
+    lines = [
+        f"Bandit a detecte {len(results)} probleme(s) : "
+        + ", ".join(f"{n} {sev}" for sev, n in counts.items()) + "."
+    ]
+    for issue in results[:15]:
         lines.append(
-            f"- [{issue.get('issue_severity')}] {issue.get('issue_text')} "
+            f"- [{issue.get('issue_severity')}/{issue.get('issue_confidence')}] "
+            f"{issue.get('test_id')} : {issue.get('issue_text')} "
             f"(fichier: {issue.get('filename')}, ligne: {issue.get('line_number')})"
         )
     return "\n".join(lines)
 
 
 def summarize_pylint(data):
-    if data is None or not data:
+    if not data:
         return "Pylint : aucun avertissement significatif."
-    lines = [f"Pylint a releve {len(data)} avertissement(s) :"]
+    data = sorted(data, key=lambda i: PYLINT_ORDER.get(i.get('type', 'convention'), 5))
+    counts = {}
+    for issue in data:
+        t = issue.get('type', 'convention')
+        counts[t] = counts.get(t, 0) + 1
+    lines = [
+        f"Pylint a releve {len(data)} message(s) : "
+        + ", ".join(f"{n} {t}" for t, n in counts.items()) + "."
+    ]
     for issue in data[:10]:
         lines.append(f"- [{issue.get('type')}] {issue.get('message')} (ligne {issue.get('line')})")
     return "\n".join(lines)
@@ -78,7 +110,14 @@ Voici les resultats d'analyse automatique :
 ## Analyse de qualite (Pylint)
 {pylint_summary}
 
-Evalue le niveau de risque global de ce changement pour un deploiement en production.
+Regles de decision, a appliquer strictement :
+- Toute vulnerabilite Bandit de severite HIGH => risk_level "high" et recommendation "block".
+- Toute vulnerabilite Bandit de severite MEDIUM liee a une injection (SQL, commande)
+  ou a l'execution de code arbitraire => risk_level "high" et recommendation "block".
+- Un ou plusieurs tests Pytest en echec ou en erreur => au minimum "medium" et recommendation "block".
+- Uniquement des messages Pylint de style ou de convention, sans autre probleme => "low" et "continue".
+- Aucun probleme detecte => "low" et "continue".
+
 Reponds STRICTEMENT au format JSON suivant, sans aucun texte avant ou apres :
 
 {{
@@ -89,31 +128,6 @@ Reponds STRICTEMENT au format JSON suivant, sans aucun texte avant ou apres :
 """
 
 
-def call_gemini_with_retry(client, model, prompt, max_attempts=4, base_delay=5):
-    """Appelle Gemini avec retry + backoff exponentiel sur les erreurs
-    transitoires (503 UNAVAILABLE, 429 RESOURCE_EXHAUSTED, 500).
-    Leve la derniere exception si tous les essais echouent."""
-    transient_codes = {429, 500, 503}
-    last_error = None
-
-    for attempt in range(1, max_attempts + 1):
-        try:
-            return client.models.generate_content(model=model, contents=prompt)
-        except genai_errors.ServerError as e:
-            last_error = e
-            status_code = getattr(e, 'code', None) or getattr(e, 'status_code', None)
-            if status_code not in transient_codes or attempt == max_attempts:
-                raise
-            delay = base_delay * (2 ** (attempt - 1))
-            print(
-                f"Gemini indisponible (tentative {attempt}/{max_attempts}, "
-                f"code {status_code}). Nouvelle tentative dans {delay}s..."
-            )
-            time.sleep(delay)
-
-    raise last_error
-
-
 def main():
     api_key = os.environ.get('GEMINI_API_KEY')
     if not api_key:
@@ -122,28 +136,23 @@ def main():
 
     client = genai.Client(api_key=api_key)
 
-    pytest_data = load_json_safe('pytest-report.json')
-    bandit_data = load_json_safe('bandit-report.json')
-    pylint_data = load_json_safe('pylint-report.json')
+    pytest_summary = summarize_pytest(load_json_safe('pytest-report.json'))
+    bandit_summary = summarize_bandit(load_json_safe('bandit-report.json'))
+    pylint_summary = summarize_pylint(load_json_safe('pylint-report.json'))
 
-    prompt = build_prompt(
-        summarize_pytest(pytest_data),
-        summarize_bandit(bandit_data),
-        summarize_pylint(pylint_data),
+    print("=== Donnees transmises a l'IA ===")
+    print(pytest_summary)
+    print(bandit_summary)
+    print(pylint_summary)
+    print()
+
+    prompt = build_prompt(pytest_summary, bandit_summary, pylint_summary)
+
+    response = client.models.generate_content(
+        model='gemini-3.6-flash',
+        contents=prompt,
+        config=types.GenerateContentConfig(temperature=0),
     )
-
-    try:
-        response = call_gemini_with_retry(client, 'gemini-3.6-flash', prompt)
-    except genai_errors.ServerError as e:
-        # Panne d'infrastructure cote Google, distincte d'un jugement de risque :
-        # on ne pretend pas avoir evalue le code, on le dit explicitement.
-        print("=== Evaluation IA du risque ===")
-        print("ERREUR INFRASTRUCTURE : le service Gemini est indisponible "
-              "apres plusieurs tentatives (pas un jugement sur le code).")
-        print(f"Detail : {e}")
-        print("PIPELINE BLOQUE : impossible d'evaluer le risque, blocage par prudence.")
-        sys.exit(1)
-
     raw_text = response.text.strip()
 
     if raw_text.startswith('```'):
@@ -169,11 +178,6 @@ def main():
 
     if recommendation == 'block':
         print("PIPELINE BLOQUE : risque juge trop eleve pour continuer.")
-        from send_alert import send_alert_email
-        send_alert_email(
-            subject="Deploiement bloque par l'IA",
-            message=f"Risque : {risk}\nJustification : {justification}"
-        )
         sys.exit(1)
 
     print("Risque acceptable, le pipeline continue.")

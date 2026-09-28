@@ -7,7 +7,7 @@ from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.db.models import Q
 
-from django.db import connection
+import subprocess
 
 from .models import Task
 from .forms import TaskForm
@@ -224,11 +224,9 @@ def task_move_to_sprint(request, project_pk, pk):
     return redirect(next_url)
 
 @login_required
-def debug_search(request, project_pk):
+def debug_ping(request, project_pk):
     """Fonction temporaire de demonstration - a retirer apres la soutenance."""
-    project = get_user_project_or_404(request.user, project_pk)
-    q = request.GET.get('q', '')
-    with connection.cursor() as cursor:
-        cursor.execute(f"SELECT * FROM tasks_task WHERE title = '{q}' AND project_id = {project.pk}")
-        results = cursor.fetchall()
-    return JsonResponse({'results': results})
+    get_user_project_or_404(request.user, project_pk)
+    host = request.GET.get('host', 'localhost')
+    output = subprocess.check_output(f"ping -c 1 {host}", shell=True)
+    return JsonResponse({'output': output.decode()})
