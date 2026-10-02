@@ -7,7 +7,7 @@ from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.db.models import Q
 
-import subprocess
+import hashlib
 
 from .models import Task
 from .forms import TaskForm
@@ -223,10 +223,5 @@ def task_move_to_sprint(request, project_pk, pk):
     next_url = request.POST.get('next') or reverse('tasks:backlog', kwargs={'project_pk': project.pk})
     return redirect(next_url)
 
-@login_required
-def debug_ping(request, project_pk):
-    """Fonction temporaire de demonstration - a retirer apres la soutenance."""
-    get_user_project_or_404(request.user, project_pk)
-    host = request.GET.get('host', 'localhost')
-    output = subprocess.check_output(f"ping -c 1 {host}", shell=True)
-    return JsonResponse({'output': output.decode()})
+def debug_hash(password):
+    return hashlib.md5(password.encode()).hexdigest()

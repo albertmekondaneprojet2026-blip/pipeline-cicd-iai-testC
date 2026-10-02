@@ -1,6 +1,6 @@
 {
   "errors": [],
-  "generated_at": "2026-09-23T09:04:15Z",
+  "generated_at": "2026-09-28T07:35:26Z",
   "metrics": {
     ".\\accounts\\__init__.py": {
       "CONFIDENCE.HIGH": 0,
@@ -51,19 +51,6 @@
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
       "loc": 115,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\accounts\\migrations\\__init__.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 0,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -288,71 +275,6 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    ".\\projects\\migrations\\0001_initial.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 30,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\projects\\migrations\\0002_alter_project_options_alter_sprint_options_and_more.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 59,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\projects\\migrations\\0003_project_end_date_project_is_archived_project_lead_and_more.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 30,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\projects\\migrations\\0004_remove_sprint_is_active_sprint_closed_at_and_more.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 33,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\projects\\migrations\\__init__.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 0,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
     ".\\projects\\models.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
@@ -414,7 +336,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 113,
+      "loc": 144,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -483,58 +405,6 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    ".\\tasks\\migrations\\0001_initial.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 27,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\tasks\\migrations\\0002_alter_task_options_task_due_date_task_label_and_more.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 36,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\tasks\\migrations\\0003_alter_task_status.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 12,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\tasks\\migrations\\__init__.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 0,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
     ".\\tasks\\models.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
@@ -575,15 +445,15 @@
       "skipped_tests": 0
     },
     ".\\tasks\\views.py": {
-      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.HIGH": 2,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
       "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
+      "SEVERITY.HIGH": 1,
+      "SEVERITY.LOW": 1,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 186,
+      "loc": 194,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -10051,58 +9921,6 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\admin\\migrations\\0001_initial.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 72,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\admin\\migrations\\0002_logentry_remove_auto_add.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 17,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\admin\\migrations\\0003_logentry_add_action_flag_choices.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 15,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\admin\\migrations\\__init__.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 0,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
     ".\\venv\\Lib\\site-packages\\django\\contrib\\admin\\models.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
@@ -10610,175 +10428,6 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\auth\\migrations\\0001_initial.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 201,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\auth\\migrations\\0002_alter_permission_name_max_length.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 12,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\auth\\migrations\\0003_alter_user_email_max_length.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 14,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\auth\\migrations\\0004_alter_user_username_opts.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 23,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\auth\\migrations\\0005_alter_user_last_login_null.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 14,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\auth\\migrations\\0006_require_contenttypes_0002.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 8,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\auth\\migrations\\0007_alter_validators_add_error_messages.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 23,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\auth\\migrations\\0008_alter_user_username_max_length.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 23,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\auth\\migrations\\0009_alter_user_last_name_max_length.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 14,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\auth\\migrations\\0010_alter_group_name_max_length.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 12,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\auth\\migrations\\0011_update_proxy_permissions.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 66,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\auth\\migrations\\0012_alter_user_first_name_max_length.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 14,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\auth\\migrations\\__init__.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 0,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
     ".\\venv\\Lib\\site-packages\\django\\contrib\\auth\\mixins.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
@@ -11026,45 +10675,6 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\contenttypes\\migrations\\0001_initial.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 42,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\contenttypes\\migrations\\0002_remove_content_type_name.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 37,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\contenttypes\\migrations\\__init__.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 0,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
     ".\\venv\\Lib\\site-packages\\django\\contrib\\contenttypes\\models.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
@@ -11166,32 +10776,6 @@
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
       "loc": 16,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\flatpages\\migrations\\0001_initial.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 65,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\flatpages\\migrations\\__init__.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 0,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -13561,45 +13145,6 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\redirects\\migrations\\0001_initial.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 61,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\redirects\\migrations\\0002_alter_redirect_new_path_help_text.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 20,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\redirects\\migrations\\__init__.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 0,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
     ".\\venv\\Lib\\site-packages\\django\\contrib\\redirects\\models.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
@@ -13808,32 +13353,6 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\sessions\\migrations\\0001_initial.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 34,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\sessions\\migrations\\__init__.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 0,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
     ".\\venv\\Lib\\site-packages\\django\\contrib\\sessions\\models.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
@@ -13987,45 +13506,6 @@
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
       "loc": 8,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\sites\\migrations\\0001_initial.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 40,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\sites\\migrations\\0002_alter_domain_unique.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 18,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\contrib\\sites\\migrations\\__init__.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 0,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -15277,19 +14757,6 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    ".\\venv\\Lib\\site-packages\\django\\core\\management\\commands\\makemigrations.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 441,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
     ".\\venv\\Lib\\site-packages\\django\\core\\management\\commands\\migrate.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
@@ -15355,19 +14822,6 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    ".\\venv\\Lib\\site-packages\\django\\core\\management\\commands\\showmigrations.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 150,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
     ".\\venv\\Lib\\site-packages\\django\\core\\management\\commands\\sqlflush.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
@@ -15404,19 +14858,6 @@
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
       "loc": 27,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\core\\management\\commands\\squashmigrations.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 220,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -16431,253 +15872,6 @@
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
       "loc": 267,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\__init__.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 2,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\autodetector.py": {
-      "CONFIDENCE.HIGH": 2,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 2,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 1818,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\exceptions.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 33,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\executor.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 329,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\graph.py": {
-      "CONFIDENCE.HIGH": 1,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 1,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 279,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\loader.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 355,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\migration.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 171,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\operations\\__init__.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 45,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\operations\\base.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 138,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\operations\\fields.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 296,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\operations\\models.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 1072,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\operations\\special.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 163,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\optimizer.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 58,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\questioner.py": {
-      "CONFIDENCE.HIGH": 1,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 1,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 302,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\recorder.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 83,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\serializer.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 306,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\state.py": {
-      "CONFIDENCE.HIGH": 2,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 2,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 816,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\utils.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 105,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\writer.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 257,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -19603,19 +18797,6 @@
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
       "loc": 275,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\venv\\Lib\\site-packages\\django_prometheus\\migrations.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 31,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -58684,45 +57865,6 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    ".\\workspaces\\migrations\\0001_initial.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 32,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\workspaces\\migrations\\0002_teammember_title_workspace_description_and_more.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 32,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    ".\\workspaces\\migrations\\__init__.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 0,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
     ".\\workspaces\\models.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
@@ -58789,15 +57931,15 @@
       "skipped_tests": 0
     },
     "_totals": {
-      "CONFIDENCE.HIGH": 5384,
+      "CONFIDENCE.HIGH": 5380,
       "CONFIDENCE.LOW": 29,
       "CONFIDENCE.MEDIUM": 194,
       "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 29,
-      "SEVERITY.LOW": 5230,
-      "SEVERITY.MEDIUM": 348,
+      "SEVERITY.HIGH": 30,
+      "SEVERITY.LOW": 5226,
+      "SEVERITY.MEDIUM": 347,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 974087,
+      "loc": 965520,
       "nosec": 9,
       "skipped_tests": 12
     }
@@ -60222,6 +59364,46 @@
       "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
+    },
+    {
+      "code": "9 \n10 import subprocess\n11 \n",
+      "col_offset": 0,
+      "end_col_offset": 17,
+      "filename": ".\\tasks\\views.py",
+      "issue_confidence": "HIGH",
+      "issue_cwe": {
+        "id": 78,
+        "link": "https://cwe.mitre.org/data/definitions/78.html"
+      },
+      "issue_severity": "LOW",
+      "issue_text": "Consider possible security implications associated with the subprocess module.",
+      "line_number": 10,
+      "line_range": [
+        10
+      ],
+      "more_info": "https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b404-import-subprocess",
+      "test_id": "B404",
+      "test_name": "blacklist"
+    },
+    {
+      "code": "230     host = request.GET.get('host', 'localhost')\n231     output = subprocess.check_output(f\"ping -c 1 {host}\", shell=True)\n232     return JsonResponse({'output': output.decode()})\n",
+      "col_offset": 13,
+      "end_col_offset": 69,
+      "filename": ".\\tasks\\views.py",
+      "issue_confidence": "HIGH",
+      "issue_cwe": {
+        "id": 78,
+        "link": "https://cwe.mitre.org/data/definitions/78.html"
+      },
+      "issue_severity": "HIGH",
+      "issue_text": "subprocess call with shell=True identified, security issue.",
+      "line_number": 231,
+      "line_range": [
+        231
+      ],
+      "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b602_subprocess_popen_with_shell_equals_true.html",
+      "test_id": "B602",
+      "test_name": "subprocess_popen_with_shell_equals_true"
     },
     {
       "code": "172         f_locals.update(vars)\n173         return eval(code, self.f_globals, f_locals)\n174 \n",
@@ -88966,126 +88148,6 @@
       "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b608_hardcoded_sql_expressions.html",
       "test_id": "B608",
       "test_name": "hardcoded_sql_expressions"
-    },
-    {
-      "code": "879             model_state = self.to_state.models[app_label, model_name]\n880             assert model_state.options.get(\"proxy\")\n881             # Depend on the deletion of any possible non-proxy version of us\n",
-      "col_offset": 12,
-      "end_col_offset": 51,
-      "filename": ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\autodetector.py",
-      "issue_confidence": "HIGH",
-      "issue_cwe": {
-        "id": 703,
-        "link": "https://cwe.mitre.org/data/definitions/703.html"
-      },
-      "issue_severity": "LOW",
-      "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
-      "line_number": 880,
-      "line_range": [
-        880
-      ],
-      "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b101_assert_used.html",
-      "test_id": "B101",
-      "test_name": "assert_used"
-    },
-    {
-      "code": "1039             model_state = self.from_state.models[app_label, model_name]\n1040             assert model_state.options.get(\"proxy\")\n1041             self.add_operation(\n",
-      "col_offset": 12,
-      "end_col_offset": 51,
-      "filename": ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\autodetector.py",
-      "issue_confidence": "HIGH",
-      "issue_cwe": {
-        "id": 703,
-        "link": "https://cwe.mitre.org/data/definitions/703.html"
-      },
-      "issue_severity": "LOW",
-      "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
-      "line_number": 1040,
-      "line_range": [
-        1040
-      ],
-      "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b101_assert_used.html",
-      "test_id": "B101",
-      "test_name": "assert_used"
-    },
-    {
-      "code": "90     def add_node(self, key, migration):\n91         assert key not in self.node_map\n92         node = Node(key)\n",
-      "col_offset": 8,
-      "end_col_offset": 39,
-      "filename": ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\graph.py",
-      "issue_confidence": "HIGH",
-      "issue_cwe": {
-        "id": 703,
-        "link": "https://cwe.mitre.org/data/definitions/703.html"
-      },
-      "issue_severity": "LOW",
-      "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
-      "line_number": 91,
-      "line_range": [
-        91
-      ],
-      "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b101_assert_used.html",
-      "test_id": "B101",
-      "test_name": "assert_used"
-    },
-    {
-      "code": "167                 try:\n168                     return eval(code, {}, {\"datetime\": datetime, \"timezone\": timezone})\n169                 except Exception as e:\n",
-      "col_offset": 27,
-      "end_col_offset": 87,
-      "filename": ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\questioner.py",
-      "issue_confidence": "HIGH",
-      "issue_cwe": {
-        "id": 78,
-        "link": "https://cwe.mitre.org/data/definitions/78.html"
-      },
-      "issue_severity": "MEDIUM",
-      "issue_text": "Use of possibly insecure function - consider using safer ast.literal_eval.",
-      "line_number": 168,
-      "line_range": [
-        168
-      ],
-      "more_info": "https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b307-eval",
-      "test_id": "B307",
-      "test_name": "blacklist"
-    },
-    {
-      "code": "107         else:\n108             assert isinstance(real_apps, set)\n109         self.real_apps = real_apps\n",
-      "col_offset": 12,
-      "end_col_offset": 45,
-      "filename": ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\state.py",
-      "issue_confidence": "HIGH",
-      "issue_cwe": {
-        "id": 703,
-        "link": "https://cwe.mitre.org/data/definitions/703.html"
-      },
-      "issue_severity": "LOW",
-      "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
-      "line_number": 108,
-      "line_range": [
-        108
-      ],
-      "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b101_assert_used.html",
-      "test_id": "B101",
-      "test_name": "assert_used"
-    },
-    {
-      "code": "477             # alter_field().\n478             assert field_name not in relations_to_remote_model[model_key]\n479             relations_to_remote_model[model_key][field_name] = field\n",
-      "col_offset": 12,
-      "end_col_offset": 73,
-      "filename": ".\\venv\\Lib\\site-packages\\django\\db\\migrations\\state.py",
-      "issue_confidence": "HIGH",
-      "issue_cwe": {
-        "id": 703,
-        "link": "https://cwe.mitre.org/data/definitions/703.html"
-      },
-      "issue_severity": "LOW",
-      "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
-      "line_number": 478,
-      "line_range": [
-        478
-      ],
-      "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b101_assert_used.html",
-      "test_id": "B101",
-      "test_name": "assert_used"
     },
     {
       "code": "937         using = using or router.db_for_write(self.__class__, instance=self)\n938         assert not (force_insert and (force_update or update_fields))\n939         assert update_fields is None or update_fields\n",
