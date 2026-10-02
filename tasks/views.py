@@ -7,7 +7,7 @@ from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.db.models import Q
 
-import hashlib
+
 
 from .models import Task
 from .forms import TaskForm
@@ -223,5 +223,3 @@ def task_move_to_sprint(request, project_pk, pk):
     next_url = request.POST.get('next') or reverse('tasks:backlog', kwargs={'project_pk': project.pk})
     return redirect(next_url)
 
-def debug_hash(password):
-    return hashlib.md5(password.encode()).hexdigest()
